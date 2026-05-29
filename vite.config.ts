@@ -12,4 +12,31 @@ export default defineConfig({
   tanstackStart: {
     server: { entry: "server" },
   },
+  vite: {
+    build: {
+      // Do not emit source maps in production — prevents exposing original source
+      sourcemap: false,
+      // Explicit esbuild minification (Vite's default, made explicit for clarity)
+      minify: "esbuild",
+      rollupOptions: {
+        output: {
+          // Obfuscate output filenames with content hashes
+          chunkFileNames: "assets/[hash].js",
+          assetFileNames: "assets/[hash][extname]",
+        },
+      },
+    },
+    esbuild: {
+      // Remove debugger statements from production bundles
+      drop: ["debugger"],
+      // Strip debug-level console calls; console.error is intentionally preserved
+      // for essential error handling in catch blocks across the application
+      pure: [
+        "console.log",
+        "console.debug",
+        "console.info",
+        "console.warn",
+      ],
+    },
+  },
 });
