@@ -136,10 +136,30 @@ const SITEMAP_XML = `<?xml version="1.0" encoding="UTF-8"?>
   </url>
 </urlset>`;
 
+const ROBOTS_TXT = `User-agent: *
+Allow: /
+
+Sitemap: https://converttpdf.com/sitemap.xml
+`;
+
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
-    // Serve sitemap.xml directly — bypass TanStack Start for this static resource
     const url = new URL(request.url);
+
+    // Serve robots.txt directly — bypass TanStack Start for this static resource
+    if (url.pathname === "/robots.txt") {
+      return addSecurityHeaders(
+        new Response(ROBOTS_TXT, {
+          status: 200,
+          headers: {
+            "content-type": "text/plain; charset=utf-8",
+            "cache-control": "public, max-age=86400",
+          },
+        }),
+      );
+    }
+
+    // Serve sitemap.xml directly — bypass TanStack Start for this static resource
     if (url.pathname === "/sitemap.xml") {
       return addSecurityHeaders(
         new Response(SITEMAP_XML, {
