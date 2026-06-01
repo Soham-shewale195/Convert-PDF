@@ -10,6 +10,7 @@ import { Features, HowItWorks, Testimonials, FAQ, Footer } from "@/components/Se
 import Tools from "@/components/Tools";
 import ImageTools from "@/components/ImageTools";
 import { BannerAdProvider } from "@/components/ads/providers/BannerAdProvider";
+import { WebsiteSchema, OrganizationSchema } from "@/components/schema/Schema";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -33,6 +34,8 @@ function Index() {
 
   return (
     <div id="top" className="min-h-screen">
+      <WebsiteSchema />
+      <OrganizationSchema />
       <Background />
       <Toaster theme="dark" position="top-center" richColors />
       <Navbar />

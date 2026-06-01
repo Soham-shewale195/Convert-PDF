@@ -9,19 +9,76 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WebpToJpgRouteImport } from './routes/webp-to-jpg'
+import { Route as WatermarkPdfRouteImport } from './routes/watermark-pdf'
+import { Route as WatermarkImageRouteImport } from './routes/watermark-image'
+import { Route as TextToPdfRouteImport } from './routes/text-to-pdf'
 import { Route as TermsRouteImport } from './routes/terms'
+import { Route as SplitPdfRouteImport } from './routes/split-pdf'
+import { Route as RotatePdfRouteImport } from './routes/rotate-pdf'
+import { Route as RotateImageRouteImport } from './routes/rotate-image'
+import { Route as ResizeImageRouteImport } from './routes/resize-image'
 import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as PngToJpgRouteImport } from './routes/png-to-jpg'
+import { Route as PdfToJpgRouteImport } from './routes/pdf-to-jpg'
 import { Route as MissionRouteImport } from './routes/mission'
+import { Route as MergePdfRouteImport } from './routes/merge-pdf'
+import { Route as JpgToPngRouteImport } from './routes/jpg-to-png'
+import { Route as JpgToPdfRouteImport } from './routes/jpg-to-pdf'
 import { Route as HowItWorksRouteImport } from './routes/how-it-works'
+import { Route as ExcelToPdfRouteImport } from './routes/excel-to-pdf'
 import { Route as DisclaimerRouteImport } from './routes/disclaimer'
+import { Route as CropImageRouteImport } from './routes/crop-image'
 import { Route as CookieRouteImport } from './routes/cookie'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CompressPdfRouteImport } from './routes/compress-pdf'
+import { Route as CompressImageRouteImport } from './routes/compress-image'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 
+const WebpToJpgRoute = WebpToJpgRouteImport.update({
+  id: '/webp-to-jpg',
+  path: '/webp-to-jpg',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WatermarkPdfRoute = WatermarkPdfRouteImport.update({
+  id: '/watermark-pdf',
+  path: '/watermark-pdf',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WatermarkImageRoute = WatermarkImageRouteImport.update({
+  id: '/watermark-image',
+  path: '/watermark-image',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TextToPdfRoute = TextToPdfRouteImport.update({
+  id: '/text-to-pdf',
+  path: '/text-to-pdf',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SplitPdfRoute = SplitPdfRouteImport.update({
+  id: '/split-pdf',
+  path: '/split-pdf',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RotatePdfRoute = RotatePdfRouteImport.update({
+  id: '/rotate-pdf',
+  path: '/rotate-pdf',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RotateImageRoute = RotateImageRouteImport.update({
+  id: '/rotate-image',
+  path: '/rotate-image',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResizeImageRoute = ResizeImageRouteImport.update({
+  id: '/resize-image',
+  path: '/resize-image',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -29,9 +86,34 @@ const PrivacyRoute = PrivacyRouteImport.update({
   path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PngToJpgRoute = PngToJpgRouteImport.update({
+  id: '/png-to-jpg',
+  path: '/png-to-jpg',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PdfToJpgRoute = PdfToJpgRouteImport.update({
+  id: '/pdf-to-jpg',
+  path: '/pdf-to-jpg',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MissionRoute = MissionRouteImport.update({
   id: '/mission',
   path: '/mission',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MergePdfRoute = MergePdfRouteImport.update({
+  id: '/merge-pdf',
+  path: '/merge-pdf',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JpgToPngRoute = JpgToPngRouteImport.update({
+  id: '/jpg-to-png',
+  path: '/jpg-to-png',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const JpgToPdfRoute = JpgToPdfRouteImport.update({
+  id: '/jpg-to-pdf',
+  path: '/jpg-to-pdf',
   getParentRoute: () => rootRouteImport,
 } as any)
 const HowItWorksRoute = HowItWorksRouteImport.update({
@@ -39,9 +121,19 @@ const HowItWorksRoute = HowItWorksRouteImport.update({
   path: '/how-it-works',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ExcelToPdfRoute = ExcelToPdfRouteImport.update({
+  id: '/excel-to-pdf',
+  path: '/excel-to-pdf',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DisclaimerRoute = DisclaimerRouteImport.update({
   id: '/disclaimer',
   path: '/disclaimer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CropImageRoute = CropImageRouteImport.update({
+  id: '/crop-image',
+  path: '/crop-image',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CookieRoute = CookieRouteImport.update({
@@ -52,6 +144,16 @@ const CookieRoute = CookieRouteImport.update({
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CompressPdfRoute = CompressPdfRouteImport.update({
+  id: '/compress-pdf',
+  path: '/compress-pdf',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CompressImageRoute = CompressImageRouteImport.update({
+  id: '/compress-image',
+  path: '/compress-image',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -68,92 +170,267 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/compress-image': typeof CompressImageRoute
+  '/compress-pdf': typeof CompressPdfRoute
   '/contact': typeof ContactRoute
   '/cookie': typeof CookieRoute
+  '/crop-image': typeof CropImageRoute
   '/disclaimer': typeof DisclaimerRoute
+  '/excel-to-pdf': typeof ExcelToPdfRoute
   '/how-it-works': typeof HowItWorksRoute
+  '/jpg-to-pdf': typeof JpgToPdfRoute
+  '/jpg-to-png': typeof JpgToPngRoute
+  '/merge-pdf': typeof MergePdfRoute
   '/mission': typeof MissionRoute
+  '/pdf-to-jpg': typeof PdfToJpgRoute
+  '/png-to-jpg': typeof PngToJpgRoute
   '/privacy': typeof PrivacyRoute
+  '/resize-image': typeof ResizeImageRoute
+  '/rotate-image': typeof RotateImageRoute
+  '/rotate-pdf': typeof RotatePdfRoute
+  '/split-pdf': typeof SplitPdfRoute
   '/terms': typeof TermsRoute
+  '/text-to-pdf': typeof TextToPdfRoute
+  '/watermark-image': typeof WatermarkImageRoute
+  '/watermark-pdf': typeof WatermarkPdfRoute
+  '/webp-to-jpg': typeof WebpToJpgRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/compress-image': typeof CompressImageRoute
+  '/compress-pdf': typeof CompressPdfRoute
   '/contact': typeof ContactRoute
   '/cookie': typeof CookieRoute
+  '/crop-image': typeof CropImageRoute
   '/disclaimer': typeof DisclaimerRoute
+  '/excel-to-pdf': typeof ExcelToPdfRoute
   '/how-it-works': typeof HowItWorksRoute
+  '/jpg-to-pdf': typeof JpgToPdfRoute
+  '/jpg-to-png': typeof JpgToPngRoute
+  '/merge-pdf': typeof MergePdfRoute
   '/mission': typeof MissionRoute
+  '/pdf-to-jpg': typeof PdfToJpgRoute
+  '/png-to-jpg': typeof PngToJpgRoute
   '/privacy': typeof PrivacyRoute
+  '/resize-image': typeof ResizeImageRoute
+  '/rotate-image': typeof RotateImageRoute
+  '/rotate-pdf': typeof RotatePdfRoute
+  '/split-pdf': typeof SplitPdfRoute
   '/terms': typeof TermsRoute
+  '/text-to-pdf': typeof TextToPdfRoute
+  '/watermark-image': typeof WatermarkImageRoute
+  '/watermark-pdf': typeof WatermarkPdfRoute
+  '/webp-to-jpg': typeof WebpToJpgRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/compress-image': typeof CompressImageRoute
+  '/compress-pdf': typeof CompressPdfRoute
   '/contact': typeof ContactRoute
   '/cookie': typeof CookieRoute
+  '/crop-image': typeof CropImageRoute
   '/disclaimer': typeof DisclaimerRoute
+  '/excel-to-pdf': typeof ExcelToPdfRoute
   '/how-it-works': typeof HowItWorksRoute
+  '/jpg-to-pdf': typeof JpgToPdfRoute
+  '/jpg-to-png': typeof JpgToPngRoute
+  '/merge-pdf': typeof MergePdfRoute
   '/mission': typeof MissionRoute
+  '/pdf-to-jpg': typeof PdfToJpgRoute
+  '/png-to-jpg': typeof PngToJpgRoute
   '/privacy': typeof PrivacyRoute
+  '/resize-image': typeof ResizeImageRoute
+  '/rotate-image': typeof RotateImageRoute
+  '/rotate-pdf': typeof RotatePdfRoute
+  '/split-pdf': typeof SplitPdfRoute
   '/terms': typeof TermsRoute
+  '/text-to-pdf': typeof TextToPdfRoute
+  '/watermark-image': typeof WatermarkImageRoute
+  '/watermark-pdf': typeof WatermarkPdfRoute
+  '/webp-to-jpg': typeof WebpToJpgRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/about'
+    | '/compress-image'
+    | '/compress-pdf'
     | '/contact'
     | '/cookie'
+    | '/crop-image'
     | '/disclaimer'
+    | '/excel-to-pdf'
     | '/how-it-works'
+    | '/jpg-to-pdf'
+    | '/jpg-to-png'
+    | '/merge-pdf'
     | '/mission'
+    | '/pdf-to-jpg'
+    | '/png-to-jpg'
     | '/privacy'
+    | '/resize-image'
+    | '/rotate-image'
+    | '/rotate-pdf'
+    | '/split-pdf'
     | '/terms'
+    | '/text-to-pdf'
+    | '/watermark-image'
+    | '/watermark-pdf'
+    | '/webp-to-jpg'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
+    | '/compress-image'
+    | '/compress-pdf'
     | '/contact'
     | '/cookie'
+    | '/crop-image'
     | '/disclaimer'
+    | '/excel-to-pdf'
     | '/how-it-works'
+    | '/jpg-to-pdf'
+    | '/jpg-to-png'
+    | '/merge-pdf'
     | '/mission'
+    | '/pdf-to-jpg'
+    | '/png-to-jpg'
     | '/privacy'
+    | '/resize-image'
+    | '/rotate-image'
+    | '/rotate-pdf'
+    | '/split-pdf'
     | '/terms'
+    | '/text-to-pdf'
+    | '/watermark-image'
+    | '/watermark-pdf'
+    | '/webp-to-jpg'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/compress-image'
+    | '/compress-pdf'
     | '/contact'
     | '/cookie'
+    | '/crop-image'
     | '/disclaimer'
+    | '/excel-to-pdf'
     | '/how-it-works'
+    | '/jpg-to-pdf'
+    | '/jpg-to-png'
+    | '/merge-pdf'
     | '/mission'
+    | '/pdf-to-jpg'
+    | '/png-to-jpg'
     | '/privacy'
+    | '/resize-image'
+    | '/rotate-image'
+    | '/rotate-pdf'
+    | '/split-pdf'
     | '/terms'
+    | '/text-to-pdf'
+    | '/watermark-image'
+    | '/watermark-pdf'
+    | '/webp-to-jpg'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  CompressImageRoute: typeof CompressImageRoute
+  CompressPdfRoute: typeof CompressPdfRoute
   ContactRoute: typeof ContactRoute
   CookieRoute: typeof CookieRoute
+  CropImageRoute: typeof CropImageRoute
   DisclaimerRoute: typeof DisclaimerRoute
+  ExcelToPdfRoute: typeof ExcelToPdfRoute
   HowItWorksRoute: typeof HowItWorksRoute
+  JpgToPdfRoute: typeof JpgToPdfRoute
+  JpgToPngRoute: typeof JpgToPngRoute
+  MergePdfRoute: typeof MergePdfRoute
   MissionRoute: typeof MissionRoute
+  PdfToJpgRoute: typeof PdfToJpgRoute
+  PngToJpgRoute: typeof PngToJpgRoute
   PrivacyRoute: typeof PrivacyRoute
+  ResizeImageRoute: typeof ResizeImageRoute
+  RotateImageRoute: typeof RotateImageRoute
+  RotatePdfRoute: typeof RotatePdfRoute
+  SplitPdfRoute: typeof SplitPdfRoute
   TermsRoute: typeof TermsRoute
+  TextToPdfRoute: typeof TextToPdfRoute
+  WatermarkImageRoute: typeof WatermarkImageRoute
+  WatermarkPdfRoute: typeof WatermarkPdfRoute
+  WebpToJpgRoute: typeof WebpToJpgRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/webp-to-jpg': {
+      id: '/webp-to-jpg'
+      path: '/webp-to-jpg'
+      fullPath: '/webp-to-jpg'
+      preLoaderRoute: typeof WebpToJpgRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/watermark-pdf': {
+      id: '/watermark-pdf'
+      path: '/watermark-pdf'
+      fullPath: '/watermark-pdf'
+      preLoaderRoute: typeof WatermarkPdfRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/watermark-image': {
+      id: '/watermark-image'
+      path: '/watermark-image'
+      fullPath: '/watermark-image'
+      preLoaderRoute: typeof WatermarkImageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/text-to-pdf': {
+      id: '/text-to-pdf'
+      path: '/text-to-pdf'
+      fullPath: '/text-to-pdf'
+      preLoaderRoute: typeof TextToPdfRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/terms': {
       id: '/terms'
       path: '/terms'
       fullPath: '/terms'
       preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/split-pdf': {
+      id: '/split-pdf'
+      path: '/split-pdf'
+      fullPath: '/split-pdf'
+      preLoaderRoute: typeof SplitPdfRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rotate-pdf': {
+      id: '/rotate-pdf'
+      path: '/rotate-pdf'
+      fullPath: '/rotate-pdf'
+      preLoaderRoute: typeof RotatePdfRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rotate-image': {
+      id: '/rotate-image'
+      path: '/rotate-image'
+      fullPath: '/rotate-image'
+      preLoaderRoute: typeof RotateImageRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/resize-image': {
+      id: '/resize-image'
+      path: '/resize-image'
+      fullPath: '/resize-image'
+      preLoaderRoute: typeof ResizeImageRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -163,11 +440,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/png-to-jpg': {
+      id: '/png-to-jpg'
+      path: '/png-to-jpg'
+      fullPath: '/png-to-jpg'
+      preLoaderRoute: typeof PngToJpgRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pdf-to-jpg': {
+      id: '/pdf-to-jpg'
+      path: '/pdf-to-jpg'
+      fullPath: '/pdf-to-jpg'
+      preLoaderRoute: typeof PdfToJpgRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/mission': {
       id: '/mission'
       path: '/mission'
       fullPath: '/mission'
       preLoaderRoute: typeof MissionRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/merge-pdf': {
+      id: '/merge-pdf'
+      path: '/merge-pdf'
+      fullPath: '/merge-pdf'
+      preLoaderRoute: typeof MergePdfRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jpg-to-png': {
+      id: '/jpg-to-png'
+      path: '/jpg-to-png'
+      fullPath: '/jpg-to-png'
+      preLoaderRoute: typeof JpgToPngRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/jpg-to-pdf': {
+      id: '/jpg-to-pdf'
+      path: '/jpg-to-pdf'
+      fullPath: '/jpg-to-pdf'
+      preLoaderRoute: typeof JpgToPdfRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/how-it-works': {
@@ -177,11 +489,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof HowItWorksRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/excel-to-pdf': {
+      id: '/excel-to-pdf'
+      path: '/excel-to-pdf'
+      fullPath: '/excel-to-pdf'
+      preLoaderRoute: typeof ExcelToPdfRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/disclaimer': {
       id: '/disclaimer'
       path: '/disclaimer'
       fullPath: '/disclaimer'
       preLoaderRoute: typeof DisclaimerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/crop-image': {
+      id: '/crop-image'
+      path: '/crop-image'
+      fullPath: '/crop-image'
+      preLoaderRoute: typeof CropImageRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/cookie': {
@@ -196,6 +522,20 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/compress-pdf': {
+      id: '/compress-pdf'
+      path: '/compress-pdf'
+      fullPath: '/compress-pdf'
+      preLoaderRoute: typeof CompressPdfRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/compress-image': {
+      id: '/compress-image'
+      path: '/compress-image'
+      fullPath: '/compress-image'
+      preLoaderRoute: typeof CompressImageRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -218,13 +558,30 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  CompressImageRoute: CompressImageRoute,
+  CompressPdfRoute: CompressPdfRoute,
   ContactRoute: ContactRoute,
   CookieRoute: CookieRoute,
+  CropImageRoute: CropImageRoute,
   DisclaimerRoute: DisclaimerRoute,
+  ExcelToPdfRoute: ExcelToPdfRoute,
   HowItWorksRoute: HowItWorksRoute,
+  JpgToPdfRoute: JpgToPdfRoute,
+  JpgToPngRoute: JpgToPngRoute,
+  MergePdfRoute: MergePdfRoute,
   MissionRoute: MissionRoute,
+  PdfToJpgRoute: PdfToJpgRoute,
+  PngToJpgRoute: PngToJpgRoute,
   PrivacyRoute: PrivacyRoute,
+  ResizeImageRoute: ResizeImageRoute,
+  RotateImageRoute: RotateImageRoute,
+  RotatePdfRoute: RotatePdfRoute,
+  SplitPdfRoute: SplitPdfRoute,
   TermsRoute: TermsRoute,
+  TextToPdfRoute: TextToPdfRoute,
+  WatermarkImageRoute: WatermarkImageRoute,
+  WatermarkPdfRoute: WatermarkPdfRoute,
+  WebpToJpgRoute: WebpToJpgRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
