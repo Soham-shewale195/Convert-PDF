@@ -14,7 +14,7 @@ export const Route = createFileRoute("/cookie")({
 function CookiePolicy() {
   return (
     <PageLayout title="Cookie Policy">
-      <p>Last updated: {new Date().toLocaleDateString()}</p>
+      <p>Last Updated: June 1, 2026</p>
       
       <h2 className="text-xl font-semibold text-foreground mt-8 mb-4">What Are Cookies?</h2>
       <p>Cookies are small text files that are stored on your computer or mobile device when you visit a website. They allow the website to recognize your device and remember if you've been there before.</p>
@@ -32,6 +32,11 @@ function CookiePolicy() {
       
       <h2 className="text-xl font-semibold text-foreground mt-8 mb-4">Managing Cookies</h2>
       <p>You can manage or disable cookies and local storage through your browser settings. However, please note that disabling local storage may cause our browser-based conversion tools to stop functioning correctly, as they require local memory to process files without uploading them.</p>
+
+      <h2 className="text-xl font-semibold text-foreground mt-8 mb-4">Questions About Cookies</h2>
+      <p>If you have questions regarding this Cookie Policy or how cookies and local storage are used on Convert PDF, please contact us at:</p>
+      <p className="mt-2"><a href="mailto:converttpdf.contact@gmail.com" className="text-primary hover:underline">converttpdf.contact@gmail.com</a></p>
+      <p className="mt-4">We will do our best to respond to inquiries in a timely manner.</p>
     </PageLayout>
   );
 }

@@ -25,7 +25,7 @@ function Contact() {
           <div>
             <h3 className="font-semibold text-lg text-foreground mb-1">Email Us</h3>
             <p className="text-sm mb-2">For general inquiries and support.</p>
-            <a href="mailto:hello@convert-pdf.com" className="text-primary hover:text-primary-foreground transition font-medium">hello@convert-pdf.com</a>
+            <a href="mailto:converttpdf.contact@gmail.com" className="text-primary hover:text-primary-foreground transition font-medium">converttpdf.contact@gmail.com</a>
           </div>
         </div>
         

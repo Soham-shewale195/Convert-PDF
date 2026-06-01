@@ -14,7 +14,7 @@ export const Route = createFileRoute("/terms")({
 function Terms() {
   return (
     <PageLayout title="Terms & Conditions">
-      <p>Last updated: {new Date().toLocaleDateString()}</p>
+      <p>Last Updated: June 1, 2026</p>
       
       <h2 className="text-xl font-semibold text-foreground mt-8 mb-4">1. Acceptance of Terms</h2>
       <p>By accessing and using Convert PDF, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by these terms, please do not use this service.</p>
@@ -30,6 +30,14 @@ function Terms() {
       
       <h2 className="text-xl font-semibold text-foreground mt-8 mb-4">5. Disclaimer of Warranties</h2>
       <p>The service is provided on an "as is" and "as available" basis without any warranties of any kind, either express or implied. We do not guarantee that the service will be uninterrupted or error-free.</p>
+
+      <h2 className="text-xl font-semibold text-foreground mt-8 mb-4">Changes To Terms</h2>
+      <p>We reserve the right to update or modify these Terms & Conditions at any time. Changes will be reflected on this page with an updated revision date. Continued use of Convert PDF after any updates constitutes acceptance of the revised Terms.</p>
+
+      <h2 className="text-xl font-semibold text-foreground mt-8 mb-4">Contact Information</h2>
+      <p>If you have questions regarding these Terms & Conditions, please contact us at:</p>
+      <p className="mt-2"><a href="mailto:converttpdf.contact@gmail.com" className="text-primary hover:underline">converttpdf.contact@gmail.com</a></p>
+      <p className="mt-4">We will do our best to respond to inquiries in a timely manner.</p>
     </PageLayout>
   );
 }
