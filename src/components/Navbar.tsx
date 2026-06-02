@@ -11,6 +11,7 @@ const links = [
   { label: "Features", href: "/#features" },
   { label: "How It Works", href: "/#how" },
   { label: "FAQ", href: "/#faq" },
+  { label: "Blog", href: "/blog" },
 ];
 
 export default function Navbar() {

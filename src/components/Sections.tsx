@@ -237,7 +237,8 @@ export function Footer() {
             { label: "About Us", href: "/about" },
             { label: "Contact Us", href: "/contact" },
             { label: "Our Mission", href: "/mission" },
-            { label: "How It Works", href: "/how-it-works" }
+            { label: "How It Works", href: "/how-it-works" },
+            { label: "Blog", href: "/blog" },
           ]} />
           <FooterCol title="Legal" items={[
             { label: "Privacy Policy", href: "/privacy" },

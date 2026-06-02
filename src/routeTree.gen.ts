@@ -35,6 +35,13 @@ import { Route as CompressPdfRouteImport } from './routes/compress-pdf'
 import { Route as CompressImageRouteImport } from './routes/compress-image'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as BlogIndexRouteImport } from './routes/blog/index'
+import { Route as BlogJpgVsPngGuideRouteImport } from './routes/blog/jpg-vs-png-guide'
+import { Route as BlogHowToMergePdfFilesOnlineRouteImport } from './routes/blog/how-to-merge-pdf-files-online'
+import { Route as BlogHowToConvertPdfToWordRouteImport } from './routes/blog/how-to-convert-pdf-to-word'
+import { Route as BlogCompressPdfWithoutLosingQualityRouteImport } from './routes/blog/compress-pdf-without-losing-quality'
+import { Route as BlogBrowserPdfConverterPrivacyRouteImport } from './routes/blog/browser-pdf-converter-privacy'
+import { Route as BlogBestFreePdfToolsRouteImport } from './routes/blog/best-free-pdf-tools'
 
 const WebpToJpgRoute = WebpToJpgRouteImport.update({
   id: '/webp-to-jpg',
@@ -166,6 +173,45 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlogIndexRoute = BlogIndexRouteImport.update({
+  id: '/blog/',
+  path: '/blog/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogJpgVsPngGuideRoute = BlogJpgVsPngGuideRouteImport.update({
+  id: '/blog/jpg-vs-png-guide',
+  path: '/blog/jpg-vs-png-guide',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogHowToMergePdfFilesOnlineRoute =
+  BlogHowToMergePdfFilesOnlineRouteImport.update({
+    id: '/blog/how-to-merge-pdf-files-online',
+    path: '/blog/how-to-merge-pdf-files-online',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const BlogHowToConvertPdfToWordRoute =
+  BlogHowToConvertPdfToWordRouteImport.update({
+    id: '/blog/how-to-convert-pdf-to-word',
+    path: '/blog/how-to-convert-pdf-to-word',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const BlogCompressPdfWithoutLosingQualityRoute =
+  BlogCompressPdfWithoutLosingQualityRouteImport.update({
+    id: '/blog/compress-pdf-without-losing-quality',
+    path: '/blog/compress-pdf-without-losing-quality',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const BlogBrowserPdfConverterPrivacyRoute =
+  BlogBrowserPdfConverterPrivacyRouteImport.update({
+    id: '/blog/browser-pdf-converter-privacy',
+    path: '/blog/browser-pdf-converter-privacy',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const BlogBestFreePdfToolsRoute = BlogBestFreePdfToolsRouteImport.update({
+  id: '/blog/best-free-pdf-tools',
+  path: '/blog/best-free-pdf-tools',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -194,6 +240,13 @@ export interface FileRoutesByFullPath {
   '/watermark-image': typeof WatermarkImageRoute
   '/watermark-pdf': typeof WatermarkPdfRoute
   '/webp-to-jpg': typeof WebpToJpgRoute
+  '/blog/best-free-pdf-tools': typeof BlogBestFreePdfToolsRoute
+  '/blog/browser-pdf-converter-privacy': typeof BlogBrowserPdfConverterPrivacyRoute
+  '/blog/compress-pdf-without-losing-quality': typeof BlogCompressPdfWithoutLosingQualityRoute
+  '/blog/how-to-convert-pdf-to-word': typeof BlogHowToConvertPdfToWordRoute
+  '/blog/how-to-merge-pdf-files-online': typeof BlogHowToMergePdfFilesOnlineRoute
+  '/blog/jpg-vs-png-guide': typeof BlogJpgVsPngGuideRoute
+  '/blog/': typeof BlogIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -222,6 +275,13 @@ export interface FileRoutesByTo {
   '/watermark-image': typeof WatermarkImageRoute
   '/watermark-pdf': typeof WatermarkPdfRoute
   '/webp-to-jpg': typeof WebpToJpgRoute
+  '/blog/best-free-pdf-tools': typeof BlogBestFreePdfToolsRoute
+  '/blog/browser-pdf-converter-privacy': typeof BlogBrowserPdfConverterPrivacyRoute
+  '/blog/compress-pdf-without-losing-quality': typeof BlogCompressPdfWithoutLosingQualityRoute
+  '/blog/how-to-convert-pdf-to-word': typeof BlogHowToConvertPdfToWordRoute
+  '/blog/how-to-merge-pdf-files-online': typeof BlogHowToMergePdfFilesOnlineRoute
+  '/blog/jpg-vs-png-guide': typeof BlogJpgVsPngGuideRoute
+  '/blog': typeof BlogIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -251,6 +311,13 @@ export interface FileRoutesById {
   '/watermark-image': typeof WatermarkImageRoute
   '/watermark-pdf': typeof WatermarkPdfRoute
   '/webp-to-jpg': typeof WebpToJpgRoute
+  '/blog/best-free-pdf-tools': typeof BlogBestFreePdfToolsRoute
+  '/blog/browser-pdf-converter-privacy': typeof BlogBrowserPdfConverterPrivacyRoute
+  '/blog/compress-pdf-without-losing-quality': typeof BlogCompressPdfWithoutLosingQualityRoute
+  '/blog/how-to-convert-pdf-to-word': typeof BlogHowToConvertPdfToWordRoute
+  '/blog/how-to-merge-pdf-files-online': typeof BlogHowToMergePdfFilesOnlineRoute
+  '/blog/jpg-vs-png-guide': typeof BlogJpgVsPngGuideRoute
+  '/blog/': typeof BlogIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -281,6 +348,13 @@ export interface FileRouteTypes {
     | '/watermark-image'
     | '/watermark-pdf'
     | '/webp-to-jpg'
+    | '/blog/best-free-pdf-tools'
+    | '/blog/browser-pdf-converter-privacy'
+    | '/blog/compress-pdf-without-losing-quality'
+    | '/blog/how-to-convert-pdf-to-word'
+    | '/blog/how-to-merge-pdf-files-online'
+    | '/blog/jpg-vs-png-guide'
+    | '/blog/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -309,6 +383,13 @@ export interface FileRouteTypes {
     | '/watermark-image'
     | '/watermark-pdf'
     | '/webp-to-jpg'
+    | '/blog/best-free-pdf-tools'
+    | '/blog/browser-pdf-converter-privacy'
+    | '/blog/compress-pdf-without-losing-quality'
+    | '/blog/how-to-convert-pdf-to-word'
+    | '/blog/how-to-merge-pdf-files-online'
+    | '/blog/jpg-vs-png-guide'
+    | '/blog'
   id:
     | '__root__'
     | '/'
@@ -337,6 +418,13 @@ export interface FileRouteTypes {
     | '/watermark-image'
     | '/watermark-pdf'
     | '/webp-to-jpg'
+    | '/blog/best-free-pdf-tools'
+    | '/blog/browser-pdf-converter-privacy'
+    | '/blog/compress-pdf-without-losing-quality'
+    | '/blog/how-to-convert-pdf-to-word'
+    | '/blog/how-to-merge-pdf-files-online'
+    | '/blog/jpg-vs-png-guide'
+    | '/blog/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -366,6 +454,13 @@ export interface RootRouteChildren {
   WatermarkImageRoute: typeof WatermarkImageRoute
   WatermarkPdfRoute: typeof WatermarkPdfRoute
   WebpToJpgRoute: typeof WebpToJpgRoute
+  BlogBestFreePdfToolsRoute: typeof BlogBestFreePdfToolsRoute
+  BlogBrowserPdfConverterPrivacyRoute: typeof BlogBrowserPdfConverterPrivacyRoute
+  BlogCompressPdfWithoutLosingQualityRoute: typeof BlogCompressPdfWithoutLosingQualityRoute
+  BlogHowToConvertPdfToWordRoute: typeof BlogHowToConvertPdfToWordRoute
+  BlogHowToMergePdfFilesOnlineRoute: typeof BlogHowToMergePdfFilesOnlineRoute
+  BlogJpgVsPngGuideRoute: typeof BlogJpgVsPngGuideRoute
+  BlogIndexRoute: typeof BlogIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -552,6 +647,55 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog/': {
+      id: '/blog/'
+      path: '/blog'
+      fullPath: '/blog/'
+      preLoaderRoute: typeof BlogIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/jpg-vs-png-guide': {
+      id: '/blog/jpg-vs-png-guide'
+      path: '/blog/jpg-vs-png-guide'
+      fullPath: '/blog/jpg-vs-png-guide'
+      preLoaderRoute: typeof BlogJpgVsPngGuideRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/how-to-merge-pdf-files-online': {
+      id: '/blog/how-to-merge-pdf-files-online'
+      path: '/blog/how-to-merge-pdf-files-online'
+      fullPath: '/blog/how-to-merge-pdf-files-online'
+      preLoaderRoute: typeof BlogHowToMergePdfFilesOnlineRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/how-to-convert-pdf-to-word': {
+      id: '/blog/how-to-convert-pdf-to-word'
+      path: '/blog/how-to-convert-pdf-to-word'
+      fullPath: '/blog/how-to-convert-pdf-to-word'
+      preLoaderRoute: typeof BlogHowToConvertPdfToWordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/compress-pdf-without-losing-quality': {
+      id: '/blog/compress-pdf-without-losing-quality'
+      path: '/blog/compress-pdf-without-losing-quality'
+      fullPath: '/blog/compress-pdf-without-losing-quality'
+      preLoaderRoute: typeof BlogCompressPdfWithoutLosingQualityRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/browser-pdf-converter-privacy': {
+      id: '/blog/browser-pdf-converter-privacy'
+      path: '/blog/browser-pdf-converter-privacy'
+      fullPath: '/blog/browser-pdf-converter-privacy'
+      preLoaderRoute: typeof BlogBrowserPdfConverterPrivacyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/best-free-pdf-tools': {
+      id: '/blog/best-free-pdf-tools'
+      path: '/blog/best-free-pdf-tools'
+      fullPath: '/blog/best-free-pdf-tools'
+      preLoaderRoute: typeof BlogBestFreePdfToolsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -582,6 +726,14 @@ const rootRouteChildren: RootRouteChildren = {
   WatermarkImageRoute: WatermarkImageRoute,
   WatermarkPdfRoute: WatermarkPdfRoute,
   WebpToJpgRoute: WebpToJpgRoute,
+  BlogBestFreePdfToolsRoute: BlogBestFreePdfToolsRoute,
+  BlogBrowserPdfConverterPrivacyRoute: BlogBrowserPdfConverterPrivacyRoute,
+  BlogCompressPdfWithoutLosingQualityRoute:
+    BlogCompressPdfWithoutLosingQualityRoute,
+  BlogHowToConvertPdfToWordRoute: BlogHowToConvertPdfToWordRoute,
+  BlogHowToMergePdfFilesOnlineRoute: BlogHowToMergePdfFilesOnlineRoute,
+  BlogJpgVsPngGuideRoute: BlogJpgVsPngGuideRoute,
+  BlogIndexRoute: BlogIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
