@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import PageLayout from "@/components/PageLayout";
+import { InfoPageSchema } from "@/components/schema/Schema";
 
 export const Route = createFileRoute("/privacy")({
   head: () => ({
@@ -14,6 +15,7 @@ export const Route = createFileRoute("/privacy")({
 function PrivacyPolicy() {
   return (
     <PageLayout title="Privacy Policy">
+      <InfoPageSchema title="Privacy Policy" description="Read the Convert PDF Privacy Policy. Learn how our browser-based document processing keeps your files private, secure, and on your device." urlPath="/privacy" dateModified={new Date().toISOString().split('T')[0]} />
       <p>Last updated: {new Date().toLocaleDateString()}</p>
       
       <h2 className="text-xl font-semibold text-foreground mt-8 mb-4">1. Privacy-First Approach</h2>

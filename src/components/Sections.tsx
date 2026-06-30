@@ -184,8 +184,23 @@ export function FAQ() {
     { q: "Do I need to create an account?", a: "No account needed at all. Just open the site, upload your file, convert, and download. It is that simple." },
   ];
   const [open, setOpen] = useState<number | null>(0);
+  
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": faqs.map((f) => ({
+      "@type": "Question",
+      "name": f.q,
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": f.a
+      }
+    }))
+  };
+
   return (
     <section id="faq" className="py-16 sm:py-24 px-4 sm:px-6">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <div className="max-w-3xl mx-auto">
         <SectionHeader eyebrow="FAQ" title="Frequently asked questions" sub="Everything you need to know." />
         <div className="mt-8 sm:mt-12 space-y-3">

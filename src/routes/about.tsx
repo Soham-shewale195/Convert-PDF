@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import PageLayout from "@/components/PageLayout";
+import { InfoPageSchema } from "@/components/schema/Schema";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -14,6 +15,7 @@ export const Route = createFileRoute("/about")({
 function AboutUs() {
   return (
     <PageLayout title="About Us">
+      <InfoPageSchema title="About Us" description="Learn about Convert PDF and our mission to provide secure, private document conversion tools." urlPath="/about" />
       <p className="text-lg mb-6">Convert PDF was born out of a simple frustration: why do we have to upload our private, sensitive documents to random servers just to convert them to another format?</p>
       
       <h2 className="text-xl font-semibold text-foreground mt-8 mb-4">Our Story</h2>

@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import PageLayout from "@/components/PageLayout";
 import { Mail, MapPin, MessageSquare } from "lucide-react";
+import { InfoPageSchema } from "@/components/schema/Schema";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -15,6 +16,7 @@ export const Route = createFileRoute("/contact")({
 function Contact() {
   return (
     <PageLayout title="Contact Us">
+      <InfoPageSchema title="Contact Us" description="Get in touch with the Convert PDF team for support, feedback, or business inquiries." urlPath="/contact" />
       <p className="text-lg mb-8">Have a question, feedback, or need support? We're here to help.</p>
       
       <div className="grid sm:grid-cols-2 gap-6 mb-12">

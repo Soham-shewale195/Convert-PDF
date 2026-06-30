@@ -15,7 +15,12 @@ export function OrganizationSchema() {
     "@type": "Organization",
     "name": "ConvertPDF",
     "url": "https://converttpdf.com",
-    "logo": "https://converttpdf.com/apple-touch-icon.png"
+    "logo": "https://converttpdf.com/apple-touch-icon.png",
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "email": "converttpdf.contact@gmail.com",
+      "contactType": "customer support"
+    }
   };
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />;
 }
@@ -73,4 +78,26 @@ export function ToolSchema({ title, description, urlPath }: { title: string; des
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(webpageSchema) }} />
     </>
   );
+}
+
+export function InfoPageSchema({ title, description, urlPath, dateModified }: { title: string; description: string; urlPath: string; dateModified?: string }) {
+  const url = `https://converttpdf.com${urlPath}`;
+  const schema: Record<string, any> = {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": title,
+    "url": url,
+    "description": description,
+    "inLanguage": "en-US",
+    "isPartOf": {
+      "@id": "https://converttpdf.com/#website"
+    },
+    "publisher": {
+      "@id": "https://converttpdf.com/#organization"
+    }
+  };
+  if (dateModified) {
+    schema.dateModified = dateModified;
+  }
+  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />;
 }

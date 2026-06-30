@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import PageLayout from "@/components/PageLayout";
+import { InfoPageSchema } from "@/components/schema/Schema";
 
 export const Route = createFileRoute("/terms")({
   head: () => ({
@@ -14,6 +15,7 @@ export const Route = createFileRoute("/terms")({
 function Terms() {
   return (
     <PageLayout title="Terms & Conditions">
+      <InfoPageSchema title="Terms & Conditions" description="Terms and conditions for using Convert PDF's browser-based document tools." urlPath="/terms" dateModified="2026-06-01" />
       <p>Last Updated: June 1, 2026</p>
       
       <h2 className="text-xl font-semibold text-foreground mt-8 mb-4">1. Acceptance of Terms</h2>

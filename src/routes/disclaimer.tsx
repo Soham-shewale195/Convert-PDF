@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import PageLayout from "@/components/PageLayout";
+import { InfoPageSchema } from "@/components/schema/Schema";
 
 export const Route = createFileRoute("/disclaimer")({
   head: () => ({
@@ -14,6 +15,7 @@ export const Route = createFileRoute("/disclaimer")({
 function Disclaimer() {
   return (
     <PageLayout title="Disclaimer">
+      <InfoPageSchema title="Disclaimer" description="Legal disclaimer regarding the use and limitations of Convert PDF's services." urlPath="/disclaimer" dateModified="2026-06-01" />
       <p>Last Updated: June 1, 2026</p>
       
       <h2 className="text-xl font-semibold text-foreground mt-8 mb-4">No Professional Advice</h2>
