@@ -87,208 +87,56 @@ function addSecurityHeaders(response: Response): Response {
   });
 }
 
-const buildDate = new Date().toISOString().split('T')[0];
-const SITEMAP_XML = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://converttpdf.com/</loc>
-    <lastmod>${buildDate}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://converttpdf.com/about</loc>
-    <lastmod>${buildDate}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://converttpdf.com/contact</loc>
-    <lastmod>${buildDate}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://converttpdf.com/how-it-works</loc>
-    <lastmod>${buildDate}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://converttpdf.com/mission</loc>
-    <lastmod>${buildDate}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://converttpdf.com/privacy</loc>
-    <lastmod>${buildDate}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://converttpdf.com/terms</loc>
-    <lastmod>${buildDate}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://converttpdf.com/disclaimer</loc>
-    <lastmod>${buildDate}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://converttpdf.com/cookie</loc>
-    <lastmod>${buildDate}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://converttpdf.com/merge-pdf</loc>
-    <lastmod>${buildDate}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://converttpdf.com/split-pdf</loc>
-    <lastmod>${buildDate}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://converttpdf.com/compress-pdf</loc>
-    <lastmod>${buildDate}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://converttpdf.com/pdf-to-jpg</loc>
-    <lastmod>${buildDate}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://converttpdf.com/jpg-to-pdf</loc>
-    <lastmod>${buildDate}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://converttpdf.com/text-to-pdf</loc>
-    <lastmod>${buildDate}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://converttpdf.com/excel-to-pdf</loc>
-    <lastmod>${buildDate}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://converttpdf.com/rotate-pdf</loc>
-    <lastmod>${buildDate}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://converttpdf.com/watermark-pdf</loc>
-    <lastmod>${buildDate}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://converttpdf.com/jpg-to-png</loc>
-    <lastmod>${buildDate}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://converttpdf.com/png-to-jpg</loc>
-    <lastmod>${buildDate}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://converttpdf.com/webp-to-jpg</loc>
-    <lastmod>${buildDate}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://converttpdf.com/resize-image</loc>
-    <lastmod>${buildDate}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://converttpdf.com/compress-image</loc>
-    <lastmod>${buildDate}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://converttpdf.com/crop-image</loc>
-    <lastmod>${buildDate}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://converttpdf.com/rotate-image</loc>
-    <lastmod>${buildDate}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://converttpdf.com/watermark-image</loc>
-    <lastmod>${buildDate}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://converttpdf.com/blog</loc>
-    <lastmod>${buildDate}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://converttpdf.com/blog/how-to-convert-pdf-to-word</loc>
-    <lastmod>${buildDate}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://converttpdf.com/blog/compress-pdf-without-losing-quality</loc>
-    <lastmod>${buildDate}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://converttpdf.com/blog/jpg-vs-png-guide</loc>
-    <lastmod>${buildDate}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://converttpdf.com/blog/browser-pdf-converter-privacy</loc>
-    <lastmod>${buildDate}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://converttpdf.com/blog/best-free-pdf-tools</loc>
-    <lastmod>${buildDate}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://converttpdf.com/blog/how-to-merge-pdf-files-online</loc>
-    <lastmod>${buildDate}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-</urlset>`;
+const SITEMAP_URLS: { loc: string; changefreq: string; priority: string }[] = [
+  { loc: "https://converttpdf.com/", changefreq: "weekly", priority: "1.0" },
+  { loc: "https://converttpdf.com/about", changefreq: "monthly", priority: "0.8" },
+  { loc: "https://converttpdf.com/contact", changefreq: "monthly", priority: "0.8" },
+  { loc: "https://converttpdf.com/how-it-works", changefreq: "monthly", priority: "0.8" },
+  { loc: "https://converttpdf.com/mission", changefreq: "monthly", priority: "0.8" },
+  { loc: "https://converttpdf.com/privacy", changefreq: "monthly", priority: "0.5" },
+  { loc: "https://converttpdf.com/terms", changefreq: "monthly", priority: "0.5" },
+  { loc: "https://converttpdf.com/disclaimer", changefreq: "monthly", priority: "0.5" },
+  { loc: "https://converttpdf.com/cookie", changefreq: "monthly", priority: "0.5" },
+  { loc: "https://converttpdf.com/merge-pdf", changefreq: "monthly", priority: "0.9" },
+  { loc: "https://converttpdf.com/split-pdf", changefreq: "monthly", priority: "0.9" },
+  { loc: "https://converttpdf.com/compress-pdf", changefreq: "monthly", priority: "0.9" },
+  { loc: "https://converttpdf.com/pdf-to-jpg", changefreq: "monthly", priority: "0.9" },
+  { loc: "https://converttpdf.com/jpg-to-pdf", changefreq: "monthly", priority: "0.9" },
+  { loc: "https://converttpdf.com/text-to-pdf", changefreq: "monthly", priority: "0.9" },
+  { loc: "https://converttpdf.com/excel-to-pdf", changefreq: "monthly", priority: "0.9" },
+  { loc: "https://converttpdf.com/rotate-pdf", changefreq: "monthly", priority: "0.9" },
+  { loc: "https://converttpdf.com/watermark-pdf", changefreq: "monthly", priority: "0.9" },
+  { loc: "https://converttpdf.com/jpg-to-png", changefreq: "monthly", priority: "0.9" },
+  { loc: "https://converttpdf.com/png-to-jpg", changefreq: "monthly", priority: "0.9" },
+  { loc: "https://converttpdf.com/webp-to-jpg", changefreq: "monthly", priority: "0.9" },
+  { loc: "https://converttpdf.com/resize-image", changefreq: "monthly", priority: "0.9" },
+  { loc: "https://converttpdf.com/compress-image", changefreq: "monthly", priority: "0.9" },
+  { loc: "https://converttpdf.com/crop-image", changefreq: "monthly", priority: "0.9" },
+  { loc: "https://converttpdf.com/rotate-image", changefreq: "monthly", priority: "0.9" },
+  { loc: "https://converttpdf.com/watermark-image", changefreq: "monthly", priority: "0.9" },
+  { loc: "https://converttpdf.com/blog", changefreq: "weekly", priority: "0.8" },
+  { loc: "https://converttpdf.com/blog/how-to-convert-pdf-to-word", changefreq: "monthly", priority: "0.8" },
+  { loc: "https://converttpdf.com/blog/compress-pdf-without-losing-quality", changefreq: "monthly", priority: "0.8" },
+  { loc: "https://converttpdf.com/blog/jpg-vs-png-guide", changefreq: "monthly", priority: "0.8" },
+  { loc: "https://converttpdf.com/blog/browser-pdf-converter-privacy", changefreq: "monthly", priority: "0.8" },
+  { loc: "https://converttpdf.com/blog/best-free-pdf-tools", changefreq: "monthly", priority: "0.8" },
+  { loc: "https://converttpdf.com/blog/how-to-merge-pdf-files-online", changefreq: "monthly", priority: "0.8" },
+];
+
+// Generate sitemap XML at request time so Date reflects the real clock.
+// Cloudflare Workers returns epoch (1970-01-01) for new Date() at module top-level.
+function buildSitemapXml(): string {
+  const today = new Date().toISOString().split("T")[0];
+  const entries = SITEMAP_URLS.map(
+    (u) => `  <url>
+    <loc>${u.loc}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${u.changefreq}</changefreq>
+    <priority>${u.priority}</priority>
+  </url>`,
+  ).join("\n");
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries}\n</urlset>`;
+}
 
 const ROBOTS_TXT = `User-agent: *
 Allow: /
@@ -316,7 +164,7 @@ export default {
     // Serve sitemap.xml directly — bypass TanStack Start for this static resource
     if (url.pathname === "/sitemap.xml") {
       return addSecurityHeaders(
-        new Response(SITEMAP_XML, {
+        new Response(buildSitemapXml(), {
           status: 200,
           headers: {
             "content-type": "application/xml; charset=utf-8",
