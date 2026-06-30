@@ -91,167 +91,200 @@ const buildDate = new Date().toISOString().split('T')[0];
 const SITEMAP_XML = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc></loc>\n    <lastmod></lastmod>
+    <loc>https://converttpdf.com/</loc>
+    <lastmod>${buildDate}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc></loc>\n    <lastmod></lastmod>
+    <loc>https://converttpdf.com/about</loc>
+    <lastmod>${buildDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc></loc>\n    <lastmod></lastmod>
+    <loc>https://converttpdf.com/contact</loc>
+    <lastmod>${buildDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc></loc>\n    <lastmod></lastmod>
+    <loc>https://converttpdf.com/how-it-works</loc>
+    <lastmod>${buildDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc></loc>\n    <lastmod></lastmod>
+    <loc>https://converttpdf.com/mission</loc>
+    <lastmod>${buildDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc></loc>\n    <lastmod></lastmod>
+    <loc>https://converttpdf.com/privacy</loc>
+    <lastmod>${buildDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc></loc>\n    <lastmod></lastmod>
+    <loc>https://converttpdf.com/terms</loc>
+    <lastmod>${buildDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc></loc>\n    <lastmod></lastmod>
+    <loc>https://converttpdf.com/disclaimer</loc>
+    <lastmod>${buildDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc></loc>\n    <lastmod></lastmod>
+    <loc>https://converttpdf.com/cookie</loc>
+    <lastmod>${buildDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc></loc>\n    <lastmod></lastmod>
+    <loc>https://converttpdf.com/merge-pdf</loc>
+    <lastmod>${buildDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc></loc>\n    <lastmod></lastmod>
+    <loc>https://converttpdf.com/split-pdf</loc>
+    <lastmod>${buildDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc></loc>\n    <lastmod></lastmod>
+    <loc>https://converttpdf.com/compress-pdf</loc>
+    <lastmod>${buildDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc></loc>\n    <lastmod></lastmod>
+    <loc>https://converttpdf.com/pdf-to-jpg</loc>
+    <lastmod>${buildDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc></loc>\n    <lastmod></lastmod>
+    <loc>https://converttpdf.com/jpg-to-pdf</loc>
+    <lastmod>${buildDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc></loc>\n    <lastmod></lastmod>
+    <loc>https://converttpdf.com/text-to-pdf</loc>
+    <lastmod>${buildDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc></loc>\n    <lastmod></lastmod>
+    <loc>https://converttpdf.com/excel-to-pdf</loc>
+    <lastmod>${buildDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc></loc>\n    <lastmod></lastmod>
+    <loc>https://converttpdf.com/rotate-pdf</loc>
+    <lastmod>${buildDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc></loc>\n    <lastmod></lastmod>
+    <loc>https://converttpdf.com/watermark-pdf</loc>
+    <lastmod>${buildDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc></loc>\n    <lastmod></lastmod>
+    <loc>https://converttpdf.com/jpg-to-png</loc>
+    <lastmod>${buildDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc></loc>\n    <lastmod></lastmod>
+    <loc>https://converttpdf.com/png-to-jpg</loc>
+    <lastmod>${buildDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc></loc>\n    <lastmod></lastmod>
+    <loc>https://converttpdf.com/webp-to-jpg</loc>
+    <lastmod>${buildDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc></loc>\n    <lastmod></lastmod>
+    <loc>https://converttpdf.com/resize-image</loc>
+    <lastmod>${buildDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc></loc>\n    <lastmod></lastmod>
+    <loc>https://converttpdf.com/compress-image</loc>
+    <lastmod>${buildDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc></loc>\n    <lastmod></lastmod>
+    <loc>https://converttpdf.com/crop-image</loc>
+    <lastmod>${buildDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc></loc>\n    <lastmod></lastmod>
+    <loc>https://converttpdf.com/rotate-image</loc>
+    <lastmod>${buildDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc></loc>\n    <lastmod></lastmod>
+    <loc>https://converttpdf.com/watermark-image</loc>
+    <lastmod>${buildDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc></loc>\n    <lastmod></lastmod>
+    <loc>https://converttpdf.com/blog</loc>
+    <lastmod>${buildDate}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc></loc>\n    <lastmod></lastmod>
+    <loc>https://converttpdf.com/blog/how-to-convert-pdf-to-word</loc>
+    <lastmod>${buildDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc></loc>\n    <lastmod></lastmod>
+    <loc>https://converttpdf.com/blog/compress-pdf-without-losing-quality</loc>
+    <lastmod>${buildDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc></loc>\n    <lastmod></lastmod>
+    <loc>https://converttpdf.com/blog/jpg-vs-png-guide</loc>
+    <lastmod>${buildDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc></loc>\n    <lastmod></lastmod>
+    <loc>https://converttpdf.com/blog/browser-pdf-converter-privacy</loc>
+    <lastmod>${buildDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc></loc>\n    <lastmod></lastmod>
+    <loc>https://converttpdf.com/blog/best-free-pdf-tools</loc>
+    <lastmod>${buildDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc></loc>\n    <lastmod></lastmod>
+    <loc>https://converttpdf.com/blog/how-to-merge-pdf-files-online</loc>
+    <lastmod>${buildDate}</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
