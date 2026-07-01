@@ -14,9 +14,18 @@ interface ToolPageLayoutProps {
   icon: React.ComponentType<{ className?: string }>;
   accent: string;
   children: ReactNode;
+  /** Optional content sections rendered below the tool panel */
+  contentSections?: ReactNode;
 }
 
-export default function ToolPageLayout({ title, description, icon: Icon, accent, children }: ToolPageLayoutProps) {
+export default function ToolPageLayout({
+  title,
+  description,
+  icon: Icon,
+  accent,
+  children,
+  contentSections,
+}: ToolPageLayoutProps) {
   const location = useLocation();
 
   useEffect(() => {
@@ -38,11 +47,15 @@ export default function ToolPageLayout({ title, description, icon: Icon, accent,
             animate={{ opacity: 1, y: 0 }}
             className="text-center mb-8 sm:mb-10"
           >
-            <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br ${accent} flex items-center justify-center mx-auto mb-4 shadow-lg`}>
+            <div
+              className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-gradient-to-br ${accent} flex items-center justify-center mx-auto mb-4 shadow-lg`}
+            >
               <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-white" />
             </div>
             <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight">{title}</h1>
-            <p className="mt-2 text-sm sm:text-base text-muted-foreground max-w-xl mx-auto">{description}</p>
+            <p className="mt-2 text-sm sm:text-base text-muted-foreground max-w-xl mx-auto">
+              {description}
+            </p>
           </motion.div>
 
           {/* Tool panel container — matches Tools.tsx active panel styling */}
@@ -67,6 +80,9 @@ export default function ToolPageLayout({ title, description, icon: Icon, accent,
               <span>100% private — files never leave your device</span>
             </div>
           </motion.div>
+
+          {/* Content sections (below the fold) */}
+          {contentSections}
         </div>
       </main>
 
