@@ -15,12 +15,16 @@ export default function ExcelToPdfPanel() {
       const { jsPDF } = await import("jspdf");
       const wb = XLSX.read(await files[0].arrayBuffer(), { type: "array" });
       const pdf = new jsPDF({ unit: "pt", format: "a4", orientation: "landscape" });
-      const margin = 32; const pageW = pdf.internal.pageSize.getWidth(); const pageH = pdf.internal.pageSize.getHeight();
+      const margin = 32;
+      const pageW = pdf.internal.pageSize.getWidth();
+      const pageH = pdf.internal.pageSize.getHeight();
       let first = true;
       for (const name of wb.SheetNames) {
         const rows: any[][] = XLSX.utils.sheet_to_json(wb.Sheets[name], { header: 1 });
-        if (!first) pdf.addPage(); first = false;
-        pdf.setFontSize(14); pdf.text(name, margin, margin);
+        if (!first) pdf.addPage();
+        first = false;
+        pdf.setFontSize(14);
+        pdf.text(name, margin, margin);
         pdf.setFontSize(9);
         const cols = Math.max(1, ...rows.map((r) => r.length));
         const colW = (pageW - margin * 2) / cols;
@@ -32,7 +36,10 @@ export default function ExcelToPdfPanel() {
             pdf.text(text, margin + c * colW, y);
           }
           y += 14;
-          if (y > pageH - margin) { pdf.addPage(); y = margin; }
+          if (y > pageH - margin) {
+            pdf.addPage();
+            y = margin;
+          }
         }
       }
       const rawBlob = pdf.output("blob");
@@ -40,13 +47,21 @@ export default function ExcelToPdfPanel() {
       await prepareDownload(blob, files[0].name.replace(/\.(xlsx|xls|csv)$/i, "") + ".pdf");
       setState("success");
       toast.success("Converted");
-    } catch (e) { console.error(e); setState("idle"); toast.error("Failed"); }
+    } catch (e) {
+      console.error(e);
+      setState("idle");
+      toast.error("Failed");
+    }
   };
   return (
     <>
       {state === "idle" && Dropzone}
       {state === "idle" && <FileList files={files} setFiles={setFiles} />}
-      {state === "idle" && <ActionButton onClick={run} busy={false} disabled={!files.length}>Convert to PDF</ActionButton>}
+      {state === "idle" && (
+        <ActionButton onClick={run} busy={false} disabled={!files.length}>
+          Convert to PDF
+        </ActionButton>
+      )}
       {state === "processing" && <LoadingState />}
       {state === "success" && renderStatusCard()}
       {renderModal()}

@@ -23,13 +23,21 @@ export default function MergePdfPanel() {
       await prepareDownload(blob, "merged.pdf");
       setState("success");
       toast.success("Merged successfully!");
-    } catch (e) { console.error(e); setState("idle"); toast.error("Merge failed"); }
+    } catch (e) {
+      console.error(e);
+      setState("idle");
+      toast.error("Merge failed");
+    }
   };
   return (
     <>
       {state === "idle" && Dropzone}
       {state === "idle" && <FileList files={files} setFiles={setFiles} />}
-      {state === "idle" && <ActionButton onClick={run} busy={false} disabled={files.length < 2}>Merge & prepare</ActionButton>}
+      {state === "idle" && (
+        <ActionButton onClick={run} busy={false} disabled={files.length < 2}>
+          Merge & prepare
+        </ActionButton>
+      )}
       {state === "processing" && <LoadingState />}
       {state === "success" && renderStatusCard()}
       {renderModal()}

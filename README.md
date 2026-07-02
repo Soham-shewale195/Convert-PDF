@@ -39,17 +39,20 @@
 
 ## 🚀 Project Overview
 
-**Convert PDF** is a premium, client-side web application built for converting and manipulating documents and images without ever uploading them to a server. 
+**Convert PDF** is a premium, client-side web application built for converting and manipulating documents and images without ever uploading them to a server.
 
 ### The Problem It Solves:
+
 Traditional document converters require users to upload sensitive files to remote servers, risking data privacy and consuming high bandwidth. Convert PDF solves this by bringing the conversion engine directly into the user's browser using WebAssembly and native web APIs.
 
 ### Target Audience:
+
 - Professionals working with sensitive or confidential documents.
 - Students and casual users looking for quick, free conversions.
 - Anyone who needs to bypass strict corporate firewalls that block uploading to third-party sites.
 
 ### Key Highlights:
+
 - **100% Client-Side:** Files never leave your device. All processing happens in-memory.
 - **Lightning Fast:** Powered by WebAssembly and local hardware.
 - **Rich Toolkit:** PDF ↔ Word conversion, PDF manipulation (merge, split, rotate), and comprehensive Image Tools (crop, resize, convert).
@@ -61,6 +64,7 @@ Traditional document converters require users to upload sensitive files to remot
 ## 💻 Tech Stack
 
 ### Frontend
+
 - **Framework:** React `19.2.0`
 - **Build Tool:** Vite `7.3.1`
 - **Routing:** `@tanstack/react-router` `1.168.25` & `@tanstack/react-start` (for SSR routing structure)
@@ -71,13 +75,15 @@ Traditional document converters require users to upload sensitive files to remot
 - **Notifications:** `sonner`
 
 ### Core Processing Libraries (In-Browser)
+
 - **PDF Manipulation:** `pdf-lib`, `pdfjs-dist`
 - **Word Conversion:** `docx`, `mammoth`
 - **Image Processing:** `react-image-crop`
 - **Archives & Data:** `jszip`, `xlsx`
 
 ### Backend / Database
-- *None.* This is a completely serverless, client-side application. The included `server.ts` simply acts as an SSR/Cloudflare Worker entry point to serve the static frontend app.
+
+- _None._ This is a completely serverless, client-side application. The included `server.ts` simply acts as an SSR/Cloudflare Worker entry point to serve the static frontend app.
 
 ---
 
@@ -86,6 +92,7 @@ Traditional document converters require users to upload sensitive files to remot
 Convert PDF utilizes a **Client-Side Monolithic Architecture** combined with an **Event-Driven UI layer**.
 
 ### Why this architecture?
+
 Since privacy and speed are the top priorities, moving all business logic (document parsing, byte manipulation, and conversion) into the client browser eliminates server costs, removes bandwidth bottlenecks, and provides absolute data security guarantees.
 
 ### Architectural Diagram
@@ -111,6 +118,7 @@ Since privacy and speed are the top priorities, moving all business logic (docum
 ```
 
 **Layer Roles:**
+
 1. **UI Layer:** Handles drag-and-drop, file selection, and visually renders progress using Framer Motion.
 2. **Logic / Hook Layer:** Manages application state, validates files, handles file size thresholds, and orchestrates ad displays before downloads are unlocked.
 3. **Processing Engine Layer:** Takes the raw `ArrayBuffer` of the uploaded file, applies the requested transformations using specialized libraries, and outputs a new binary string/Blob.
@@ -166,9 +174,10 @@ Since privacy and speed are the top priorities, moving all business logic (docum
 ## 🔄 Data Flow & Request Lifecycle
 
 **Scenario: User Converts a PDF to Word**
+
 1. **File Selection:** User drops a PDF into the `<Converter />` component.
 2. **Validation:** `validateMagicNumbers` checks the file's binary header to ensure it's a real PDF (not just a renamed `.exe`).
-3. **Processing:** 
+3. **Processing:**
    - `pdfjs-dist` parses the PDF text.
    - `docx` library structures the extracted text into paragraphs and builds a valid `.docx` document in-memory.
 4. **Threshold Check (`useRewardedDownload`):**
@@ -184,28 +193,33 @@ Since privacy and speed are the top priorities, moving all business logic (docum
 ## 🧩 Module & Component Breakdown
 
 ### 1. `Converter.tsx`
+
 - **Location:** `src/components/Converter.tsx`
 - **Purpose:** Handles the primary two-way conversion between PDF and Word.
 - **Key Functions:** Uses `FileReader` to read bytes, parses text out of PDFs, and generates Word documents using the `docx` library.
 - **Dependencies:** Relies on `useRewardedDownload` for final file delivery.
 
 ### 2. `ImageToolsUI.tsx`
+
 - **Location:** `src/components/ImageToolsUI.tsx`
 - **Purpose:** Full suite of image manipulations.
 - **Key Logic:** Utilizes the HTML5 Canvas API to perform resizing, format conversion (JPG ↔ PNG), and watermarking entirely locally.
 - **Input/Output:** Takes an image `File`, outputs a modified `Blob`.
 
 ### 3. `Tools.tsx`
+
 - **Location:** `src/components/Tools.tsx`
 - **Purpose:** A dynamic grid of PDF-specific utilities (Merge, Split, Rotate, Compress).
 - **Key Logic:** Acts as a router to render specific "Panels" based on user selection. Uses `pdf-lib` to splice and modify PDF buffers.
 
 ### 4. `useRewardedDownload.tsx`
+
 - **Location:** `src/hooks/monetization/useRewardedDownload.tsx`
 - **Purpose:** Monetization gatekeeper.
 - **Logic:** Evaluates `file.size`. Intercepts the download action to mount a Radix UI Dialog containing the Ad logic if the size exceeds `adRequiredSizeMB` (10MB).
 
 ### 5. `Navbar.tsx` & `Sections.tsx`
+
 - **Location:** `src/components/Navbar.tsx`, `src/components/Sections.tsx`
 - **Purpose:** Presentational components handling the landing page layout, responsive glassmorphism menus, FAQs, and static copy.
 
@@ -214,8 +228,9 @@ Since privacy and speed are the top priorities, moving all business logic (docum
 ## 🗄️ Database Design & Schema
 
 **No Database Required.**
-Convert PDF is a strictly stateless, client-side application. No user data, files, or conversion histories are saved. 
-- *Why?* To guarantee 100% privacy and zero server overhead.
+Convert PDF is a strictly stateless, client-side application. No user data, files, or conversion histories are saved.
+
+- _Why?_ To guarantee 100% privacy and zero server overhead.
 
 ---
 
@@ -234,10 +249,12 @@ Convert PDF is a strictly stateless, client-side application. No user data, file
 ### Installation & Setup
 
 **Prerequisites:**
+
 - Node.js (v18 or newer recommended)
 - npm or pnpm
 
 **Step-by-step:**
+
 1. Clone the repository:
    ```bash
    git clone https://github.com/yourusername/convert-pdf.git
@@ -258,12 +275,14 @@ Convert PDF is a strictly stateless, client-side application. No user data, file
 
 **Development Mode:**
 Starts the Vite dev server with Hot Module Replacement (HMR).
+
 ```bash
 npm run dev
 ```
 
 **Production Mode:**
 Compiles the application into static files optimized for deployment.
+
 ```bash
 npm run build
 npm run preview
@@ -273,7 +292,7 @@ npm run preview
 
 ## 📖 API Documentation
 
-*N/A - Convert PDF operates without a backend API. All logic executes via native browser APIs (File API, Blob API, Canvas API).*
+_N/A - Convert PDF operates without a backend API. All logic executes via native browser APIs (File API, Blob API, Canvas API)._
 
 ---
 
@@ -290,20 +309,25 @@ npm run preview
 Currently, the project focuses on static analysis and formatting.
 
 To run the linter:
+
 ```bash
 npm run lint
 ```
+
 To auto-format the code:
+
 ```bash
 npm run format
 ```
-*(Unit testing implementations using Vitest or Jest are planned for the roadmap).*
+
+_(Unit testing implementations using Vitest or Jest are planned for the roadmap)._
 
 ---
 
 ## 📸 Screenshots / Demo
 
-*(Add screenshots here)*
+_(Add screenshots here)_
+
 - `<!-- Image 1: Main Landing Page showing the Hero section -->`
 - `<!-- Image 2: The PDF to Word Converter in action -->`
 - `<!-- Image 3: The Image Tools dashboard -->`
@@ -328,7 +352,7 @@ npm run format
 
 ## 🤝 Contributing
 
-We welcome contributions! 
+We welcome contributions!
 
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
@@ -350,9 +374,10 @@ This project is licensed under the MIT License.
 
 - **Author:** Soham Shewale
 - **GitHub:** [https://github.com/sohamshewale](https://github.com/sohamshewale)
-- **Email:** *(Add your email here)*
+- **Email:** _(Add your email here)_
 
 ---
+
 <div align="center">
   <sub>Built with ❤️ and WebAssembly.</sub>
 </div>

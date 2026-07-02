@@ -25,13 +25,21 @@ export default function SplitPdfPanel() {
       await prepareDownload(blob, files[0].name.replace(/\.pdf$/i, "") + "-pages.zip");
       setState("success");
       toast.success("Split into pages successfully!");
-    } catch (e) { console.error(e); setState("idle"); toast.error("Split failed"); }
+    } catch (e) {
+      console.error(e);
+      setState("idle");
+      toast.error("Split failed");
+    }
   };
   return (
     <>
       {state === "idle" && Dropzone}
       {state === "idle" && <FileList files={files} setFiles={setFiles} />}
-      {state === "idle" && <ActionButton onClick={run} busy={false} disabled={!files.length}>Split into pages</ActionButton>}
+      {state === "idle" && (
+        <ActionButton onClick={run} busy={false} disabled={!files.length}>
+          Split into pages
+        </ActionButton>
+      )}
       {state === "processing" && <LoadingState />}
       {state === "success" && renderStatusCard()}
       {renderModal()}

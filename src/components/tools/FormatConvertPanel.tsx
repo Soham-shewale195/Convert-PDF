@@ -6,14 +6,22 @@ import { useRewardedDownload } from "@/hooks/monetization/useRewardedDownload";
 
 type ProcessState = "idle" | "processing" | "success";
 
-export default function FormatConvertPanel({ from, to }: { from: "jpg"|"png"|"webp"; to: "jpg"|"png" }) {
+export default function FormatConvertPanel({
+  from,
+  to,
+}: {
+  from: "jpg" | "png" | "webp";
+  to: "jpg" | "png";
+}) {
   const acceptMap: Record<string, string> = { jpg: ".jpg,.jpeg", png: ".png", webp: ".webp" };
   const [files, setFiles] = useState<File[]>([]);
   const [state, setState] = useState<ProcessState>("idle");
   const { prepareDownload, renderStatusCard, renderModal } = useRewardedDownload();
 
   // Reset state when new file is added
-  useEffect(() => { if (files.length) setState("idle"); }, [files]);
+  useEffect(() => {
+    if (files.length) setState("idle");
+  }, [files]);
 
   const run = async () => {
     if (!files[0]) return;
@@ -24,7 +32,7 @@ export default function FormatConvertPanel({ from, to }: { from: "jpg"|"png"|"we
       const ext = to === "png" ? ".png" : ".jpg";
       const newName = files[0].name.replace(/\.[^.]+$/, "") + ext;
       await prepareDownload(blob, newName);
-      
+
       setState("success");
       toast.success(`Converted to ${to.toUpperCase()}!`);
     } catch (e) {
@@ -34,14 +42,18 @@ export default function FormatConvertPanel({ from, to }: { from: "jpg"|"png"|"we
     }
   };
 
-  return (<>
-    <ImageDropzone accept={acceptMap[from] || "image/*"} files={files} setFiles={setFiles} />
-    {files[0] && <ImagePreview file={files[0]} />}
-    {state === "success" ? renderStatusCard() : (
-      <ActionButton onClick={run} state={state} disabled={!files.length}>
-        Convert to {to.toUpperCase()}
-      </ActionButton>
-    )}
-    {renderModal()}
-  </>);
+  return (
+    <>
+      <ImageDropzone accept={acceptMap[from] || "image/*"} files={files} setFiles={setFiles} />
+      {files[0] && <ImagePreview file={files[0]} />}
+      {state === "success" ? (
+        renderStatusCard()
+      ) : (
+        <ActionButton onClick={run} state={state} disabled={!files.length}>
+          Convert to {to.toUpperCase()}
+        </ActionButton>
+      )}
+      {renderModal()}
+    </>
+  );
 }

@@ -12,7 +12,7 @@ let serverEntryPromise: Promise<ServerEntry> | undefined;
 async function getServerEntry(): Promise<ServerEntry> {
   if (!serverEntryPromise) {
     serverEntryPromise = import("@tanstack/react-start/server-entry").then(
-      (m) => ((m as { default?: ServerEntry }).default ?? (m as unknown as ServerEntry)),
+      (m) => (m as { default?: ServerEntry }).default ?? (m as unknown as ServerEntry),
     );
   }
   return serverEntryPromise;
@@ -115,12 +115,132 @@ const SITEMAP_URLS: { loc: string; changefreq: string; priority: string }[] = [
   { loc: "https://converttpdf.com/rotate-image", changefreq: "monthly", priority: "0.9" },
   { loc: "https://converttpdf.com/watermark-image", changefreq: "monthly", priority: "0.9" },
   { loc: "https://converttpdf.com/blog", changefreq: "weekly", priority: "0.8" },
-  { loc: "https://converttpdf.com/blog/how-to-convert-pdf-to-word", changefreq: "monthly", priority: "0.8" },
-  { loc: "https://converttpdf.com/blog/compress-pdf-without-losing-quality", changefreq: "monthly", priority: "0.8" },
+  {
+    loc: "https://converttpdf.com/blog/how-to-convert-pdf-to-word",
+    changefreq: "monthly",
+    priority: "0.8",
+  },
+  {
+    loc: "https://converttpdf.com/blog/compress-pdf-without-losing-quality",
+    changefreq: "monthly",
+    priority: "0.8",
+  },
   { loc: "https://converttpdf.com/blog/jpg-vs-png-guide", changefreq: "monthly", priority: "0.8" },
-  { loc: "https://converttpdf.com/blog/browser-pdf-converter-privacy", changefreq: "monthly", priority: "0.8" },
-  { loc: "https://converttpdf.com/blog/best-free-pdf-tools", changefreq: "monthly", priority: "0.8" },
-  { loc: "https://converttpdf.com/blog/how-to-merge-pdf-files-online", changefreq: "monthly", priority: "0.8" },
+  {
+    loc: "https://converttpdf.com/blog/browser-pdf-converter-privacy",
+    changefreq: "monthly",
+    priority: "0.8",
+  },
+  {
+    loc: "https://converttpdf.com/blog/best-free-pdf-tools",
+    changefreq: "monthly",
+    priority: "0.8",
+  },
+  {
+    loc: "https://converttpdf.com/blog/how-to-merge-pdf-files-online",
+    changefreq: "monthly",
+    priority: "0.8",
+  },
+  {
+    loc: "https://converttpdf.com/blog/how-to-split-pdf-pages",
+    changefreq: "monthly",
+    priority: "0.8",
+  },
+  {
+    loc: "https://converttpdf.com/blog/excel-to-pdf-formatting-guide",
+    changefreq: "monthly",
+    priority: "0.8",
+  },
+  {
+    loc: "https://converttpdf.com/blog/webp-vs-jpg-vs-png",
+    changefreq: "monthly",
+    priority: "0.8",
+  },
+  {
+    loc: "https://converttpdf.com/blog/how-to-rotate-pdf-pages",
+    changefreq: "monthly",
+    priority: "0.8",
+  },
+  {
+    loc: "https://converttpdf.com/blog/how-to-resize-images-social-media",
+    changefreq: "monthly",
+    priority: "0.8",
+  },
+  {
+    loc: "https://converttpdf.com/blog/pdf-vs-word-differences",
+    changefreq: "monthly",
+    priority: "0.8",
+  },
+  {
+    loc: "https://converttpdf.com/blog/risks-of-online-file-converters",
+    changefreq: "monthly",
+    priority: "0.8",
+  },
+  {
+    loc: "https://converttpdf.com/blog/how-to-convert-webp-to-jpg",
+    changefreq: "monthly",
+    priority: "0.8",
+  },
+  {
+    loc: "https://converttpdf.com/blog/how-to-watermark-pdf-documents",
+    changefreq: "monthly",
+    priority: "0.8",
+  },
+  {
+    loc: "https://converttpdf.com/blog/image-aspect-ratio-cropping-guide",
+    changefreq: "monthly",
+    priority: "0.8",
+  },
+  {
+    loc: "https://converttpdf.com/blog/how-to-watermark-photos-online",
+    changefreq: "monthly",
+    priority: "0.8",
+  },
+  {
+    loc: "https://converttpdf.com/blog/what-is-client-side-processing",
+    changefreq: "monthly",
+    priority: "0.8",
+  },
+  {
+    loc: "https://converttpdf.com/blog/text-to-pdf-converter-guide",
+    changefreq: "monthly",
+    priority: "0.8",
+  },
+  {
+    loc: "https://converttpdf.com/blog/how-to-convert-images-to-pdf",
+    changefreq: "monthly",
+    priority: "0.8",
+  },
+  {
+    loc: "https://converttpdf.com/blog/how-to-check-pdf-converter-safety",
+    changefreq: "monthly",
+    priority: "0.8",
+  },
+  {
+    loc: "https://converttpdf.com/blog/digital-document-workflow-students",
+    changefreq: "monthly",
+    priority: "0.8",
+  },
+  {
+    loc: "https://converttpdf.com/blog/freelance-contract-management-free",
+    changefreq: "monthly",
+    priority: "0.8",
+  },
+  {
+    loc: "https://converttpdf.com/blog/why-compress-pdfs-for-email",
+    changefreq: "monthly",
+    priority: "0.8",
+  },
+  {
+    loc: "https://converttpdf.com/blog/batch-image-processing-guide",
+    changefreq: "monthly",
+    priority: "0.8",
+  },
+  {
+    loc: "https://converttpdf.com/blog/browser-tech-replacing-desktop-apps",
+    changefreq: "monthly",
+    priority: "0.8",
+  },
 ];
 
 // Generate sitemap XML at request time so Date reflects the real clock.

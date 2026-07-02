@@ -3,8 +3,8 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { Calendar, Search, ArrowRight, BookOpen, User, Tag } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import { Footer } from "@/components/Footer";
 import Background from "@/components/Background";
-import { Footer } from "@/components/Sections";
 import { ALL_BLOG_POSTS } from "@/components/BlogLayout";
 
 export const Route = createFileRoute("/blog/")({
@@ -16,11 +16,16 @@ export const Route = createFileRoute("/blog/")({
         content:
           "Expert guides on PDF conversion, image formats, compression, privacy and productivity. Learn how to work smarter with free browser-based tools.",
       },
-      { name: "keywords", content: "pdf blog, pdf tutorials, image format guide, pdf tips, compress pdf, convert pdf, pdf tools guide" },
+      {
+        name: "keywords",
+        content:
+          "pdf blog, pdf tutorials, image format guide, pdf tips, compress pdf, convert pdf, pdf tools guide",
+      },
       { property: "og:title", content: "PDF & Image Tips Blog — Convert PDF" },
       {
         property: "og:description",
-        content: "Expert guides on PDF tools, image formats, and document productivity. All free, browser-based.",
+        content:
+          "Expert guides on PDF tools, image formats, and document productivity. All free, browser-based.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://converttpdf.com/blog" },
@@ -77,13 +82,14 @@ function BlogIndex() {
       search === "" ||
       p.title.toLowerCase().includes(search.toLowerCase()) ||
       p.description.toLowerCase().includes(search.toLowerCase());
-    const matchesCategory =
-      activeCategory === "All" || p.category === activeCategory;
+    const matchesCategory = activeCategory === "All" || p.category === activeCategory;
     return matchesSearch && matchesCategory;
   });
 
   const featured = ALL_BLOG_POSTS[ALL_BLOG_POSTS.length - 1];
-  const rest = filtered.filter((p) => p.slug !== featured.slug || activeCategory !== "All" || search !== "");
+  const rest = filtered.filter(
+    (p) => p.slug !== featured.slug || activeCategory !== "All" || search !== "",
+  );
 
   return (
     <div className="min-h-screen flex flex-col relative z-0">
@@ -103,11 +109,11 @@ function BlogIndex() {
               Resources & Guides
             </span>
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight mb-4">
-              PDF & Image{" "}
-              <span className="gradient-text">Tips & Guides</span>
+              PDF & Image <span className="gradient-text">Tips & Guides</span>
             </h1>
             <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
-              Practical tutorials on PDF conversion, image formats, compression, and privacy. Written by the ConvertPDF Team.
+              Practical tutorials on PDF conversion, image formats, compression, and privacy.
+              Written by the ConvertPDF Team.
             </p>
           </motion.div>
 
@@ -161,7 +167,9 @@ function BlogIndex() {
               className="mb-12"
             >
               <div className="flex items-center gap-2 mb-5">
-                <span className="text-sm font-semibold text-white/60 uppercase tracking-wider">Featured</span>
+                <span className="text-sm font-semibold text-white/60 uppercase tracking-wider">
+                  Featured
+                </span>
                 <div className="flex-1 h-px bg-white/10" />
               </div>
               <Link
@@ -171,10 +179,12 @@ function BlogIndex() {
                 <div
                   className={`h-52 lg:h-auto bg-gradient-to-br ${featured.featuredImageGradient} flex items-center justify-center text-7xl sm:text-8xl relative overflow-hidden`}
                 >
-                  <div className="absolute inset-0 opacity-10"
+                  <div
+                    className="absolute inset-0 opacity-10"
                     style={{
-                      backgroundImage: "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
-                      backgroundSize: "28px 28px"
+                      backgroundImage:
+                        "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
+                      backgroundSize: "28px 28px",
                     }}
                   />
                   <div className="absolute -top-6 -right-6 w-32 h-32 rounded-full bg-white/10 blur-2xl" />
@@ -218,7 +228,9 @@ function BlogIndex() {
           <div>
             {activeCategory === "All" && search === "" && (
               <div className="flex items-center gap-2 mb-5">
-                <span className="text-sm font-semibold text-white/60 uppercase tracking-wider">All Articles</span>
+                <span className="text-sm font-semibold text-white/60 uppercase tracking-wider">
+                  All Articles
+                </span>
                 <div className="flex-1 h-px bg-white/10" />
               </div>
             )}
@@ -228,7 +240,10 @@ function BlogIndex() {
                 <Search className="w-12 h-12 mx-auto mb-4 opacity-30" />
                 <p className="text-lg">No articles found for "{search}"</p>
                 <button
-                  onClick={() => { setSearch(""); setActiveCategory("All"); }}
+                  onClick={() => {
+                    setSearch("");
+                    setActiveCategory("All");
+                  }}
                   className="mt-4 text-sm text-primary hover:underline"
                 >
                   Clear filters
@@ -251,16 +266,20 @@ function BlogIndex() {
                       <div
                         className={`h-44 bg-gradient-to-br ${post.featuredImageGradient} flex items-center justify-center text-5xl relative overflow-hidden`}
                       >
-                        <div className="absolute inset-0 opacity-10"
+                        <div
+                          className="absolute inset-0 opacity-10"
                           style={{
-                            backgroundImage: "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
-                            backgroundSize: "20px 20px"
+                            backgroundImage:
+                              "radial-gradient(circle at 1px 1px, white 1px, transparent 0)",
+                            backgroundSize: "20px 20px",
                           }}
                         />
                         {post.featuredImageEmoji}
                       </div>
                       <div className="p-5 flex flex-col flex-1">
-                        <span className="text-xs font-medium text-primary mb-2">{post.category}</span>
+                        <span className="text-xs font-medium text-primary mb-2">
+                          {post.category}
+                        </span>
                         <h2 className="font-bold text-base text-white mb-2 group-hover:text-primary transition leading-snug flex-1">
                           {post.title}
                         </h2>

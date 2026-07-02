@@ -24,13 +24,21 @@ export default function JpgToPdfPanel() {
       await prepareDownload(blob, "images.pdf");
       setState("success");
       toast.success("PDF ready");
-    } catch (e) { console.error(e); setState("idle"); toast.error("Failed"); }
+    } catch (e) {
+      console.error(e);
+      setState("idle");
+      toast.error("Failed");
+    }
   };
   return (
     <>
       {state === "idle" && Dropzone}
       {state === "idle" && <FileList files={files} setFiles={setFiles} />}
-      {state === "idle" && <ActionButton onClick={run} busy={false} disabled={!files.length}>Create PDF</ActionButton>}
+      {state === "idle" && (
+        <ActionButton onClick={run} busy={false} disabled={!files.length}>
+          Create PDF
+        </ActionButton>
+      )}
       {state === "processing" && <LoadingState />}
       {state === "success" && renderStatusCard()}
       {renderModal()}

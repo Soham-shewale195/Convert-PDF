@@ -18,14 +18,26 @@ export default function CompressPdfPanel() {
       await prepareDownload(blob, files[0].name.replace(/\.pdf$/i, "") + "-compressed.pdf");
       setState("success");
       toast.success("Compressed successfully!");
-    } catch (e) { console.error(e); setState("idle"); toast.error("Compress failed"); }
+    } catch (e) {
+      console.error(e);
+      setState("idle");
+      toast.error("Compress failed");
+    }
   };
   return (
     <>
       {state === "idle" && Dropzone}
       {state === "idle" && <FileList files={files} setFiles={setFiles} />}
-      {state === "idle" && <p className="text-xs text-muted-foreground mt-3">Lossless re-save using object streams. Best for text-heavy PDFs.</p>}
-      {state === "idle" && <ActionButton onClick={run} busy={false} disabled={!files.length}>Compress PDF</ActionButton>}
+      {state === "idle" && (
+        <p className="text-xs text-muted-foreground mt-3">
+          Lossless re-save using object streams. Best for text-heavy PDFs.
+        </p>
+      )}
+      {state === "idle" && (
+        <ActionButton onClick={run} busy={false} disabled={!files.length}>
+          Compress PDF
+        </ActionButton>
+      )}
       {state === "processing" && <LoadingState />}
       {state === "success" && renderStatusCard()}
       {renderModal()}

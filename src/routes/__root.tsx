@@ -73,17 +73,33 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Convert PDF — Free PDF & Image Tools | 100% Private" },
-      { name: "description", content: "Free browser-based PDF and image tools. Convert PDF to Word, Word to PDF, compress images, convert JPG to PNG, resize, rotate, watermark and more. No uploads, no account, no watermarks. Runs entirely in your browser." },
+      {
+        name: "description",
+        content:
+          "Free browser-based PDF and image tools. Convert PDF to Word, Word to PDF, compress images, convert JPG to PNG, resize, rotate, watermark and more. No uploads, no account, no watermarks. Runs entirely in your browser.",
+      },
       { name: "author", content: "Convert PDF" },
-      { name: "keywords", content: "pdf to word, word to pdf, convert pdf, free pdf converter, browser pdf converter, private pdf converter, pdf tools, no upload pdf converter, secure pdf converter, pdf to docx, docx to pdf, online pdf tools, jpg to png, png to jpg, compress image, resize image, rotate image, watermark image, free image converter, browser image tools, image compressor, image resizer online, convert image free, jpg converter, png converter, image tools online, no upload image converter, private image tools" },
+      {
+        name: "keywords",
+        content:
+          "pdf to word, word to pdf, convert pdf, free pdf converter, browser pdf converter, private pdf converter, pdf tools, no upload pdf converter, secure pdf converter, pdf to docx, docx to pdf, online pdf tools, jpg to png, png to jpg, compress image, resize image, rotate image, watermark image, free image converter, browser image tools, image compressor, image resizer online, convert image free, jpg converter, png converter, image tools online, no upload image converter, private image tools",
+      },
       { property: "og:title", content: "Convert PDF — Free PDF & Image Tools | 100% Private" },
-      { property: "og:description", content: "Free PDF and image conversion tools that run entirely in your browser. Convert, compress, resize and edit files privately with zero uploads." },
+      {
+        property: "og:description",
+        content:
+          "Free PDF and image conversion tools that run entirely in your browser. Convert, compress, resize and edit files privately with zero uploads.",
+      },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://converttpdf.com" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@ConvertPDF" },
       { name: "twitter:title", content: "Convert PDF — Free PDF & Image Tools | 100% Private" },
-      { name: "twitter:description", content: "Free browser-based PDF and image tools. Convert PDF to Word, compress images, JPG to PNG and more. 100% private — files never leave your device." },
+      {
+        name: "twitter:description",
+        content:
+          "Free browser-based PDF and image tools. Convert PDF to Word, compress images, JPG to PNG and more. 100% private — files never leave your device.",
+      },
     ],
     links: [
       {
@@ -146,7 +162,11 @@ function RootShell({ children }: { children: React.ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
-        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5782225557161078" crossOrigin="anonymous"></script>
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5782225557161078"
+          crossOrigin="anonymous"
+        ></script>
       </head>
       <body>
         {children}

@@ -12,5 +12,5 @@ export const MONETIZATION_CONFIG = {
   providers: {
     adsenseClientId: "", // e.g. "ca-pub-XXXXXXXXX"
     affiliateId: "",
-  }
+  },
 };

@@ -144,6 +144,70 @@ export function InfoPageSchema({
   );
 }
 
+export function AboutPageSchema({
+  title,
+  description,
+  urlPath,
+}: {
+  title: string;
+  description: string;
+  urlPath: string;
+}) {
+  const url = `https://converttpdf.com${urlPath}`;
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    name: title,
+    description: description,
+    url: url,
+    inLanguage: "en-US",
+    isPartOf: {
+      "@id": "https://converttpdf.com/#website",
+    },
+    publisher: {
+      "@id": "https://converttpdf.com/#organization",
+    },
+  };
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  );
+}
+
+export function ContactPageSchema({
+  title,
+  description,
+  urlPath,
+}: {
+  title: string;
+  description: string;
+  urlPath: string;
+}) {
+  const url = `https://converttpdf.com${urlPath}`;
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    name: title,
+    description: description,
+    url: url,
+    inLanguage: "en-US",
+    isPartOf: {
+      "@id": "https://converttpdf.com/#website",
+    },
+    publisher: {
+      "@id": "https://converttpdf.com/#organization",
+    },
+  };
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  );
+}
+
 export function ToolFAQSchema({ faqs }: { faqs: { question: string; answer: string }[] }) {
   const schema = {
     "@context": "https://schema.org",

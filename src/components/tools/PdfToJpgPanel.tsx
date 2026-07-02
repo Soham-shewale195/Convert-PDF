@@ -1,7 +1,13 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { useRewardedDownload } from "@/hooks/monetization/useRewardedDownload";
-import { useDropFiles, FileList, ActionButton, LoadingState, loadPdfJs } from "@/components/PdfToolsUI";
+import {
+  useDropFiles,
+  FileList,
+  ActionButton,
+  LoadingState,
+  loadPdfJs,
+} from "@/components/PdfToolsUI";
 
 export default function PdfToJpgPanel() {
   const { files, setFiles, Dropzone } = useDropFiles(false, ".pdf");
@@ -13,7 +19,7 @@ export default function PdfToJpgPanel() {
     try {
       const pdfjs = await loadPdfJs();
       const pdf = await pdfjs.getDocument({ data: await files[0].arrayBuffer() }).promise;
-      
+
       // Calculate total height and max width for the combined canvas
       let totalHeight = 0;
       let maxWidth = 0;
@@ -42,7 +48,7 @@ export default function PdfToJpgPanel() {
         tempCanvas.width = viewport.width;
         tempCanvas.height = viewport.height;
         const tempCtx = tempCanvas.getContext("2d")!;
-        
+
         await page.render({ canvasContext: tempCtx, viewport, canvas: tempCanvas }).promise;
         // Draw the rendered page onto the main canvas
         // Center the page if it's narrower than the max width
@@ -51,18 +57,28 @@ export default function PdfToJpgPanel() {
         currentY += viewport.height;
       }
 
-      const rawBlob: Blob = await new Promise((r) => canvas.toBlob((b) => r(b!), "image/jpeg", 0.9)!);
+      const rawBlob: Blob = await new Promise(
+        (r) => canvas.toBlob((b) => r(b!), "image/jpeg", 0.9)!,
+      );
       const blob = new Blob([rawBlob], { type: "image/jpeg" });
       await prepareDownload(blob, files[0].name.replace(/\.pdf$/i, "") + ".jpg");
       setState("success");
       toast.success("Image ready");
-    } catch (e) { console.error(e); setState("idle"); toast.error("Conversion failed"); }
+    } catch (e) {
+      console.error(e);
+      setState("idle");
+      toast.error("Conversion failed");
+    }
   };
   return (
     <>
       {state === "idle" && Dropzone}
       {state === "idle" && <FileList files={files} setFiles={setFiles} />}
-      {state === "idle" && <ActionButton onClick={run} busy={false} disabled={!files.length}>Convert to JPG</ActionButton>}
+      {state === "idle" && (
+        <ActionButton onClick={run} busy={false} disabled={!files.length}>
+          Convert to JPG
+        </ActionButton>
+      )}
       {state === "processing" && <LoadingState />}
       {state === "success" && renderStatusCard()}
       {renderModal()}

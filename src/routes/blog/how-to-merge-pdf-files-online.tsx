@@ -5,8 +5,7 @@ export const Route = createFileRoute("/blog/how-to-merge-pdf-files-online")({
   head: () => ({
     meta: [
       {
-        title:
-          "How to Merge PDF Files Online — Fast, Free & Private | Convert PDF",
+        title: "How to Merge PDF Files Online — Fast, Free & Private | Convert PDF",
       },
       {
         name: "description",
@@ -30,8 +29,7 @@ export const Route = createFileRoute("/blog/how-to-merge-pdf-files-online")({
       { property: "og:type", content: "article" },
       {
         property: "og:url",
-        content:
-          "https://converttpdf.com/blog/how-to-merge-pdf-files-online",
+        content: "https://converttpdf.com/blog/how-to-merge-pdf-files-online",
       },
       { name: "twitter:card", content: "summary_large_image" },
       {
@@ -132,13 +130,21 @@ function MergePdfGuide() {
         Why Merging PDFs Is Such a Common Need
       </h2>
       <p>
-        Think about how many times a week you assemble documents from multiple sources. A proposal that includes a cover letter, a pricing sheet, and an appendix. A client report built from three different department outputs. A job application that combines your CV, cover letter, and portfolio samples. A legal filing that combines multiple exhibits.
+        Think about how many times a week you assemble documents from multiple sources. A proposal
+        that includes a cover letter, a pricing sheet, and an appendix. A client report built from
+        three different department outputs. A job application that combines your CV, cover letter,
+        and portfolio samples. A legal filing that combines multiple exhibits.
       </p>
       <p className="mt-4">
-        In every one of these cases, the professional move is to send a single, organized PDF — not a zip file of loosely related documents. <strong>Merging PDF files</strong> is one of the most frequently needed document skills, and it's one that too many people struggle with unnecessarily.
+        In every one of these cases, the professional move is to send a single, organized PDF — not
+        a zip file of loosely related documents. <strong>Merging PDF files</strong> is one of the
+        most frequently needed document skills, and it's one that too many people struggle with
+        unnecessarily.
       </p>
       <p className="mt-4">
-        The good news: you don't need Adobe Acrobat, a subscription service, or any installed software. ConvertPDF's free <strong>online PDF merger</strong> handles it directly in your browser in seconds.
+        The good news: you don't need Adobe Acrobat, a subscription service, or any installed
+        software. ConvertPDF's free <strong>online PDF merger</strong> handles it directly in your
+        browser in seconds.
       </p>
 
       <h2 className="text-2xl sm:text-3xl font-bold text-white mt-10 mb-4">
@@ -153,24 +159,26 @@ function MergePdfGuide() {
         <Link to="/merge-pdf" className="text-primary hover:underline">
           converttpdf.com/merge-pdf
         </Link>
-        . The tool loads instantly in your browser. No download, no installation, no account required.
+        . The tool loads instantly in your browser. No download, no installation, no account
+        required.
       </p>
 
-      <h3 className="text-xl font-semibold text-white mt-6 mb-3">
-        Step 2: Add Your PDF Files
-      </h3>
+      <h3 className="text-xl font-semibold text-white mt-6 mb-3">Step 2: Add Your PDF Files</h3>
       <p>
-        Click the upload area to browse for files, or drag and drop your PDFs directly onto the page. You can add multiple files at once. Each file will appear in a list where you can see the filename and file size.
+        Click the upload area to browse for files, or drag and drop your PDFs directly onto the
+        page. You can add multiple files at once. Each file will appear in a list where you can see
+        the filename and file size.
       </p>
       <p className="mt-3">
-        <strong>Important:</strong> Your files load directly into your browser's memory — they are never sent to any server. This makes ConvertPDF safe even for confidential business documents.
+        <strong>Important:</strong> Your files load directly into your browser's memory — they are
+        never sent to any server. This makes ConvertPDF safe even for confidential business
+        documents.
       </p>
 
-      <h3 className="text-xl font-semibold text-white mt-6 mb-3">
-        Step 3: Arrange the Order
-      </h3>
+      <h3 className="text-xl font-semibold text-white mt-6 mb-3">Step 3: Arrange the Order</h3>
       <p>
-        The files will appear in the order you added them. Drag to reorder them so the pages appear in the correct sequence in the merged output. For example:
+        The files will appear in the order you added them. Drag to reorder them so the pages appear
+        in the correct sequence in the merged output. For example:
       </p>
       <ul className="list-disc pl-6 space-y-2 mt-2 text-white/80">
         <li>Position 1: Cover letter</li>
@@ -178,14 +186,15 @@ function MergePdfGuide() {
         <li>Position 3: Appendix / supporting data</li>
       </ul>
 
-      <h3 className="text-xl font-semibold text-white mt-6 mb-3">
-        Step 4: Merge and Download
-      </h3>
+      <h3 className="text-xl font-semibold text-white mt-6 mb-3">Step 4: Merge and Download</h3>
       <p>
-        Click <strong>"Merge PDF"</strong>. The browser processes all files and combines them into a single PDF. Once complete, click <strong>"Download"</strong> to save the merged file to your device.
+        Click <strong>"Merge PDF"</strong>. The browser processes all files and combines them into a
+        single PDF. Once complete, click <strong>"Download"</strong> to save the merged file to your
+        device.
       </p>
       <p className="mt-3">
-        Files under 10 MB total download immediately. Larger merged files (10–25 MB) require watching a short ad to keep the service free.
+        Files under 10 MB total download immediately. Larger merged files (10–25 MB) require
+        watching a short ad to keep the service free.
       </p>
 
       <h2 className="text-2xl sm:text-3xl font-bold text-white mt-10 mb-4">
@@ -196,59 +205,72 @@ function MergePdfGuide() {
         1. Business Proposals and Reports
       </h3>
       <p>
-        Business reports are often assembled from content generated by multiple teams or tools. A sales proposal might combine an executive summary (created in Word, exported to PDF), a pricing table (from Excel), and case studies. Merging these into one polished PDF creates a professional, unified deliverable.
+        Business reports are often assembled from content generated by multiple teams or tools. A
+        sales proposal might combine an executive summary (created in Word, exported to PDF), a
+        pricing table (from Excel), and case studies. Merging these into one polished PDF creates a
+        professional, unified deliverable.
       </p>
 
       <h3 className="text-xl font-semibold text-white mt-6 mb-3">
         2. Legal Documents and Contracts
       </h3>
       <p>
-        Legal filings, contracts, and agreements often require multiple documents to be submitted as a single PDF. Court submissions, due diligence packages, and real estate closings frequently involve assembling dozens of individual PDF files into a structured combined document.
+        Legal filings, contracts, and agreements often require multiple documents to be submitted as
+        a single PDF. Court submissions, due diligence packages, and real estate closings frequently
+        involve assembling dozens of individual PDF files into a structured combined document.
       </p>
       <p className="mt-3">
-        For legal documents, browser-based processing is especially important — you should never upload confidential legal documents to a third-party server. Read more in our article on{" "}
+        For legal documents, browser-based processing is especially important — you should never
+        upload confidential legal documents to a third-party server. Read more in our article on{" "}
         <Link to="/blog/browser-pdf-converter-privacy" className="text-primary hover:underline">
           PDF privacy and security
         </Link>
         .
       </p>
 
-      <h3 className="text-xl font-semibold text-white mt-6 mb-3">
-        3. Job Applications
-      </h3>
+      <h3 className="text-xl font-semibold text-white mt-6 mb-3">3. Job Applications</h3>
       <p>
-        Many job application portals only accept a single PDF upload. If you have a separate resume, cover letter, writing samples, and references, merging them into one organized PDF makes the application process smoother and ensures the recruiter receives everything in the right order.
+        Many job application portals only accept a single PDF upload. If you have a separate resume,
+        cover letter, writing samples, and references, merging them into one organized PDF makes the
+        application process smoother and ensures the recruiter receives everything in the right
+        order.
       </p>
 
       <h3 className="text-xl font-semibold text-white mt-6 mb-3">
         4. Academic and Research Papers
       </h3>
       <p>
-        Researchers often need to submit papers with supplementary materials, appendices, or datasets as a single PDF. Merging allows you to keep your main document and supporting materials together in a logically structured combined file.
+        Researchers often need to submit papers with supplementary materials, appendices, or
+        datasets as a single PDF. Merging allows you to keep your main document and supporting
+        materials together in a logically structured combined file.
       </p>
 
       <h3 className="text-xl font-semibold text-white mt-6 mb-3">
         5. Invoice and Receipt Archives
       </h3>
       <p>
-        Accountants and business owners often need to compile monthly expense reports from individual receipt PDFs. Merging all receipts into a single monthly archive simplifies bookkeeping and makes documentation much easier to share with an accountant or auditor.
+        Accountants and business owners often need to compile monthly expense reports from
+        individual receipt PDFs. Merging all receipts into a single monthly archive simplifies
+        bookkeeping and makes documentation much easier to share with an accountant or auditor.
       </p>
 
       <h2 className="text-2xl sm:text-3xl font-bold text-white mt-10 mb-4">
         Merge PDF vs Combine PDF vs Append PDF — What's the Difference?
       </h2>
-      <p>
-        These terms are often used interchangeably, but technically:
-      </p>
+      <p>These terms are often used interchangeably, but technically:</p>
       <ul className="list-disc pl-6 space-y-3 mt-4">
         <li>
-          <strong>Merge PDF</strong> — Combining two or more separate PDF files into a single new file. All pages from all source files appear in sequence.
+          <strong>Merge PDF</strong> — Combining two or more separate PDF files into a single new
+          file. All pages from all source files appear in sequence.
         </li>
         <li>
-          <strong>Combine PDF</strong> — Another term for the same operation. "Combine" and "merge" mean the same thing in this context.
+          <strong>Combine PDF</strong> — Another term for the same operation. "Combine" and "merge"
+          mean the same thing in this context.
         </li>
         <li>
-          <strong>Append PDF</strong> — Adding pages to an existing PDF, typically from another file. This is technically merging, just described from the perspective of the base document.
+          <strong>Append PDF</strong> — Adding pages to an existing PDF, typically from another
+          file. This is technically merging, just described from the perspective of the base
+          document.
         </li>
         <li>
           <strong>Join PDF</strong> — Yet another synonym for merge/combine.
@@ -266,13 +288,18 @@ function MergePdfGuide() {
         What Happens to PDF Quality When You Merge?
       </h2>
       <p>
-        <strong>Nothing.</strong> Merging PDFs is a lossless operation. The tool reads each PDF's page content, assembles the pages in order, and writes a new PDF file containing all of them. No compression, no re-rendering, no quality degradation.
+        <strong>Nothing.</strong> Merging PDFs is a lossless operation. The tool reads each PDF's
+        page content, assembles the pages in order, and writes a new PDF file containing all of
+        them. No compression, no re-rendering, no quality degradation.
       </p>
       <p className="mt-4">
-        The merged PDF is essentially just a new PDF file that contains all the pages from your source files, in sequence. Text remains crisp, images retain their original resolution, and embedded fonts are preserved.
+        The merged PDF is essentially just a new PDF file that contains all the pages from your
+        source files, in sequence. Text remains crisp, images retain their original resolution, and
+        embedded fonts are preserved.
       </p>
       <p className="mt-4">
-        The only thing that changes is the file size — the merged PDF will be approximately the sum of the individual file sizes, plus a small overhead for PDF metadata.
+        The only thing that changes is the file size — the merged PDF will be approximately the sum
+        of the individual file sizes, plus a small overhead for PDF metadata.
       </p>
 
       <h2 className="text-2xl sm:text-3xl font-bold text-white mt-10 mb-4">
@@ -283,49 +310,61 @@ function MergePdfGuide() {
         Compress Individual Files Before Merging
       </h3>
       <p>
-        If each source PDF has a moderate file size, the merged result can quickly become very large. To keep the merged file manageable, consider{" "}
+        If each source PDF has a moderate file size, the merged result can quickly become very
+        large. To keep the merged file manageable, consider{" "}
         <Link to="/compress-pdf" className="text-primary hover:underline">
           compressing each PDF
         </Link>{" "}
         before merging, or compressing the merged result afterward.
       </p>
 
-      <h3 className="text-xl font-semibold text-white mt-6 mb-3">
-        Add a Table of Contents Page
-      </h3>
+      <h3 className="text-xl font-semibold text-white mt-6 mb-3">Add a Table of Contents Page</h3>
       <p>
-        For long merged documents, consider creating a cover page or table of contents in Word, exporting it as a PDF, and placing it as the first document in your merge. This makes the combined document much more navigable for the reader.
+        For long merged documents, consider creating a cover page or table of contents in Word,
+        exporting it as a PDF, and placing it as the first document in your merge. This makes the
+        combined document much more navigable for the reader.
       </p>
 
       <h3 className="text-xl font-semibold text-white mt-6 mb-3">
         Check Page Orientation Before Merging
       </h3>
       <p>
-        If some source documents are landscape and others are portrait, the merged PDF will contain a mix of orientations. This can be jarring for readers. Before merging, use ConvertPDF's{" "}
+        If some source documents are landscape and others are portrait, the merged PDF will contain
+        a mix of orientations. This can be jarring for readers. Before merging, use ConvertPDF's{" "}
         <Link to="/rotate-pdf" className="text-primary hover:underline">
           rotate PDF tool
         </Link>{" "}
         to standardize all pages to the same orientation.
       </p>
 
-      <h3 className="text-xl font-semibold text-white mt-6 mb-3">
-        Review the Final Document
-      </h3>
+      <h3 className="text-xl font-semibold text-white mt-6 mb-3">Review the Final Document</h3>
       <p>
-        After merging, open the combined PDF and scroll through all pages. Check that the order is correct, no pages are missing, and the content looks as expected. A quick 2-minute review can save significant embarrassment when sending to clients or submitting to institutions.
+        After merging, open the combined PDF and scroll through all pages. Check that the order is
+        correct, no pages are missing, and the content looks as expected. A quick 2-minute review
+        can save significant embarrassment when sending to clients or submitting to institutions.
       </p>
 
       <h2 className="text-2xl sm:text-3xl font-bold text-white mt-10 mb-4">
         Merging PDFs vs Desktop Software: Is Online Better?
       </h2>
 
-      <div className="overflow-x-auto mt-6 mb-6 rounded-xl" style={{ border: "1px solid oklch(1 0 0 / 12%)" }}>
+      <div
+        className="overflow-x-auto mt-6 mb-6 rounded-xl"
+        style={{ border: "1px solid oklch(1 0 0 / 12%)" }}
+      >
         <table className="w-full text-sm">
           <thead>
-            <tr style={{ borderBottom: "1px solid oklch(1 0 0 / 12%)", background: "oklch(1 0 0 / 5%)" }}>
+            <tr
+              style={{
+                borderBottom: "1px solid oklch(1 0 0 / 12%)",
+                background: "oklch(1 0 0 / 5%)",
+              }}
+            >
               <th className="text-left px-5 py-3 font-semibold text-white">Factor</th>
               <th className="text-left px-5 py-3 font-semibold text-white">ConvertPDF (Browser)</th>
-              <th className="text-left px-5 py-3 font-semibold text-white">Adobe Acrobat (Desktop)</th>
+              <th className="text-left px-5 py-3 font-semibold text-white">
+                Adobe Acrobat (Desktop)
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -351,21 +390,25 @@ function MergePdfGuide() {
       </div>
 
       <p>
-        For the vast majority of everyday merge tasks — combining up to 10–15 documents totaling under 25 MB — a browser-based merger like ConvertPDF is faster, cheaper, and more accessible than desktop software. The only scenario where you'd prefer desktop software is when dealing with very large files or when you need page-level manipulation within individual PDFs.
+        For the vast majority of everyday merge tasks — combining up to 10–15 documents totaling
+        under 25 MB — a browser-based merger like ConvertPDF is faster, cheaper, and more accessible
+        than desktop software. The only scenario where you'd prefer desktop software is when dealing
+        with very large files or when you need page-level manipulation within individual PDFs.
       </p>
 
-      <h2 className="text-2xl sm:text-3xl font-bold text-white mt-10 mb-4">
-        Conclusion
-      </h2>
+      <h2 className="text-2xl sm:text-3xl font-bold text-white mt-10 mb-4">Conclusion</h2>
       <p>
         Merging PDF files online is fast, free, and should be entirely private. ConvertPDF's{" "}
         <Link to="/merge-pdf" className="text-primary hover:underline">
           merge PDF tool
         </Link>{" "}
-        combines all your documents in your browser — no upload, no account, no watermarks — in seconds.
+        combines all your documents in your browser — no upload, no account, no watermarks — in
+        seconds.
       </p>
       <p className="mt-4">
-        Whether you're assembling a business proposal, filing legal documents, submitting a job application, or archiving monthly receipts, merging your PDFs into a single organized file is always the professional choice.
+        Whether you're assembling a business proposal, filing legal documents, submitting a job
+        application, or archiving monthly receipts, merging your PDFs into a single organized file
+        is always the professional choice.
       </p>
       <p className="mt-4">
         Ready to get started? Head to the{" "}
@@ -376,7 +419,10 @@ function MergePdfGuide() {
       </p>
       <ul className="list-disc pl-6 space-y-2 mt-3">
         <li>
-          <Link to="/blog/compress-pdf-without-losing-quality" className="text-primary hover:underline">
+          <Link
+            to="/blog/compress-pdf-without-losing-quality"
+            className="text-primary hover:underline"
+          >
             How to Compress PDF Without Losing Quality
           </Link>
         </li>

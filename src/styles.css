@@ -42,11 +42,11 @@
   --card-foreground: oklch(0.98 0.005 250);
   --popover: oklch(0.22 0.05 270);
   --popover-foreground: oklch(0.98 0.005 250);
-  --primary: oklch(0.68 0.20 280);
+  --primary: oklch(0.68 0.2 280);
   --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.30 0.05 270 / 50%);
+  --secondary: oklch(0.3 0.05 270 / 50%);
   --secondary-foreground: oklch(0.98 0.005 250);
-  --muted: oklch(0.30 0.04 270 / 40%);
+  --muted: oklch(0.3 0.04 270 / 40%);
   --muted-foreground: oklch(0.75 0.03 270);
   --accent: oklch(0.72 0.18 220);
   --accent-foreground: oklch(0.15 0.04 270);
@@ -54,26 +54,39 @@
   --destructive-foreground: oklch(0.99 0 0);
   --border: oklch(1 0 0 / 12%);
   --input: oklch(1 0 0 / 8%);
-  --ring: oklch(0.68 0.20 280);
+  --ring: oklch(0.68 0.2 280);
   --glow: oklch(0.68 0.22 290);
   --glow-2: oklch(0.75 0.18 210);
 
-  --gradient-primary: linear-gradient(135deg, oklch(0.68 0.20 280), oklch(0.72 0.18 220));
-  --gradient-mesh: radial-gradient(ellipse at 20% 10%, oklch(0.55 0.22 290 / 35%) 0%, transparent 50%),
-                   radial-gradient(ellipse at 80% 30%, oklch(0.6 0.2 220 / 30%) 0%, transparent 55%),
-                   radial-gradient(ellipse at 50% 90%, oklch(0.6 0.18 320 / 25%) 0%, transparent 50%);
-  --shadow-glow: 0 10px 40px -10px oklch(0.68 0.20 280 / 60%);
+  --gradient-primary: linear-gradient(135deg, oklch(0.68 0.2 280), oklch(0.72 0.18 220));
+  --gradient-mesh:
+    radial-gradient(ellipse at 20% 10%, oklch(0.55 0.22 290 / 35%) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 30%, oklch(0.6 0.2 220 / 30%) 0%, transparent 55%),
+    radial-gradient(ellipse at 50% 90%, oklch(0.6 0.18 320 / 25%) 0%, transparent 50%);
+  --shadow-glow: 0 10px 40px -10px oklch(0.68 0.2 280 / 60%);
   --shadow-glass: 0 8px 32px 0 oklch(0.1 0.05 270 / 50%);
 }
 
 @layer base {
-  * { border-color: var(--color-border); }
-  html, body { background-color: var(--color-background); color: var(--color-foreground); }
+  * {
+    border-color: var(--color-border);
+  }
+  html,
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+  }
   body {
     background-image: var(--gradient-mesh);
     background-attachment: fixed;
     min-height: 100vh;
-    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Inter, sans-serif;
+    font-family:
+      ui-sans-serif,
+      system-ui,
+      -apple-system,
+      "Segoe UI",
+      Inter,
+      sans-serif;
     -webkit-font-smoothing: antialiased;
   }
 }
@@ -110,11 +123,20 @@
     background: var(--gradient-primary);
     color: var(--primary-foreground);
     box-shadow: var(--shadow-glow);
-    transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease,
+      filter 0.2s ease;
   }
-  .btn-gradient:hover { transform: translateY(-2px); filter: brightness(1.1); box-shadow: 0 15px 50px -10px oklch(0.68 0.20 280 / 80%); }
+  .btn-gradient:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+    box-shadow: 0 15px 50px -10px oklch(0.68 0.2 280 / 80%);
+  }
   .glow-ring {
-    box-shadow: 0 0 0 1px oklch(1 0 0 / 15%), 0 0 60px -10px oklch(0.68 0.22 290 / 50%);
+    box-shadow:
+      0 0 0 1px oklch(1 0 0 / 15%),
+      0 0 60px -10px oklch(0.68 0.22 290 / 50%);
   }
   .blob {
     position: absolute;
@@ -124,13 +146,27 @@
     pointer-events: none;
   }
   @keyframes float-slow {
-    0%, 100% { transform: translateY(0) translateX(0); }
-    50% { transform: translateY(-30px) translateX(20px); }
+    0%,
+    100% {
+      transform: translateY(0) translateX(0);
+    }
+    50% {
+      transform: translateY(-30px) translateX(20px);
+    }
   }
-  .animate-float { animation: float-slow 8s ease-in-out infinite; }
+  .animate-float {
+    animation: float-slow 8s ease-in-out infinite;
+  }
   @keyframes pulse-glow {
-    0%, 100% { box-shadow: 0 0 0 0 oklch(0.68 0.22 290 / 40%); }
-    50% { box-shadow: 0 0 0 20px oklch(0.68 0.22 290 / 0%); }
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 oklch(0.68 0.22 290 / 40%);
+    }
+    50% {
+      box-shadow: 0 0 0 20px oklch(0.68 0.22 290 / 0%);
+    }
   }
-  .pulse-glow { animation: pulse-glow 2.5s ease-out infinite; }
+  .pulse-glow {
+    animation: pulse-glow 2.5s ease-out infinite;
+  }
 }

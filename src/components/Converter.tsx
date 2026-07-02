@@ -1,6 +1,15 @@
 import { useCallback, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Upload, FileText, Download, Loader2, CheckCircle2, X, FileUp, ArrowRight } from "lucide-react";
+import {
+  Upload,
+  FileText,
+  Download,
+  Loader2,
+  CheckCircle2,
+  X,
+  FileUp,
+  ArrowRight,
+} from "lucide-react";
 import { toast } from "sonner";
 import { useRewardedDownload } from "@/hooks/monetization/useRewardedDownload";
 import { validateMagicNumbers } from "@/utils/validation";
@@ -24,7 +33,10 @@ export default function Converter({ mode, setMode }: ConverterProps) {
   const [dragOver, setDragOver] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const accept = mode === "pdf2word" ? ".pdf,application/pdf" : ".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+  const accept =
+    mode === "pdf2word"
+      ? ".pdf,application/pdf"
+      : ".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 
   const reset = () => {
     setFile(null);
@@ -39,7 +51,7 @@ export default function Converter({ mode, setMode }: ConverterProps) {
       toast.error("File too large (max 25 MB)");
       return false;
     }
-    
+
     if (mode === "pdf2word") {
       const isPdf = await validateMagicNumbers(f, ["pdf"]);
       if (!isPdf) {
@@ -47,7 +59,7 @@ export default function Converter({ mode, setMode }: ConverterProps) {
         return false;
       }
     }
-    
+
     const isPdf = f.type === "application/pdf" || f.name.toLowerCase().endsWith(".pdf");
     const isDocx = f.name.toLowerCase().endsWith(".docx");
     if (mode === "pdf2word" && !isPdf) {
@@ -68,12 +80,15 @@ export default function Converter({ mode, setMode }: ConverterProps) {
     setProgress(0);
   };
 
-  const onDrop = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    setDragOver(false);
-    const f = e.dataTransfer.files?.[0];
-    if (f) onPick(f);
-  }, [mode]);
+  const onDrop = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      setDragOver(false);
+      const f = e.dataTransfer.files?.[0];
+      if (f) onPick(f);
+    },
+    [mode],
+  );
 
   const convert = async () => {
     if (!file) return;
@@ -88,7 +103,7 @@ export default function Converter({ mode, setMode }: ConverterProps) {
         // worker via CDN to avoid bundler config
         pdfjs.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
         const pdf = await pdfjs.getDocument({ data: buf }).promise;
-        
+
         if (pdf.numPages > 100) {
           throw new Error("PDF exceeds the 100-page limit for Word conversion.");
         }
@@ -106,26 +121,32 @@ export default function Converter({ mode, setMode }: ConverterProps) {
             const y = Math.round(item.transform[5]);
             (lines[y] ||= []).push(item.str);
           }
-          const keys = Object.keys(lines).map(Number).sort((a, b) => b - a);
+          const keys = Object.keys(lines)
+            .map(Number)
+            .sort((a, b) => b - a);
 
-          children.push(new Paragraph({
-            heading: HeadingLevel.HEADING_2,
-            children: [new TextRun({ text: `Page ${i}`, bold: true })],
-            spacing: { before: 200, after: 120 },
-          }));
+          children.push(
+            new Paragraph({
+              heading: HeadingLevel.HEADING_2,
+              children: [new TextRun({ text: `Page ${i}`, bold: true })],
+              spacing: { before: 200, after: 120 },
+            }),
+          );
           for (const k of keys) {
             const text = lines[k].join(" ").trim();
             if (text) children.push(new Paragraph({ children: [new TextRun(text)] }));
           }
           setProgress(35 + Math.round((i / pdf.numPages) * 50));
-          
+
           // Yield execution to the main thread to prevent UI freezing
-          await new Promise(r => setTimeout(r, 0));
+          await new Promise((r) => setTimeout(r, 0));
         }
 
         const doc = new Document({ sections: [{ children }] });
         const rawBlob = await Packer.toBlob(doc);
-        const blob = new Blob([rawBlob], { type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" });
+        const blob = new Blob([rawBlob], {
+          type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+        });
         const name = file.name.replace(/\.pdf$/i, "") + ".docx";
         setResultName(name);
         await prepareDownload(blob, name);
@@ -185,19 +206,27 @@ export default function Converter({ mode, setMode }: ConverterProps) {
         <div className="flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4 mb-6 sm:mb-8">
           <div className="inline-flex p-1 rounded-full glass w-full sm:w-auto">
             <button
-              onClick={() => { setMode("pdf2word"); reset(); }}
+              onClick={() => {
+                setMode("pdf2word");
+                reset();
+              }}
               className={`flex-1 sm:flex-none px-4 sm:px-5 py-2 rounded-full text-sm font-medium transition-all ${mode === "pdf2word" ? "btn-gradient" : "text-muted-foreground hover:text-foreground"}`}
             >
               PDF → Word
             </button>
             <button
-              onClick={() => { setMode("word2pdf"); reset(); }}
+              onClick={() => {
+                setMode("word2pdf");
+                reset();
+              }}
               className={`flex-1 sm:flex-none px-4 sm:px-5 py-2 rounded-full text-sm font-medium transition-all ${mode === "word2pdf" ? "btn-gradient" : "text-muted-foreground hover:text-foreground"}`}
             >
               Word → PDF
             </button>
           </div>
-          <p className="text-xs text-muted-foreground text-center sm:text-right">100% private · runs in your browser</p>
+          <p className="text-xs text-muted-foreground text-center sm:text-right">
+            100% private · runs in your browser
+          </p>
         </div>
 
         {/* Drop zone */}
@@ -208,12 +237,17 @@ export default function Converter({ mode, setMode }: ConverterProps) {
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
-              onDragOver={(e) => { e.preventDefault(); setDragOver(true); }}
+              onDragOver={(e) => {
+                e.preventDefault();
+                setDragOver(true);
+              }}
               onDragLeave={() => setDragOver(false)}
               onDrop={onDrop}
               onClick={() => inputRef.current?.click()}
               className={`relative cursor-pointer rounded-2xl border-2 border-dashed transition-all duration-300 ease-out group p-6 sm:p-12 lg:p-16 text-center ${
-                dragOver ? "border-primary bg-primary/10 scale-[1.02] shadow-[0_0_40px_rgba(139,92,246,0.15)]" : "border-white/15 hover:border-primary/50 hover:bg-white/[0.03] hover:scale-[1.01]"
+                dragOver
+                  ? "border-primary bg-primary/10 scale-[1.02] shadow-[0_0_40px_rgba(139,92,246,0.15)]"
+                  : "border-white/15 hover:border-primary/50 hover:bg-white/[0.03] hover:scale-[1.01]"
               }`}
             >
               <input
@@ -221,7 +255,10 @@ export default function Converter({ mode, setMode }: ConverterProps) {
                 type="file"
                 accept={accept}
                 className="hidden"
-                onChange={(e) => { const f = e.target.files?.[0]; if (f) onPick(f); }}
+                onChange={(e) => {
+                  const f = e.target.files?.[0];
+                  if (f) onPick(f);
+                }}
               />
               <motion.div
                 animate={{ y: [0, -8, 0] }}
@@ -233,7 +270,9 @@ export default function Converter({ mode, setMode }: ConverterProps) {
               <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold mb-2 group-hover:text-primary transition-colors duration-300">
                 Drop your {mode === "pdf2word" ? "PDF" : "Word"} file here
               </h3>
-              <p className="text-sm sm:text-base text-muted-foreground mb-4 sm:mb-6">or click to browse · max 25 MB</p>
+              <p className="text-sm sm:text-base text-muted-foreground mb-4 sm:mb-6">
+                or click to browse · max 25 MB
+              </p>
               <span className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full glass text-sm font-medium">
                 <FileUp className="w-4 h-4" /> Choose file
               </span>
@@ -253,10 +292,16 @@ export default function Converter({ mode, setMode }: ConverterProps) {
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="font-medium text-sm sm:text-base truncate">{file.name}</p>
-                  <p className="text-xs text-muted-foreground">{(file.size / 1024 / 1024).toFixed(2)} MB</p>
+                  <p className="text-xs text-muted-foreground">
+                    {(file.size / 1024 / 1024).toFixed(2)} MB
+                  </p>
                 </div>
                 {status !== "converting" && (
-                  <button onClick={reset} className="p-2 rounded-full hover:bg-white/10 transition shrink-0" aria-label="Remove">
+                  <button
+                    onClick={reset}
+                    className="p-2 rounded-full hover:bg-white/10 transition shrink-0"
+                    aria-label="Remove"
+                  >
                     <X className="w-4 h-4" />
                   </button>
                 )}
@@ -279,15 +324,26 @@ export default function Converter({ mode, setMode }: ConverterProps) {
               )}
 
               {status === "ready" && (
-                <button onClick={convert} className="w-full btn-gradient rounded-2xl py-3.5 sm:py-4 font-semibold text-sm sm:text-base flex items-center justify-center gap-2 transition-all duration-300 hover:shadow-[0_0_20px_rgba(139,92,246,0.3)] hover:-translate-y-0.5 active:translate-y-0 group">
-                  Convert now <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                <button
+                  onClick={convert}
+                  className="w-full btn-gradient rounded-2xl py-3.5 sm:py-4 font-semibold text-sm sm:text-base flex items-center justify-center gap-2 transition-all duration-300 hover:shadow-[0_0_20px_rgba(139,92,246,0.3)] hover:-translate-y-0.5 active:translate-y-0 group"
+                >
+                  Convert now{" "}
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </button>
               )}
 
               {status === "done" && (
-                <motion.div initial={{ opacity: 0, scale: 0.97 }} animate={{ opacity: 1, scale: 1 }} className="space-y-4">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.97 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  className="space-y-4"
+                >
                   {renderStatusCard()}
-                  <button onClick={reset} className="w-full glass rounded-2xl py-2.5 sm:py-3 text-sm hover:bg-white/10 transition mt-2">
+                  <button
+                    onClick={reset}
+                    className="w-full glass rounded-2xl py-2.5 sm:py-3 text-sm hover:bg-white/10 transition mt-2"
+                  >
                     Convert another file
                   </button>
                 </motion.div>

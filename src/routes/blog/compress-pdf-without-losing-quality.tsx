@@ -5,8 +5,7 @@ export const Route = createFileRoute("/blog/compress-pdf-without-losing-quality"
   head: () => ({
     meta: [
       {
-        title:
-          "How to Compress PDF Without Losing Quality — Free Online Guide | Convert PDF",
+        title: "How to Compress PDF Without Losing Quality — Free Online Guide | Convert PDF",
       },
       {
         name: "description",
@@ -30,8 +29,7 @@ export const Route = createFileRoute("/blog/compress-pdf-without-losing-quality"
       { property: "og:type", content: "article" },
       {
         property: "og:url",
-        content:
-          "https://converttpdf.com/blog/compress-pdf-without-losing-quality",
+        content: "https://converttpdf.com/blog/compress-pdf-without-losing-quality",
       },
       { name: "twitter:card", content: "summary_large_image" },
       {
@@ -132,26 +130,41 @@ function CompressPdfGuide() {
         Why PDF File Size Matters
       </h2>
       <p>
-        You've written the perfect report, assembled a professional presentation, or compiled a detailed portfolio — and then realized the PDF is 45 MB. Too large for email. Too slow to upload to a client portal. Borderline impossible to share via messaging apps.
+        You've written the perfect report, assembled a professional presentation, or compiled a
+        detailed portfolio — and then realized the PDF is 45 MB. Too large for email. Too slow to
+        upload to a client portal. Borderline impossible to share via messaging apps.
       </p>
       <p className="mt-4">
-        Large PDF files create real friction in everyday workflows. Email providers typically cap attachments at 10–25 MB. Many company portals have upload limits. And a large file sent to someone on a mobile connection is simply inconsiderate.
+        Large PDF files create real friction in everyday workflows. Email providers typically cap
+        attachments at 10–25 MB. Many company portals have upload limits. And a large file sent to
+        someone on a mobile connection is simply inconsiderate.
       </p>
       <p className="mt-4">
-        The solution? <strong>Compress the PDF</strong>. But many people worry about quality loss. The good news is that with the right approach, you can dramatically reduce PDF file size while keeping the document looking sharp on screen and in print.
+        The solution? <strong>Compress the PDF</strong>. But many people worry about quality loss.
+        The good news is that with the right approach, you can dramatically reduce PDF file size
+        while keeping the document looking sharp on screen and in print.
       </p>
 
       <h2 className="text-2xl sm:text-3xl font-bold text-white mt-10 mb-4">
         What Makes a PDF Large?
       </h2>
       <p>
-        Understanding what inflates PDF size helps you target compression effectively. Here are the main contributors:
+        Understanding what inflates PDF size helps you target compression effectively. Here are the
+        main contributors:
       </p>
 
-      <div className="overflow-x-auto mt-6 mb-6 rounded-xl" style={{ border: "1px solid oklch(1 0 0 / 12%)" }}>
+      <div
+        className="overflow-x-auto mt-6 mb-6 rounded-xl"
+        style={{ border: "1px solid oklch(1 0 0 / 12%)" }}
+      >
         <table className="w-full text-sm">
           <thead>
-            <tr style={{ borderBottom: "1px solid oklch(1 0 0 / 12%)", background: "oklch(1 0 0 / 5%)" }}>
+            <tr
+              style={{
+                borderBottom: "1px solid oklch(1 0 0 / 12%)",
+                background: "oklch(1 0 0 / 5%)",
+              }}
+            >
               <th className="text-left px-5 py-3 font-semibold text-white">Factor</th>
               <th className="text-left px-5 py-3 font-semibold text-white">Size Impact</th>
               <th className="text-left px-5 py-3 font-semibold text-white">Compressible?</th>
@@ -195,25 +208,28 @@ function CompressPdfGuide() {
         . No sign-up needed.
       </p>
 
-      <h3 className="text-xl font-semibold text-white mt-6 mb-3">
-        Step 2: Upload Your PDF
-      </h3>
+      <h3 className="text-xl font-semibold text-white mt-6 mb-3">Step 2: Upload Your PDF</h3>
       <p>
-        Click the upload zone or drag and drop your PDF directly into the page. Remember — your file stays in your browser. Nothing is sent to any server.
+        Click the upload zone or drag and drop your PDF directly into the page. Remember — your file
+        stays in your browser. Nothing is sent to any server.
       </p>
 
       <h3 className="text-xl font-semibold text-white mt-6 mb-3">
         Step 3: Choose Compression Level
       </h3>
       <p>
-        Select from available compression options. For most documents, a medium compression level provides an excellent balance — typically reducing file size by 40–70% while keeping the document looking crisp.
+        Select from available compression options. For most documents, a medium compression level
+        provides an excellent balance — typically reducing file size by 40–70% while keeping the
+        document looking crisp.
       </p>
 
       <h3 className="text-xl font-semibold text-white mt-6 mb-3">
         Step 4: Download the Compressed PDF
       </h3>
       <p>
-        Once processing completes, click <strong>Download</strong> to save your compressed PDF. Files under 10 MB download immediately. Larger originals may require a short ad to unlock the download.
+        Once processing completes, click <strong>Download</strong> to save your compressed PDF.
+        Files under 10 MB download immediately. Larger originals may require a short ad to unlock
+        the download.
       </p>
 
       <h2 className="text-2xl sm:text-3xl font-bold text-white mt-10 mb-4">
@@ -224,21 +240,28 @@ function CompressPdfGuide() {
         Low Compression (Maximum Quality)
       </h3>
       <p>
-        Images are compressed minimally. File size reduction is modest — often 10–30%. Use this when print quality is critical, such as for photography portfolios, architectural drawings, or documents that will be printed at large format.
+        Images are compressed minimally. File size reduction is modest — often 10–30%. Use this when
+        print quality is critical, such as for photography portfolios, architectural drawings, or
+        documents that will be printed at large format.
       </p>
 
       <h3 className="text-xl font-semibold text-white mt-6 mb-3">
         Medium Compression (Recommended)
       </h3>
       <p>
-        The sweet spot for most use cases. Images are compressed to screen-friendly resolution (typically 150 DPI). File size drops by 40–70% with barely noticeable visual change on screen or standard printing. Perfect for business documents, reports, presentations, and eBooks.
+        The sweet spot for most use cases. Images are compressed to screen-friendly resolution
+        (typically 150 DPI). File size drops by 40–70% with barely noticeable visual change on
+        screen or standard printing. Perfect for business documents, reports, presentations, and
+        eBooks.
       </p>
 
       <h3 className="text-xl font-semibold text-white mt-6 mb-3">
         High Compression (Minimum Size)
       </h3>
       <p>
-        Images are heavily compressed and downscaled (often to 72–96 DPI). File size can drop by 70–90%. Best for documents that will only be viewed on screen, forms that need to be sent quickly, or when attachment limits are very strict.
+        Images are heavily compressed and downscaled (often to 72–96 DPI). File size can drop by
+        70–90%. Best for documents that will only be viewed on screen, forms that need to be sent
+        quickly, or when attachment limits are very strict.
       </p>
 
       <h2 className="text-2xl sm:text-3xl font-bold text-white mt-10 mb-4">
@@ -249,14 +272,17 @@ function CompressPdfGuide() {
         Tip 1: Optimize Images Before Creating the PDF
       </h3>
       <p>
-        If you're creating the PDF from a Word document, PowerPoint, or design tool, resize and compress images before exporting. A 4000×3000px product photo embedded in a Word document will balloon the resulting PDF. Resize images to 1920×1080 or lower before inserting them.
+        If you're creating the PDF from a Word document, PowerPoint, or design tool, resize and
+        compress images before exporting. A 4000×3000px product photo embedded in a Word document
+        will balloon the resulting PDF. Resize images to 1920×1080 or lower before inserting them.
       </p>
 
       <h3 className="text-xl font-semibold text-white mt-6 mb-3">
         Tip 2: Remove Unnecessary Pages
       </h3>
       <p>
-        Before compressing, consider splitting the PDF to remove pages you don't need to share. Use our{" "}
+        Before compressing, consider splitting the PDF to remove pages you don't need to share. Use
+        our{" "}
         <Link to="/split-pdf" className="text-primary hover:underline">
           PDF splitter
         </Link>{" "}
@@ -267,34 +293,40 @@ function CompressPdfGuide() {
         Tip 3: Use Grayscale for Text-Only Documents
       </h3>
       <p>
-        If your PDF is a text-heavy document with no meaningful color (like a legal brief or academic paper), converting color images to grayscale before embedding them can meaningfully reduce file size.
+        If your PDF is a text-heavy document with no meaningful color (like a legal brief or
+        academic paper), converting color images to grayscale before embedding them can meaningfully
+        reduce file size.
       </p>
 
       <h3 className="text-xl font-semibold text-white mt-6 mb-3">
         Tip 4: Compress, Then Check Quality
       </h3>
       <p>
-        Always open the compressed PDF before sending it. Zoom into images to verify they still look acceptable at the compression level you chose. It takes 30 seconds and prevents awkward follow-up conversations with clients or colleagues.
+        Always open the compressed PDF before sending it. Zoom into images to verify they still look
+        acceptable at the compression level you chose. It takes 30 seconds and prevents awkward
+        follow-up conversations with clients or colleagues.
       </p>
 
       <h2 className="text-2xl sm:text-3xl font-bold text-white mt-10 mb-4">
         How Much Can You Actually Reduce PDF Size?
       </h2>
-      <p>
-        Here are real-world examples of what to expect:
-      </p>
+      <p>Here are real-world examples of what to expect:</p>
       <ul className="list-disc pl-6 space-y-3 mt-4">
         <li>
-          <strong>A 20-page report with embedded photos (18 MB)</strong> → compressed to approximately 4–6 MB at medium compression (66–78% reduction).
+          <strong>A 20-page report with embedded photos (18 MB)</strong> → compressed to
+          approximately 4–6 MB at medium compression (66–78% reduction).
         </li>
         <li>
-          <strong>A 50-page text-heavy legal document (8 MB)</strong> → compressed to approximately 5–6 MB (25–37% reduction — text compresses less).
+          <strong>A 50-page text-heavy legal document (8 MB)</strong> → compressed to approximately
+          5–6 MB (25–37% reduction — text compresses less).
         </li>
         <li>
-          <strong>A scanned invoice (3 MB, 1 page)</strong> → compressed to approximately 300–600 KB (80–90% reduction).
+          <strong>A scanned invoice (3 MB, 1 page)</strong> → compressed to approximately 300–600 KB
+          (80–90% reduction).
         </li>
         <li>
-          <strong>A product brochure with high-res graphics (45 MB)</strong> → compressed to approximately 8–15 MB (66–82% reduction).
+          <strong>A product brochure with high-res graphics (45 MB)</strong> → compressed to
+          approximately 8–15 MB (66–82% reduction).
         </li>
       </ul>
 
@@ -302,10 +334,16 @@ function CompressPdfGuide() {
         Privacy: Why Browser-Based Compression Is the Safest
       </h2>
       <p>
-        When you use an online PDF compressor that uploads files to a server, your document travels to a data center, gets processed, and is returned to you. During that journey and storage period, your file is potentially accessible to the service provider and anyone who breaches their systems.
+        When you use an online PDF compressor that uploads files to a server, your document travels
+        to a data center, gets processed, and is returned to you. During that journey and storage
+        period, your file is potentially accessible to the service provider and anyone who breaches
+        their systems.
       </p>
       <p className="mt-4">
-        ConvertPDF compresses your PDF entirely within your browser using efficient JavaScript libraries. Zero bytes of your document ever leave your device. For legal documents, financial statements, medical records, or anything confidential, this makes a significant difference.
+        ConvertPDF compresses your PDF entirely within your browser using efficient JavaScript
+        libraries. Zero bytes of your document ever leave your device. For legal documents,
+        financial statements, medical records, or anything confidential, this makes a significant
+        difference.
       </p>
       <p className="mt-4">
         Learn more about browser-based processing in our article:{" "}
@@ -315,11 +353,12 @@ function CompressPdfGuide() {
         .
       </p>
 
-      <h2 className="text-2xl sm:text-3xl font-bold text-white mt-10 mb-4">
-        Conclusion
-      </h2>
+      <h2 className="text-2xl sm:text-3xl font-bold text-white mt-10 mb-4">Conclusion</h2>
       <p>
-        Compressing a PDF doesn't mean sacrificing quality — it means being smart about it. By understanding what drives file size, choosing the right compression level, and using a privacy-respecting tool like ConvertPDF, you can share documents efficiently without ever worrying about where your data goes.
+        Compressing a PDF doesn't mean sacrificing quality — it means being smart about it. By
+        understanding what drives file size, choosing the right compression level, and using a
+        privacy-respecting tool like ConvertPDF, you can share documents efficiently without ever
+        worrying about where your data goes.
       </p>
       <p className="mt-4">
         Ready to compress your PDF?{" "}

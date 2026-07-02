@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Toaster } from "sonner";
@@ -6,19 +6,36 @@ import { FileText, FileType2, Sparkles } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Background from "@/components/Background";
 import Converter, { type Mode } from "@/components/Converter";
-import { Features, HowItWorks, Testimonials, FAQ, Footer } from "@/components/Sections";
-import Tools from "@/components/Tools";
-import ImageTools from "@/components/ImageTools";
+import { Footer } from "@/components/Footer";
 import { BannerAdProvider } from "@/components/ads/providers/BannerAdProvider";
 import { WebsiteSchema, OrganizationSchema } from "@/components/schema/Schema";
+
+// Lazy-loaded components (Below the fold)
+const Features = lazy(() => import("@/components/Sections").then((m) => ({ default: m.Features })));
+const HowItWorks = lazy(() =>
+  import("@/components/Sections").then((m) => ({ default: m.HowItWorks })),
+);
+const Testimonials = lazy(() =>
+  import("@/components/Sections").then((m) => ({ default: m.Testimonials })),
+);
+const FAQ = lazy(() => import("@/components/Sections").then((m) => ({ default: m.FAQ })));
+const Tools = lazy(() => import("@/components/Tools"));
+const ImageTools = lazy(() => import("@/components/ImageTools"));
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "Convert PDF — Convert PDF and Word Files Instantly" },
-      { name: "description", content: "Fast, secure, browser-based PDF to Word and Word to PDF conversion. No uploads, no watermarks, no signup." },
+      {
+        name: "description",
+        content:
+          "Fast, secure, browser-based PDF to Word and Word to PDF conversion. No uploads, no watermarks, no signup.",
+      },
       { property: "og:title", content: "Convert PDF — Premium PDF ↔ Word Converter" },
-      { property: "og:description", content: "Convert PDF and Word files instantly, right in your browser." },
+      {
+        property: "og:description",
+        content: "Convert PDF and Word files instantly, right in your browser.",
+      },
     ],
   }),
   component: Index,
@@ -57,7 +74,9 @@ function Index() {
             transition={{ delay: 0.05 }}
             className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.08] sm:leading-[1.05]"
           >
-            Convert <span className="gradient-text">PDF and Word</span><br className="hidden sm:block" /><span className="sm:hidden"> </span>files instantly
+            Convert <span className="gradient-text">PDF and Word</span>
+            <br className="hidden sm:block" />
+            <span className="sm:hidden"> </span>files instantly
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -73,10 +92,16 @@ function Index() {
             transition={{ delay: 0.15 }}
             className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 justify-center"
           >
-            <button onClick={() => scrollToConverter("pdf2word")} className="btn-gradient px-5 sm:px-6 py-3 sm:py-3.5 rounded-full font-medium inline-flex items-center justify-center gap-2 text-sm sm:text-base">
+            <button
+              onClick={() => scrollToConverter("pdf2word")}
+              className="btn-gradient px-5 sm:px-6 py-3 sm:py-3.5 rounded-full font-medium inline-flex items-center justify-center gap-2 text-sm sm:text-base"
+            >
               <FileText className="w-4 h-4" /> Convert PDF to Word
             </button>
-            <button onClick={() => scrollToConverter("word2pdf")} className="glass px-5 sm:px-6 py-3 sm:py-3.5 rounded-full font-medium hover:bg-white/10 transition inline-flex items-center justify-center gap-2 text-sm sm:text-base">
+            <button
+              onClick={() => scrollToConverter("word2pdf")}
+              className="glass px-5 sm:px-6 py-3 sm:py-3.5 rounded-full font-medium hover:bg-white/10 transition inline-flex items-center justify-center gap-2 text-sm sm:text-base"
+            >
               <FileType2 className="w-4 h-4" /> Convert Word to PDF
             </button>
           </motion.div>
@@ -106,8 +131,8 @@ function Index() {
               <Converter mode={converterMode} setMode={setConverterMode} />
             </motion.div>
           </div>
-          
-          <motion.div 
+
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4 }}
@@ -118,23 +143,38 @@ function Index() {
         </div>
       </section>
 
-      <Tools />
-      <ImageTools />
-      <Features />
-      
+      <Suspense fallback={<div className="min-h-[400px] w-full" />}>
+        <Tools />
+      </Suspense>
+
+      <Suspense fallback={<div className="min-h-[400px] w-full" />}>
+        <ImageTools />
+      </Suspense>
+
+      <Suspense fallback={<div className="min-h-[500px] w-full" />}>
+        <Features />
+      </Suspense>
+
       <section className="py-12 px-4">
         <BannerAdProvider placement="mid" />
       </section>
-      
-      <HowItWorks />
 
-      <Testimonials />
-      <FAQ />
-      
+      <Suspense fallback={<div className="min-h-[300px] w-full" />}>
+        <HowItWorks />
+      </Suspense>
+
+      <Suspense fallback={<div className="min-h-[300px] w-full" />}>
+        <Testimonials />
+      </Suspense>
+
+      <Suspense fallback={<div className="min-h-[600px] w-full" />}>
+        <FAQ />
+      </Suspense>
+
       <section className="py-8 px-4">
         <BannerAdProvider placement="footer" />
       </section>
-      
+
       <Footer />
     </div>
   );

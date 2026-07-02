@@ -19,8 +19,13 @@ export default function WatermarkPdfPanel() {
         const { width, height } = page.getSize();
         const size = Math.min(width, height) / 8;
         page.drawText(text, {
-          x: width / 2 - (text.length * size) / 4, y: height / 2,
-          size, font, color: rgb(0.85, 0.1, 0.1), opacity: 0.25, rotate: degrees(-35),
+          x: width / 2 - (text.length * size) / 4,
+          y: height / 2,
+          size,
+          font,
+          color: rgb(0.85, 0.1, 0.1),
+          opacity: 0.25,
+          rotate: degrees(-35),
         });
       }
       const bytes = await src.save();
@@ -28,7 +33,11 @@ export default function WatermarkPdfPanel() {
       await prepareDownload(blob, files[0].name.replace(/\.pdf$/i, "") + "-watermarked.pdf");
       setState("success");
       toast.success("Watermark added");
-    } catch (e) { console.error(e); setState("idle"); toast.error("Failed"); }
+    } catch (e) {
+      console.error(e);
+      setState("idle");
+      toast.error("Failed");
+    }
   };
   return (
     <>
@@ -37,10 +46,18 @@ export default function WatermarkPdfPanel() {
       {state === "idle" && (
         <>
           <label className="block text-xs text-muted-foreground mt-4 mb-1.5">Watermark text</label>
-          <input value={text} onChange={(e) => setText(e.target.value)} className="w-full glass rounded-xl px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/50" />
+          <input
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            className="w-full glass rounded-xl px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-primary/50"
+          />
         </>
       )}
-      {state === "idle" && <ActionButton onClick={run} busy={false} disabled={!files.length || !text.trim()}>Add watermark</ActionButton>}
+      {state === "idle" && (
+        <ActionButton onClick={run} busy={false} disabled={!files.length || !text.trim()}>
+          Add watermark
+        </ActionButton>
+      )}
       {state === "processing" && <LoadingState />}
       {state === "success" && renderStatusCard()}
       {renderModal()}

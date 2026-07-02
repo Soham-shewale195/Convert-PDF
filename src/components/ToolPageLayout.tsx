@@ -1,8 +1,8 @@
 import { ReactNode, useEffect } from "react";
 import { useLocation } from "@tanstack/react-router";
-import Navbar from "@/components/Navbar";
+import Navbar from "./Navbar";
+import { Footer } from "./Footer";
 import Background from "@/components/Background";
-import { Footer } from "@/components/Sections";
 import { Toaster } from "sonner";
 import { motion } from "framer-motion";
 import { ShieldCheck } from "lucide-react";

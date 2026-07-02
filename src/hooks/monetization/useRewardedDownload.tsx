@@ -51,7 +51,9 @@ export function useRewardedDownload() {
       recordTaskCompletion();
       downloadBlob(readyFile.blob, readyFile.name);
       toast.success("Downloaded Successfully");
-      setTimeout(() => { window.location.href = "/"; }, 1500);
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 1500);
     }
   }, [readyFile]);
 
@@ -61,7 +63,9 @@ export function useRewardedDownload() {
       recordTaskCompletion();
       downloadBlob(readyFile.blob, readyFile.name);
       toast.success("Unlocked & Downloaded Successfully");
-      setTimeout(() => { window.location.href = "/"; }, 1500);
+      setTimeout(() => {
+        window.location.href = "/";
+      }, 1500);
     }
     setIsModalOpen(false);
   }, [readyFile]);
@@ -72,10 +76,10 @@ export function useRewardedDownload() {
   }, []);
 
   const renderModal = () => (
-    <RewardedAdProvider 
-      isOpen={isModalOpen} 
-      onClose={handleAdClose} 
-      onComplete={handleAdComplete} 
+    <RewardedAdProvider
+      isOpen={isModalOpen}
+      onClose={handleAdClose}
+      onComplete={handleAdComplete}
     />
   );
 
@@ -102,23 +106,27 @@ export function useRewardedDownload() {
               <div className="min-w-0">
                 <h4 className="font-semibold text-base sm:text-lg">Ready to Download</h4>
                 <div className="flex items-center gap-2 mt-0.5">
-                  <p className="text-xs sm:text-sm text-muted-foreground truncate max-w-[150px] sm:max-w-[250px]">{readyFile.name}</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground truncate max-w-[150px] sm:max-w-[250px]">
+                    {readyFile.name}
+                  </p>
                   <span className="w-1 h-1 rounded-full bg-white/20"></span>
-                  <p className="text-xs sm:text-sm text-muted-foreground">{(readyFile.blob.size / (1024 * 1024)).toFixed(2)} MB</p>
+                  <p className="text-xs sm:text-sm text-muted-foreground">
+                    {(readyFile.blob.size / (1024 * 1024)).toFixed(2)} MB
+                  </p>
                 </div>
               </div>
             </div>
-            
+
             <div className="shrink-0">
               {readyFile.requiresAd ? <PremiumBadge /> : <FreeBadge />}
             </div>
           </div>
 
-          <button 
+          <button
             onClick={executeDownload}
             className="relative z-10 w-full btn-gradient py-3.5 sm:py-4 rounded-xl font-semibold text-sm sm:text-base shadow-[0_0_20px_rgba(139,92,246,0.3)] hover:shadow-[0_0_30px_rgba(139,92,246,0.5)] transition-all flex items-center justify-center gap-2 group"
           >
-            <Download className="w-4 h-4 sm:w-5 sm:h-5 group-hover:-translate-y-0.5 transition-transform" /> 
+            <Download className="w-4 h-4 sm:w-5 sm:h-5 group-hover:-translate-y-0.5 transition-transform" />
             {readyFile.requiresAd ? "Unlock & Download" : "Free Download"}
           </button>
         </motion.div>
@@ -129,6 +137,6 @@ export function useRewardedDownload() {
   return {
     prepareDownload,
     renderStatusCard,
-    renderModal
+    renderModal,
   };
 }

@@ -5,8 +5,7 @@ export const Route = createFileRoute("/blog/best-free-pdf-tools")({
   head: () => ({
     meta: [
       {
-        title:
-          "The 10 Best Free PDF Tools Online in 2025 — Full Roundup | Convert PDF",
+        title: "The 10 Best Free PDF Tools Online in 2025 — Full Roundup | Convert PDF",
       },
       {
         name: "description",
@@ -95,7 +94,14 @@ const relatedSlugs = [
   "how-to-merge-pdf-files-online",
 ];
 
-function ToolCard({ number, name, href, description, useCase, pros }: {
+function ToolCard({
+  number,
+  name,
+  href,
+  description,
+  useCase,
+  pros,
+}: {
   number: number;
   name: string;
   href: string;
@@ -152,11 +158,27 @@ function BestFreePdfTools() {
         Why Free PDF Tools Have Never Been Better
       </h2>
       <p>
-        Five years ago, doing anything useful with PDFs beyond viewing them required either expensive Adobe Acrobat subscriptions or wrestling with clunky freeware. Today, the landscape has completely changed. Browser-based PDF tools powered by WebAssembly and modern JavaScript APIs now deliver professional-quality results for free, without any software installation — and without compromising your privacy by uploading files to third-party servers.
+        Five years ago, doing anything useful with PDFs beyond viewing them required either
+        expensive Adobe Acrobat subscriptions or wrestling with clunky freeware. Today, the
+        landscape has completely changed. Browser-based PDF tools powered by WebAssembly and modern
+        JavaScript APIs now deliver professional-quality results for free, without any software
+        installation — and without compromising your privacy by uploading files to third-party
+        servers. We explore this further in our{" "}
+        <Link to="/blog/browser-pdf-converter-privacy" className="text-primary hover:underline">
+          privacy guide
+        </Link>
+        .
       </p>
       <p className="mt-4">
-        This guide covers the <strong>10 best free PDF tools</strong> available in 2025, with a focus on tools that are fast, private, and genuinely useful for everyday workflows.
+        This guide covers the <strong>10 best free PDF tools</strong> available in 2025, with a
+        focus on tools that are fast, private, and genuinely useful for everyday workflows.
       </p>
+
+      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-8 border border-white/10 border-dashed">
+        <span className="text-sm font-medium">
+          [Image Placeholder: ConvertPDF Tool Suite Interface]
+        </span>
+      </div>
 
       <h2 className="text-2xl sm:text-3xl font-bold text-white mt-10 mb-6">
         The 10 Best Free PDF Tools in 2025
@@ -305,14 +327,26 @@ function BestFreePdfTools() {
       <h2 className="text-2xl sm:text-3xl font-bold text-white mt-12 mb-4">
         How to Choose the Right PDF Tool for Your Task
       </h2>
-      <p>
-        With so many tools available, here's a quick decision framework:
-      </p>
+      <p>With so many tools available, here's a quick decision framework:</p>
 
-      <div className="overflow-x-auto mt-6 mb-6 rounded-xl" style={{ border: "1px solid oklch(1 0 0 / 12%)" }}>
+      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-8 border border-white/10 border-dashed">
+        <span className="text-sm font-medium">
+          [Image Placeholder: Comparison of Desktop vs Browser Tools]
+        </span>
+      </div>
+
+      <div
+        className="overflow-x-auto mt-6 mb-6 rounded-xl"
+        style={{ border: "1px solid oklch(1 0 0 / 12%)" }}
+      >
         <table className="w-full text-sm">
           <thead>
-            <tr style={{ borderBottom: "1px solid oklch(1 0 0 / 12%)", background: "oklch(1 0 0 / 5%)" }}>
+            <tr
+              style={{
+                borderBottom: "1px solid oklch(1 0 0 / 12%)",
+                background: "oklch(1 0 0 / 5%)",
+              }}
+            >
               <th className="text-left px-5 py-3 font-semibold text-white">Your Goal</th>
               <th className="text-left px-5 py-3 font-semibold text-white">Use This Tool</th>
             </tr>
@@ -342,23 +376,30 @@ function BestFreePdfTools() {
         What to Look for in a Free PDF Tool
       </h2>
       <p>
-        Not all free PDF tools are created equal. Here are the key qualities that separate truly useful tools from frustrating experiences:
+        Not all free PDF tools are created equal. Here are the key qualities that separate truly
+        useful tools from frustrating experiences:
       </p>
       <ul className="list-disc pl-6 space-y-3 mt-4">
         <li>
-          <strong>Browser-based processing:</strong> Your files should never leave your device. This is the most important criterion, especially for work documents.
+          <strong>Browser-based processing:</strong> Your files should never leave your device. This
+          is the most important criterion, especially for work documents.
         </li>
         <li>
-          <strong>No account required:</strong> Good tools let you work without signing up. Requiring an account is usually a signal the service wants to monetize your data.
+          <strong>No account required:</strong> Good tools let you work without signing up.
+          Requiring an account is usually a signal the service wants to monetize your data.
         </li>
         <li>
-          <strong>No watermarks:</strong> Free tools that add watermarks to output files are essentially trying to advertise at your expense. Pass.
+          <strong>No watermarks:</strong> Free tools that add watermarks to output files are
+          essentially trying to advertise at your expense. Pass.
         </li>
         <li>
-          <strong>Mobile-friendly:</strong> A good PDF tool works just as well on a phone or tablet as on a desktop. Check before relying on it.
+          <strong>Mobile-friendly:</strong> A good PDF tool works just as well on a phone or tablet
+          as on a desktop. Check before relying on it.
         </li>
         <li>
-          <strong>Honest file size limits:</strong> Every browser-based tool has some limit due to device memory. The important thing is transparency — you should know the limit before you start.
+          <strong>Honest file size limits:</strong> Every browser-based tool has some limit due to
+          device memory. The important thing is transparency — you should know the limit before you
+          start.
         </li>
       </ul>
 
@@ -366,27 +407,40 @@ function BestFreePdfTools() {
         Privacy First: The ConvertPDF Difference
       </h2>
       <p>
-        Every tool listed in this roundup is available on ConvertPDF — and every single one operates entirely in your browser. No file uploads, no accounts, no data retention, no watermarks, and no paywalls for basic functionality.
+        Every tool listed in this roundup is available on ConvertPDF — and every single one operates
+        entirely in your browser. No file uploads, no accounts, no data retention, no watermarks,
+        and no paywalls for basic functionality.
       </p>
       <p className="mt-4">
-        This approach is particularly important for professionals who handle sensitive documents. Lawyers, accountants, HR teams, healthcare workers, and anyone else who regularly works with confidential PDFs needs tools they can genuinely trust with their data.
+        This approach is particularly important for professionals who handle sensitive documents.
+        Lawyers, accountants, HR teams, healthcare workers, and anyone else who regularly works with
+        confidential PDFs needs tools they can genuinely trust with their data.
       </p>
       <p className="mt-4">
         For a deeper look at why browser-based processing matters, read our guide:{" "}
-        <Link
-          to="/blog/browser-pdf-converter-privacy"
-          className="text-primary hover:underline"
-        >
+        <Link to="/blog/browser-pdf-converter-privacy" className="text-primary hover:underline">
           Why a Browser-Based PDF Converter is the Safest Choice
         </Link>
         .
       </p>
 
-      <h2 className="text-2xl sm:text-3xl font-bold text-white mt-10 mb-4">
-        Conclusion
-      </h2>
+      <h2 className="text-2xl sm:text-3xl font-bold text-white mt-10 mb-4">Conclusion</h2>
       <p>
-        The best free PDF tools in 2025 are powerful, private, and accessible to anyone with a modern browser. Whether you need to <Link to="/" className="text-primary hover:underline">convert PDF to Word</Link>, <Link to="/compress-pdf" className="text-primary hover:underline">compress a PDF</Link>, <Link to="/merge-pdf" className="text-primary hover:underline">merge documents</Link>, or split a large file into sections, ConvertPDF has you covered — for free, with your privacy fully intact.
+        The best free PDF tools in 2025 are powerful, private, and accessible to anyone with a
+        modern browser. Whether you need to{" "}
+        <Link to="/" className="text-primary hover:underline">
+          convert PDF to Word
+        </Link>
+        ,{" "}
+        <Link to="/compress-pdf" className="text-primary hover:underline">
+          compress a PDF
+        </Link>
+        ,{" "}
+        <Link to="/merge-pdf" className="text-primary hover:underline">
+          merge documents
+        </Link>
+        , or split a large file into sections, ConvertPDF has you covered — for free, with your
+        privacy fully intact.
       </p>
       <p className="mt-4">
         Explore all the tools directly on our{" "}
@@ -402,7 +456,10 @@ function BestFreePdfTools() {
           </Link>
         </li>
         <li>
-          <Link to="/blog/compress-pdf-without-losing-quality" className="text-primary hover:underline">
+          <Link
+            to="/blog/compress-pdf-without-losing-quality"
+            className="text-primary hover:underline"
+          >
             How to Compress PDF Without Losing Quality
           </Link>
         </li>

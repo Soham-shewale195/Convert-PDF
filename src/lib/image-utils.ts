@@ -45,15 +45,15 @@ async function processImageToBlob(
   file: File,
   drawFn: (ctx: CanvasRenderingContext2D, img: HTMLImageElement, canvas: HTMLCanvasElement) => void,
   mimeType: string = "image/png",
-  quality?: number
+  quality?: number,
 ): Promise<Blob> {
   const img = await loadImage(file);
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
   if (!ctx) throw new Error("Could not get canvas context");
-  
+
   drawFn(ctx, img, canvas);
-  
+
   return new Promise((resolve, reject) => {
     canvas.toBlob(
       (blob) => {
@@ -61,7 +61,7 @@ async function processImageToBlob(
         else reject(new Error("Canvas toBlob failed"));
       },
       mimeType,
-      quality
+      quality,
     );
   });
 }
@@ -88,7 +88,7 @@ export async function convertFormat(file: File, format: "png" | "jpeg" | "webp")
       ctx.drawImage(img, 0, 0, width, height);
     },
     mimeMap[format],
-    format === "jpeg" ? 0.92 : undefined
+    format === "jpeg" ? 0.92 : undefined,
   );
 }
 
@@ -119,11 +119,17 @@ export async function compressImage(file: File, quality: number): Promise<Blob> 
       ctx.drawImage(img, 0, 0, width, height);
     },
     "image/jpeg",
-    quality / 100
+    quality / 100,
   );
 }
 
-export async function cropImage(file: File, x: number, y: number, w: number, h: number): Promise<Blob> {
+export async function cropImage(
+  file: File,
+  x: number,
+  y: number,
+  w: number,
+  h: number,
+): Promise<Blob> {
   return processImageToBlob(file, (ctx, img, canvas) => {
     canvas.width = w;
     canvas.height = h;
@@ -132,10 +138,10 @@ export async function cropImage(file: File, x: number, y: number, w: number, h: 
 }
 
 export async function rotateFlipImage(
-  file: File, 
+  file: File,
   angle: number,
   flipH: boolean,
-  flipV: boolean
+  flipV: boolean,
 ): Promise<Blob> {
   return processImageToBlob(file, (ctx, img, canvas) => {
     const rad = (angle * Math.PI) / 180;
@@ -143,7 +149,7 @@ export async function rotateFlipImage(
     const cos = Math.abs(Math.cos(rad));
     canvas.width = Math.floor(img.naturalWidth * cos + img.naturalHeight * sin);
     canvas.height = Math.floor(img.naturalWidth * sin + img.naturalHeight * cos);
-    
+
     ctx.translate(canvas.width / 2, canvas.height / 2);
     ctx.rotate(rad);
     ctx.scale(flipH ? -1 : 1, flipV ? -1 : 1);
@@ -164,26 +170,33 @@ export async function watermarkImage(file: File, opts: WatermarkOptions): Promis
     canvas.width = img.naturalWidth;
     canvas.height = img.naturalHeight;
     ctx.drawImage(img, 0, 0);
-    
+
     ctx.save();
     const size = Math.floor(canvas.width * (opts.fontSize / 100));
     ctx.font = `bold ${size}px sans-serif`;
     ctx.globalAlpha = opts.opacity / 100;
     ctx.fillStyle = opts.color;
-    
-    let x = 0, y = 0;
+
+    let x = 0,
+      y = 0;
     ctx.textBaseline = "middle";
     ctx.textAlign = "center";
-    
+
     const margin = size; // Padding
-    if (opts.position.includes("left")) { x = margin; ctx.textAlign = "left"; }
-    else if (opts.position.includes("right")) { x = canvas.width - margin; ctx.textAlign = "right"; }
-    else x = canvas.width / 2;
-    
-    if (opts.position.includes("top")) { y = margin; }
-    else if (opts.position.includes("bottom")) { y = canvas.height - margin; }
-    else y = canvas.height / 2;
-    
+    if (opts.position.includes("left")) {
+      x = margin;
+      ctx.textAlign = "left";
+    } else if (opts.position.includes("right")) {
+      x = canvas.width - margin;
+      ctx.textAlign = "right";
+    } else x = canvas.width / 2;
+
+    if (opts.position.includes("top")) {
+      y = margin;
+    } else if (opts.position.includes("bottom")) {
+      y = canvas.height - margin;
+    } else y = canvas.height / 2;
+
     ctx.fillText(opts.text, x, y);
     ctx.restore();
   });

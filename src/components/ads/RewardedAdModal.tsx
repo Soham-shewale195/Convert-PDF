@@ -22,13 +22,13 @@ export function RewardedAdModal({ isOpen, onClose, onComplete }: RewardedAdModal
       setTimeLeft(5);
       setShowConfirmClose(false);
       adStartTime.current = null;
-      
+
       // Simulate ad load time
       const loadTimer = setTimeout(() => {
         setAdState("watching");
         adStartTime.current = Date.now();
       }, 1500);
-      
+
       return () => clearTimeout(loadTimer);
     } else {
       setAdState("idle");
@@ -70,16 +70,16 @@ export function RewardedAdModal({ isOpen, onClose, onComplete }: RewardedAdModal
     setShowConfirmClose(false);
     // adjust start time so countdown continues correctly
     if (adStartTime.current) {
-      adStartTime.current = Date.now() - ((5 - timeLeft) * 1000);
+      adStartTime.current = Date.now() - (5 - timeLeft) * 1000;
     }
   };
 
   const handleUnlockClick = () => {
     // Final check to prevent any timing manipulation
     if (adStartTime.current && Date.now() - adStartTime.current < 5000) {
-      return; 
+      return;
     }
-    
+
     setAdState("unlocked");
     // Small delay to show the unlock animation before triggering complete
     setTimeout(() => {
@@ -91,13 +91,13 @@ export function RewardedAdModal({ isOpen, onClose, onComplete }: RewardedAdModal
     <AnimatePresence>
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <motion.div 
-            initial={{ opacity: 0 }} 
-            animate={{ opacity: 1 }} 
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="absolute inset-0 bg-background/80 backdrop-blur-md"
           />
-          
+
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -112,8 +112,8 @@ export function RewardedAdModal({ isOpen, onClose, onComplete }: RewardedAdModal
                 Premium Sponsor
               </div>
               {adState !== "completed" && adState !== "unlocked" && (
-                <button 
-                  onClick={handleCloseAttempt} 
+                <button
+                  onClick={handleCloseAttempt}
                   className="p-1.5 rounded-full bg-white/5 text-muted-foreground hover:bg-white/10 hover:text-foreground transition-colors"
                 >
                   <X className="w-4 h-4" />
@@ -143,10 +143,16 @@ export function RewardedAdModal({ isOpen, onClose, onComplete }: RewardedAdModal
                       You will lose your reward and the file will not be downloaded.
                     </p>
                     <div className="flex gap-3 justify-center">
-                      <button onClick={confirmClose} className="px-6 py-2.5 rounded-xl text-sm font-semibold text-muted-foreground hover:bg-white/5 transition-colors">
+                      <button
+                        onClick={confirmClose}
+                        className="px-6 py-2.5 rounded-xl text-sm font-semibold text-muted-foreground hover:bg-white/5 transition-colors"
+                      >
                         Close Video
                       </button>
-                      <button onClick={resumeAd} className="px-6 py-2.5 rounded-xl text-sm font-semibold btn-gradient shadow-[0_0_15px_rgba(139,92,246,0.3)] hover:shadow-[0_0_25px_rgba(139,92,246,0.5)] transition-all">
+                      <button
+                        onClick={resumeAd}
+                        className="px-6 py-2.5 rounded-xl text-sm font-semibold btn-gradient shadow-[0_0_15px_rgba(139,92,246,0.3)] hover:shadow-[0_0_25px_rgba(139,92,246,0.5)] transition-all"
+                      >
                         Resume Video
                       </button>
                     </div>
@@ -175,7 +181,7 @@ export function RewardedAdModal({ isOpen, onClose, onComplete }: RewardedAdModal
                     {/* Simulated Ad Provider Container */}
                     <div className="relative w-full aspect-video bg-black/40 rounded-2xl overflow-hidden mb-6 border border-white/10 flex flex-col items-center justify-center shadow-inner group">
                       <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 via-transparent to-purple-500/20 opacity-50" />
-                      
+
                       {/* Pulse Animation */}
                       <motion.div
                         animate={{ scale: [1, 1.05, 1], opacity: [0.3, 0.6, 0.3] }}
@@ -185,7 +191,9 @@ export function RewardedAdModal({ isOpen, onClose, onComplete }: RewardedAdModal
                         <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center border border-primary/30">
                           <Play className="w-5 h-5 text-primary ml-1" />
                         </div>
-                        <span className="text-xs tracking-widest text-primary/70 uppercase font-medium">Ad Space Placeholder</span>
+                        <span className="text-xs tracking-widest text-primary/70 uppercase font-medium">
+                          Ad Space Placeholder
+                        </span>
                       </motion.div>
 
                       {/* Countdown Badge */}
@@ -193,10 +201,10 @@ export function RewardedAdModal({ isOpen, onClose, onComplete }: RewardedAdModal
                         <Loader2 className="w-3.5 h-3.5 text-primary animate-spin" />
                         <span className="text-xs font-mono font-medium">Reward in {timeLeft}s</span>
                       </div>
-                      
+
                       {/* Linear Progress Bar overlayed on video bottom */}
                       <div className="absolute bottom-0 left-0 right-0 h-1 bg-white/10">
-                        <motion.div 
+                        <motion.div
                           className="h-full bg-gradient-to-r from-primary to-purple-500"
                           initial={{ width: `${((5 - timeLeft) / 5) * 100}%` }}
                           animate={{ width: `${((5 - timeLeft + 1) / 5) * 100}%` }}
@@ -204,11 +212,12 @@ export function RewardedAdModal({ isOpen, onClose, onComplete }: RewardedAdModal
                         />
                       </div>
                     </div>
-                    
+
                     <div className="text-center">
                       <h3 className="text-lg font-bold mb-1">Unlock Your Download</h3>
                       <p className="text-sm text-muted-foreground">
-                        Supporting our sponsors through this quick message keeps our premium tools 100% free for everyone.
+                        Supporting our sponsors through this quick message keeps our premium tools
+                        100% free for everyone.
                       </p>
                     </div>
                   </motion.div>
@@ -226,11 +235,13 @@ export function RewardedAdModal({ isOpen, onClose, onComplete }: RewardedAdModal
                         <Check className="w-10 h-10" />
                       </div>
                     </div>
-                    <h3 className="text-2xl font-bold mb-2 bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">Reward Unlocked!</h3>
+                    <h3 className="text-2xl font-bold mb-2 bg-gradient-to-r from-white to-white/70 bg-clip-text text-transparent">
+                      Reward Unlocked!
+                    </h3>
                     <p className="text-sm text-muted-foreground mb-8 max-w-[280px] mx-auto">
                       Thank you for your support. Your file is ready to be saved to your device.
                     </p>
-                    <button 
+                    <button
                       onClick={handleUnlockClick}
                       disabled={adState === "unlocked"}
                       className="w-full btn-gradient py-4 rounded-xl font-bold text-lg shadow-[0_0_20px_rgba(139,92,246,0.3)] hover:shadow-[0_0_35px_rgba(139,92,246,0.5)] transition-all flex items-center justify-center gap-2 group hover:-translate-y-0.5 disabled:opacity-50 disabled:hover:translate-y-0"
@@ -238,7 +249,7 @@ export function RewardedAdModal({ isOpen, onClose, onComplete }: RewardedAdModal
                       {adState === "unlocked" ? (
                         <Loader2 className="w-5 h-5 animate-spin" />
                       ) : (
-                        <Download className="w-5 h-5 group-hover:scale-110 transition-transform" /> 
+                        <Download className="w-5 h-5 group-hover:scale-110 transition-transform" />
                       )}
                       {adState === "unlocked" ? "Downloading..." : "Download File Now"}
                     </button>
@@ -246,10 +257,10 @@ export function RewardedAdModal({ isOpen, onClose, onComplete }: RewardedAdModal
                 )}
               </AnimatePresence>
             </div>
-            
+
             {/* Footer */}
             <div className="bg-black/30 p-4 flex justify-center items-center gap-2 text-[10px] text-muted-foreground/60 uppercase tracking-widest font-bold">
-              <Shield className="w-3.5 h-3.5" /> 
+              <Shield className="w-3.5 h-3.5" />
               Local Processing • Safe & Secure
             </div>
           </motion.div>

@@ -23,7 +23,11 @@ export default function RotatePdfPanel() {
       await prepareDownload(blob, files[0].name.replace(/\.pdf$/i, "") + `-rotated-${angle}.pdf`);
       setState("success");
       toast.success("Rotated");
-    } catch (e) { console.error(e); setState("idle"); toast.error("Failed"); }
+    } catch (e) {
+      console.error(e);
+      setState("idle");
+      toast.error("Failed");
+    }
   };
   return (
     <>
@@ -32,12 +36,21 @@ export default function RotatePdfPanel() {
       {state === "idle" && (
         <div className="flex gap-2 mt-4">
           {[90, 180, 270].map((a) => (
-            <button key={a} onClick={() => setAngle(a as any)}
-              className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition ${angle === a ? "btn-gradient" : "glass hover:bg-white/10"}`}>{a}°</button>
+            <button
+              key={a}
+              onClick={() => setAngle(a as any)}
+              className={`flex-1 py-2.5 rounded-xl text-sm font-medium transition ${angle === a ? "btn-gradient" : "glass hover:bg-white/10"}`}
+            >
+              {a}°
+            </button>
           ))}
         </div>
       )}
-      {state === "idle" && <ActionButton onClick={run} busy={false} disabled={!files.length}>Rotate pages</ActionButton>}
+      {state === "idle" && (
+        <ActionButton onClick={run} busy={false} disabled={!files.length}>
+          Rotate pages
+        </ActionButton>
+      )}
       {state === "processing" && <LoadingState />}
       {state === "success" && renderStatusCard()}
       {renderModal()}
