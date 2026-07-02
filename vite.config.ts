@@ -23,18 +23,7 @@ export default defineConfig({
           // Obfuscate output filenames with content hashes
           chunkFileNames: "assets/[hash].js",
           assetFileNames: "assets/[hash][extname]",
-          manualChunks: (id) => {
-            if (id.includes("node_modules")) {
-              if (id.includes("framer-motion")) return "vendor-framer";
-              if (id.includes("lucide-react")) return "vendor-lucide";
-              if (id.includes("@radix-ui")) return "vendor-radix";
-              if (id.includes("react") || id.includes("react-dom")) return "vendor-react";
-              if (id.includes("@tanstack")) return "vendor-tanstack";
-              // Do NOT return a catch-all "vendor" string here, otherwise
-              // dynamically imported heavy libraries (pdf-lib, docx) will be
-              // bundled into a single massive chunk!
-            }
-          },
+
         },
       },
     },
