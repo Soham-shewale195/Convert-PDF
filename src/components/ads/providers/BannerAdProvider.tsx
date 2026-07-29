@@ -1,5 +1,4 @@
 import { adConfig, AdPlacement } from "@/config/ads";
-import { PremiumAd } from "@/components/ads/PremiumAd";
 
 interface BannerAdProviderProps {
   placement: AdPlacement;
@@ -9,7 +8,7 @@ export function BannerAdProvider({ placement }: BannerAdProviderProps) {
   const provider = adConfig.providers.banner;
 
   if (provider === "mock") {
-    return <PremiumAd type={placement} />;
+    return null;
   }
 
   if (provider === "adsense") {

@@ -7,16 +7,12 @@ import Navbar from "@/components/Navbar";
 import Background from "@/components/Background";
 import Converter, { type Mode } from "@/components/Converter";
 import { Footer } from "@/components/Footer";
-import { BannerAdProvider } from "@/components/ads/providers/BannerAdProvider";
 import { WebsiteSchema, OrganizationSchema } from "@/components/schema/Schema";
 
 // Lazy-loaded components (Below the fold)
 const Features = lazy(() => import("@/components/Sections").then((m) => ({ default: m.Features })));
 const HowItWorks = lazy(() =>
   import("@/components/Sections").then((m) => ({ default: m.HowItWorks })),
-);
-const Testimonials = lazy(() =>
-  import("@/components/Sections").then((m) => ({ default: m.Testimonials })),
 );
 const FAQ = lazy(() => import("@/components/Sections").then((m) => ({ default: m.FAQ })));
 const Tools = lazy(() => import("@/components/Tools"));
@@ -132,14 +128,6 @@ function Index() {
             </motion.div>
           </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="mt-16 sm:mt-24"
-          >
-            <BannerAdProvider placement="hero" />
-          </motion.div>
         </div>
       </section>
 
@@ -155,25 +143,13 @@ function Index() {
         <Features />
       </Suspense>
 
-      <section className="py-12 px-4">
-        <BannerAdProvider placement="mid" />
-      </section>
-
-      <Suspense fallback={<div className="min-h-[300px] w-full" />}>
+      <Suspense fallback={<div className="min-h-[500px] w-full" />}>
         <HowItWorks />
-      </Suspense>
-
-      <Suspense fallback={<div className="min-h-[300px] w-full" />}>
-        <Testimonials />
       </Suspense>
 
       <Suspense fallback={<div className="min-h-[600px] w-full" />}>
         <FAQ />
       </Suspense>
-
-      <section className="py-8 px-4">
-        <BannerAdProvider placement="footer" />
-      </section>
 
       <Footer />
     </div>

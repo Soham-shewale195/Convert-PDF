@@ -9,7 +9,6 @@ import {
   Upload,
   Wand2,
   Download,
-  Star,
   ChevronDown,
 } from "lucide-react";
 import { useState } from "react";
@@ -117,173 +116,6 @@ export function HowItWorks() {
   );
 }
 
-export function Pricing() {
-  const plans = [
-    {
-      name: "Free",
-      price: "$0",
-      desc: "For occasional use",
-      featured: false,
-      features: [
-        "5 conversions / day",
-        "Files up to 10 MB",
-        "All formats",
-        "Browser-based privacy",
-      ],
-    },
-    {
-      name: "Pro",
-      price: "$9",
-      desc: "For power users",
-      featured: true,
-      features: [
-        "Unlimited conversions",
-        "Files up to 200 MB",
-        "Batch conversion",
-        "OCR support",
-        "Priority processing",
-      ],
-    },
-    {
-      name: "Business",
-      price: "$29",
-      desc: "For teams",
-      featured: false,
-      features: [
-        "Everything in Pro",
-        "5 team members",
-        "Conversion history",
-        "API access",
-        "Dedicated support",
-      ],
-    },
-  ];
-  return (
-    <section id="pricing" className="py-16 sm:py-24 px-4 sm:px-6">
-      <div className="max-w-7xl mx-auto">
-        <SectionHeader
-          eyebrow="Pricing"
-          title="Simple, transparent pricing"
-          sub="Start free. Upgrade when you need more."
-        />
-        <div className="grid md:grid-cols-3 gap-4 sm:gap-6 mt-10 sm:mt-14">
-          {plans.map((p, i) => (
-            <motion.div
-              key={p.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.08 }}
-              whileHover={{ y: -6 }}
-              className={`relative rounded-2xl sm:rounded-3xl p-6 sm:p-8 ${p.featured ? "glass-strong glow-ring" : "glass"}`}
-            >
-              {p.featured && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 rounded-full btn-gradient text-xs font-semibold">
-                  Most popular
-                </div>
-              )}
-              <h3 className="text-xl font-semibold">{p.name}</h3>
-              <p className="text-sm text-muted-foreground mt-1">{p.desc}</p>
-              <div className="my-4 sm:my-6 flex items-baseline gap-1">
-                <span className="text-4xl sm:text-5xl font-bold gradient-text">{p.price}</span>
-                <span className="text-muted-foreground">/mo</span>
-              </div>
-              <ul className="space-y-3 text-sm mb-8">
-                {p.features.map((f) => (
-                  <li key={f} className="flex items-start gap-2">
-                    <div className="w-5 h-5 rounded-full btn-gradient flex items-center justify-center shrink-0 mt-0.5">
-                      <span className="text-[10px]">✓</span>
-                    </div>
-                    {f}
-                  </li>
-                ))}
-              </ul>
-              <button
-                className={`w-full py-3 rounded-xl font-medium transition ${p.featured ? "btn-gradient" : "glass hover:bg-white/10"}`}
-              >
-                {p.name === "Free" ? "Get started" : `Choose ${p.name}`}
-              </button>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-export function Testimonials() {
-  const items = [
-    {
-      name: "Sarah Chen",
-      role: "Product Designer",
-      text: "Converting design briefs from PDF to editable Word used to take forever. Convert PDF does it in seconds.",
-      rating: 5,
-    },
-    {
-      name: "Marcus Johnson",
-      role: "Legal Consultant",
-      text: "The fact that nothing uploads to a server is huge for our confidential documents. Game changer.",
-      rating: 5,
-    },
-    {
-      name: "Priya Patel",
-      role: "Freelance Writer",
-      text: "Beautiful interface, instant results, no nonsense. Exactly what a tool like this should be.",
-      rating: 5,
-    },
-    {
-      name: "Tom Müller",
-      role: "Operations Lead",
-      text: "We replaced three other tools with Convert PDF. The Pro plan pays for itself the first week.",
-      rating: 5,
-    },
-  ];
-  return (
-    <section className="py-16 sm:py-24 px-4 sm:px-6">
-      <div className="max-w-7xl mx-auto">
-        <SectionHeader
-          eyebrow="Testimonials"
-          title="Loved by thousands"
-          sub="Don't just take our word for it."
-        />
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 mt-10 sm:mt-14">
-          {items.map((t, i) => (
-            <motion.div
-              key={t.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.05 }}
-              className="glass rounded-2xl p-4 sm:p-6"
-            >
-              <div className="flex gap-1 mb-2 sm:mb-3">
-                {Array.from({ length: t.rating }).map((_, j) => (
-                  <Star
-                    key={j}
-                    className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-amber-400 text-amber-400"
-                  />
-                ))}
-              </div>
-              <p className="text-xs sm:text-sm text-foreground/90 mb-4 sm:mb-5">"{t.text}"</p>
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full btn-gradient flex items-center justify-center text-xs sm:text-sm font-semibold shrink-0">
-                  {t.name
-                    .split(" ")
-                    .map((n) => n[0])
-                    .join("")}
-                </div>
-                <div className="min-w-1">
-                  <p className="text-xs sm:text-sm font-medium">{t.name}</p>
-                  <p className="text-xs text-muted-foreground">{t.role}</p>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
 
 export function FAQ() {
   const faqs = [
@@ -297,7 +129,7 @@ export function FAQ() {
     },
     {
       q: "Is there a file size limit?",
-      a: "Files under 10 MB download instantly for free. Files between 10 MB and 25 MB require watching a short ad to unlock. Files above 25 MB are not supported to ensure smooth performance on all devices including mobile.",
+      a: "Files under 25 MB download instantly for free. Files above 25 MB are not supported to ensure smooth performance on all devices including mobile.",
     },
     {
       q: "Does it support scanned PDFs?",
@@ -305,7 +137,7 @@ export function FAQ() {
     },
     {
       q: "Is the service free?",
-      a: "Yes — Convert PDF is completely free to use. No account, no signup, no watermarks. Files over 10 MB require a short ad to unlock the download to keep the service running.",
+      a: "Yes — Convert PDF is completely free to use. No account, no signup, no watermarks.",
     },
     {
       q: "Which file formats are supported?",
