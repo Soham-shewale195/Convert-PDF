@@ -8,7 +8,7 @@ import {
   Layers,
   ImageIcon,
 } from "lucide-react";
-import { FileImage, Image as ImageLucide } from "lucide-react";
+import { FileImage, Minimize2 } from "lucide-react";
 import ToolPageLayout from "@/components/ToolPageLayout";
 import FormatConvertPanel from "@/components/tools/FormatConvertPanel";
 import ToolContentSections, { type ToolContentData } from "@/components/ToolContentSections";
@@ -37,161 +37,149 @@ const contentData: ToolContentData = {
   whatIs: {
     heading: "What Is JPG to PNG Conversion?",
     paragraphs: [
-      "JPG to PNG conversion re-encodes a JPEG image into the PNG (Portable Network Graphics) format. JPEG uses lossy compression — it discards some pixel data to achieve smaller files. PNG uses lossless compression, preserving every pixel exactly. Converting from JPG to PNG is useful when you need transparency support, sharper edges on text and graphics, or a format that will not degrade further with repeated editing.",
-      "Our converter uses the browser's Canvas API to perform the transformation. The JPEG file is decoded by the browser and drawn onto an off-screen canvas element. The canvas then exports the image as a PNG using the toBlob method. Because the canvas holds the fully decoded pixel data, the PNG output captures everything the browser rendered — including any areas that could become transparent if composited with other layers later.",
+      "Transforming a JPEG into a PNG file changes the underlying architecture of your image from a lossy compression model to a completely lossless one. While JPEG (Joint Photographic Experts Group) was engineered to compress complex photographs by permanently discarding minor visual data, PNG (Portable Network Graphics) was built to preserve every single pixel perfectly.",
+      "**Transparency Explained:** The most critical difference—and the primary reason for this conversion—is the Alpha Channel. JPEGs are fundamentally flat; they cannot contain transparent pixels. If you attempt to cut out a subject in a JPEG, the background becomes solid white. By converting to PNG, you unlock the ability to have a transparent background, making it the required format for logos, overlays, and complex web graphics.",
+      "Our web-based utility handles this transition using HTML5 Canvas rendering. The browser decodes your flat JPEG, draws it precisely pixel-for-pixel into memory, and exports it as a rich PNG blob, ready for advanced editing without further degradation.",
     ],
   },
   howTo: {
     heading: "How to Convert JPG to PNG in 3 Steps",
     steps: [
       {
-        title: "Upload your JPG file",
+        title: "Load your JPEG",
         description:
-          "Drag and drop a JPG or JPEG file onto the upload area, or click to browse. The file is loaded into your browser's memory.",
+          "Drag your photo or graphic into the drop zone. The file is read directly into your device's local memory for instant processing.",
       },
       {
-        title: "Preview",
+        title: "Review the Image",
         description:
-          "A preview of your image is displayed so you can verify it is the correct file before converting.",
+          "Check the generated preview to ensure you have selected the right asset before initiating the format change.",
       },
       {
-        title: "Convert and download",
+        title: "Generate PNG",
         description:
-          'Click "Convert to PNG" to re-encode the image. The new PNG file is generated in your browser and downloaded directly to your device.',
+          "Click the conversion button. Your browser will instantly re-encode the pixels into a lossless PNG and trigger a secure local download.",
       },
     ],
   },
   benefits: {
-    heading: "Why Convert JPG to PNG",
+    heading: "Technical Advantages of PNG Output",
     items: [
       {
         icon: ShieldCheck,
-        title: "Completely private",
+        title: "Zero-Data-Leak Processing",
         description:
-          "The conversion runs entirely in your browser via the Canvas API. Your images never leave your device.",
+          "Because the conversion script runs inside your browser sandbox, your sensitive photos are never intercepted, uploaded, or stored on remote servers.",
       },
       {
         icon: Layers,
-        title: "Lossless output",
+        title: "Halt Generational Degradation",
         description:
-          "PNG preserves every pixel without additional compression artefacts. The converted file will not degrade with further edits or re-saves.",
+          "Every time you edit and re-save a JPEG, it loses more detail. Converting to PNG creates a stable, lossless foundation for endless editing.",
       },
       {
         icon: ImageIcon,
-        title: "Transparency-ready",
+        title: "Alpha Channel Activation",
         description:
-          "PNG supports an alpha channel. After conversion, you can add transparency in an image editor — something JPEG cannot do.",
+          "Switching to PNG prepares your file for background removal tools. You can immediately begin masking out elements in Photoshop or Canva.",
       },
       {
         icon: Zap,
-        title: "Instant conversion",
+        title: "Lightning-Fast Execution",
         description:
-          "Canvas re-encoding is handled natively by the browser. Most files convert in well under a second.",
+          "By bypassing server queues and utilizing your device's native rendering engine, files are transformed almost instantly.",
       },
       {
         icon: Cloud,
-        title: "No account required",
-        description: "The tool is free and open. No signup, no email, no hidden charges.",
+        title: "Completely Unrestricted",
+        description:
+          "No paywalls, no daily conversion limits, and absolutely no watermarks stamped onto your final graphics.",
       },
       {
         icon: Smartphone,
-        title: "Works on any device",
+        title: "Cross-Platform Reliability",
         description:
-          "Convert images on your phone, tablet, or desktop. The responsive interface adapts to your screen.",
+          "Whether you are working from a high-end desktop or a mobile browser, the interface scales perfectly to your current workspace.",
       },
     ],
   },
   useCases: {
-    heading: "When to Convert JPG to PNG",
-    intro: "Switching from JPEG to PNG is the right choice in several common scenarios:",
+    heading: "When to Switch from JPG to PNG",
+    intro:
+      "While JPEGs are great for everyday photos, upgrading to PNG is essential in specific design and archival scenarios:",
     items: [
       {
-        label: "Editing graphics with sharp edges",
+        label: "Designing a website header (Workflow Example)",
         description:
-          "Logos, icons, and screenshots contain hard edges and flat colour areas. PNG preserves these cleanly, whereas JPEG introduces visible artefacts around sharp transitions.",
+          "You have a JPEG image of a product that you want to place over a colored website header. You convert the JPEG to PNG first, use an eraser tool to remove the white background, and save it. The transparent PNG now blends perfectly into your site design.",
       },
       {
-        label: "Adding transparency later",
+        label: "When NOT to use this tool",
         description:
-          "If you plan to remove a background or composite the image onto other layers, you need PNG format because JPEG does not support an alpha channel.",
+          "Do not convert standard, unedited photographs to PNG if you intend to display them on a website or email them. The lossless PNG format will massively inflate the file size without adding any new detail to a photo that was already compressed as a JPEG.",
       },
       {
-        label: "Preserving quality during editing",
+        label: "Preparing graphics for strict print requirements",
         description:
-          "Each time a JPEG is re-saved, it loses a small amount of detail. Converting to PNG before editing prevents this cumulative quality loss.",
+          "Certain high-end print shops and merchandise creators refuse JPEGs due to compression artifacts, requiring lossless PNGs to ensure crisp edges on t-shirts and mugs.",
       },
       {
-        label: "Meeting upload requirements",
+        label: "Editing screenshots with text",
         description:
-          "Some platforms, forms, and design tools specifically require PNG files. Converting your JPEG satisfies the requirement without needing desktop software.",
+          "If you took a screenshot that was saved as a JPEG, the text might look slightly muddy. Converting to PNG before applying highlights or drawing arrows ensures those new annotations remain razor-sharp.",
       },
       {
-        label: "Archiving important images",
+        label: "Long-term master file archiving",
         description:
-          "Store photographs or scans in lossless PNG format for long-term archiving, ensuring no further quality degradation over time.",
+          "If you want to store a finalized digital painting or critical document scan, PNG guarantees that the file will never suffer from accidental compression if opened and saved years later.",
       },
     ],
   },
   privacy: {
-    heading: "Private Format Conversion",
+    heading: "Client-Side Format Shifting",
     paragraphs: [
-      "When you convert a JPG to PNG on ConvertPDF, the JPEG file is read into browser memory using the File API. The browser decodes the image and draws it onto a hidden Canvas element, then exports the pixel data as a PNG blob using canvas.toBlob — all within the browser's sandboxed JavaScript environment.",
-      "No image data is transmitted over the internet. There are no upload queues, no cloud rendering, and no server-side storage. Once you close the tab, all in-memory pixel data is released by the browser.",
+      "We believe that file utilities shouldn't require surrendering your data. When you initiate a JPG to PNG conversion here, the entire process is handled by a local JavaScript worker interacting with your browser's Canvas API.",
+      "Your network connection is only used to load the tool interface. Once loaded, the actual image rendering happens entirely on your CPU. We have no access to your files, no databases storing your history, and no tracking scripts monitoring the contents of your graphics.",
     ],
   },
   faqs: [
     {
-      question: "Does converting JPG to PNG improve image quality?",
+      question: "Will converting a low-quality JPG to PNG make it look better?",
       answer:
-        "It prevents further quality loss but does not restore detail already discarded by JPEG compression. The PNG output faithfully preserves the pixel data as decoded by the browser, artefacts and all. It will not degrade further on re-saves.",
+        "No. Converting to PNG prevents future quality loss, but it cannot magically restore the data that was already discarded when the original JPEG was created. You will get an exact, lossless replica of the current pixel state.",
     },
     {
-      question: "Why is the PNG file larger than the original JPG?",
+      question: "Why did my file size quadruple after converting to PNG?",
       answer:
-        "PNG uses lossless compression, which preserves every pixel. JPEG achieves smaller file sizes by discarding data. The trade-off for PNG's perfect fidelity is a larger file. This is expected behaviour.",
+        "This is the standard trade-off of lossless compression. JPEGs shrink files by grouping similar colors and throwing away fine details. PNGs map out every individual pixel meticulously. A complex photograph will always be vastly larger as a PNG.",
     },
     {
-      question: "Will the image dimensions change during conversion?",
+      question: "Does this tool automatically remove the background from my JPG?",
       answer:
-        "No. The pixel width and height remain identical to the original JPEG. Only the encoding format changes.",
+        "No, this utility strictly changes the file architecture. While the resulting PNG will support transparency, you will still need to use a dedicated image editor or background removal tool to actually delete the background pixels.",
     },
     {
-      question: "Can I convert multiple JPGs at once?",
+      question: "Is there a limit to the resolution of the JPG I can upload?",
       answer:
-        "The tool processes one image at a time. For multiple files, convert each one individually. This keeps the interface simple and ensures you can verify each result.",
-    },
-    {
-      question: "Does the converted PNG have a transparent background?",
-      answer:
-        "No. The original JPEG has no transparency data, so the PNG output has a fully opaque background. However, the PNG format now supports transparency, so you can add it later using an image editor.",
-    },
-    {
-      question: "Do my images get uploaded to a server?",
-      answer:
-        "No. ConvertPDF processes everything inside your web browser using the Canvas API. Your images are decoded locally, re-encoded as PNG, and downloaded — entirely without network requests.",
+        "The only limitation is your device's available RAM. Since the conversion happens locally, extremely massive JPEGs (like 50-megapixel camera raws) might cause older mobile browsers to stutter, but modern devices will handle them effortlessly.",
     },
   ],
   relatedTools: [
     {
-      name: "PNG to JPG",
-      href: "/png-to-jpg",
-      description: "Convert PNG to compact JPG",
-      icon: FileImage,
-      accent: "from-orange-500 to-amber-500",
-    },
-    {
-      name: "WEBP to JPG",
-      href: "/webp-to-jpg",
-      description: "Convert WEBP to JPG format",
-      icon: ImageLucide,
-      accent: "from-indigo-500 to-violet-500",
-    },
-    {
       name: "Compress Image",
       href: "/compress-image",
-      description: "Reduce image file size",
-      icon: ArrowLeftRight,
+      description:
+        "If your newly created PNG is too large for your project, use this to intelligently shrink it without reverting to JPG.",
+      icon: Minimize2,
       accent: "from-lime-500 to-green-500",
+    },
+    {
+      name: "PNG to JPG",
+      href: "/png-to-jpg",
+      description:
+        "Accidentally converted a massive photo to PNG? Instantly revert it back to a compact JPG format to save storage space.",
+      icon: FileImage,
+      accent: "from-orange-500 to-amber-500",
     },
   ],
   relatedArticleSlugs: ["jpg-vs-png-guide", "best-free-pdf-tools"],
