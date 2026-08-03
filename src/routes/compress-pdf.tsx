@@ -31,8 +31,8 @@ const contentData: ToolContentData = {
   whatIs: {
     heading: "What Is PDF Compression?",
     paragraphs: [
-      "PDF compression reduces the file size of a PDF document so that it takes up less storage space, downloads faster, and fits within email attachment limits. PDFs often contain redundant internal structures, duplicated resource dictionaries, and unoptimised object encoding that inflate the file far beyond what the actual content requires.",
-      "Our compressor uses a technique called object-stream compression. It re-encodes the internal structure of your PDF using cross-reference streams and object streams — a built-in PDF feature defined in the ISO 32000 specification. This is a lossless process, meaning no text, images, or formatting are altered during compression.",
+      "PDF compression reduces the file size of a PDF document so it transfers faster, fits within email attachment limits, and occupies less storage. The key detail is that not all PDFs are bloated for the same reason: some are large because they contain high-resolution images; others are large because of unoptimised internal structure, redundant object dictionaries, and legacy cross-reference tables that accumulate during document generation.",
+      "**How this tool works technically:** This compressor calls pdf-lib's save method with the useObjectStreams flag set to true. That instruction tells pdf-lib to re-serialise your PDF using cross-reference streams and object streams — a structural optimisation introduced in PDF 1.5 and defined in the ISO 32000 specification. The tool parses every internal object in the document, repacks multiple objects together into compressed streams, and replaces uncompressed flat xref tables with a compressed cross-reference stream. Crucially, this is a lossless structural operation: no text is reworded, no image is resampled, no font is modified. Every visible element of the document is preserved exactly.",
     ],
   },
   howTo: {
@@ -72,7 +72,8 @@ const contentData: ToolContentData = {
       {
         icon: FileText,
         title: "Lossless quality",
-        description: "Text, fonts, and images remain identical. Only internal encoding changes.",
+        description:
+          "Text, fonts, and images remain identical to the original. Only the internal PDF encoding structure changes.",
       },
       {
         icon: Cloud,
@@ -90,100 +91,108 @@ const contentData: ToolContentData = {
         icon: Layers,
         title: "Best for text-heavy PDFs",
         description:
-          "Object-stream compression produces the largest size reductions on text-rich documents.",
+          "Object-stream compression produces the largest size reductions on text-rich documents where the internal encoding has not been previously optimised — typical of exports from Word, Excel, or reporting systems.",
       },
     ],
   },
   useCases: {
     heading: "When to Compress a PDF",
     intro:
-      "PDF compression is useful whenever file size is a constraint. Here are common scenarios:",
+      "Structural PDF compression is the right choice when you need a smaller file without sacrificing any visible content. Here are the scenarios where it makes the most difference — and one where it will not:",
     items: [
       {
-        label: "Email attachments",
+        label: "Reducing a contract exported from Word (Workflow Example)",
         description:
-          "Shrink a report or contract so it stays under your email provider's attachment limit.",
+          "A legal team exports a 30-page contract from Microsoft Word as a PDF. Word-to-PDF exports frequently leave behind uncompressed xref tables and redundant object dictionaries. Running the file through the compressor re-encodes those internal structures using object streams — every word, every signature field, and every font stays intact, but the file is meaningfully smaller and fits comfortably within a standard email attachment limit.",
       },
       {
-        label: "Web uploads",
+        label: "When NOT to use this tool",
         description:
-          "Reduce file size before uploading to a portal, LMS, or government form system with strict size caps.",
+          "Do not use this tool if your goal is to reduce the size of a scanned PDF or a heavily image-laden document. Scanned PDFs store their content as embedded JPEG or FLATE-compressed images, which are already tightly compressed at the image level. Object-stream re-encoding cannot shrink image data further. For meaningful size reduction on image-heavy PDFs you would need a tool that resamples embedded images at lower resolution — which this compressor does not do, by design.",
       },
       {
-        label: "Cloud storage",
+        label: "Meeting email attachment limits",
         description:
-          "Free up space in Google Drive, Dropbox, or OneDrive by compressing archived documents.",
+          "Many email providers cap attachments at 10–25 MB. A bloated report or proposal generated by office software often exceeds those limits not because of large images, but because of unoptimised internal encoding. Structural compression can bring those files within acceptable range without altering a character of content.",
       },
       {
-        label: "Sharing via messaging apps",
+        label: "Preparing PDFs for portal uploads",
         description:
-          "WhatsApp, Slack, and Teams often cap file sizes. A smaller PDF sends and downloads faster.",
+          "Government forms, university submission portals, and corporate LMS platforms frequently enforce strict file size caps. Compressing a text-heavy PDF before upload avoids rejection without requiring you to reduce content or visual quality.",
+      },
+      {
+        label: "Archiving generated reports",
+        description:
+          "Programmatically generated PDFs — from billing systems, CRMs, or reporting tools — often carry significant structural overhead. Compressing archived copies before long-term storage reduces cumulative storage costs without affecting document fidelity.",
       },
     ],
   },
   privacy: {
     heading: "Your Privacy Is Protected",
     paragraphs: [
-      "When you compress a PDF on ConvertPDF, the entire process runs inside your web browser. Your file is read into local memory using the browser's File API, then re-encoded with pdf-lib — a JavaScript library that parses and serialises PDF structures without any server involvement.",
-      "No data is transmitted to any external server. When you close the tab, all temporary data is released from memory. There is nothing stored, nothing cached, and nothing logged.",
+      "When you compress a PDF here, the entire process runs inside your web browser. Your file is read into local memory using the browser's File API, then passed to pdf-lib — a JavaScript library that parses the full PDF object graph and re-serialises it with object streams enabled. Every step — parsing, rewriting internal structures, and exporting — happens within the browser's sandboxed JavaScript environment. No data crosses the network at any point.",
+      "There are no server-side queues, no temporary cloud storage, and no logging of your document contents. This matters particularly for sensitive materials: a contract with personal details, a financial statement, or a confidential internal report is processed and discarded entirely within your own device. Close the browser tab and everything held in memory is released immediately.",
     ],
   },
   faqs: [
     {
+      question: "What exactly does 'object-stream compression' mean?",
+      answer:
+        "PDF files are made up of individual objects — fonts, images, page dictionaries, content streams — connected by a cross-reference (xref) table. Older PDFs store these as plain text entries in an uncompressed xref table. Object-stream compression, introduced in PDF 1.5, repacks multiple objects together into compressed streams and replaces the flat xref table with a compressed cross-reference stream. The document's visual content is unchanged; only the internal encoding structure is rewritten.",
+    },
+    {
       question: "Does compressing a PDF reduce the quality of images or text?",
       answer:
-        "No. Our compressor uses lossless object-stream re-encoding, which optimises the internal structure of the PDF without altering any visible content. Text, fonts, and images remain identical to the original.",
+        "No. The compressor calls pdf-lib's save method with useObjectStreams: true, which rewrites the internal object structure without touching any visible content. Text, fonts, vector graphics, and embedded images are passed through unchanged. This is a structural operation, not a content operation.",
     },
     {
       question: "What kind of size reduction can I expect?",
       answer:
-        "Results vary depending on the PDF's internal structure. Text-heavy PDFs with unoptimised encoding can see significant reductions. PDFs that are already well-optimised or consist mostly of compressed images will see smaller improvements.",
+        "Results vary depending on how the source PDF was created. Text-heavy PDFs generated by office software often have substantial unoptimised internal encoding and can see the largest reductions. PDFs already exported from PDF-native tools with optimisation turned on, or documents consisting primarily of compressed images, may see little or no change.",
     },
     {
       question: "Is there a file size limit for compression?",
       answer:
-        "The tool is designed to handle files comfortably within browser memory. Performance depends on your device's available RAM. Files under 25 MB generally process without any issues on most devices.",
+        "There is no hard limit imposed by the tool. The practical limit is your device's available RAM — pdf-lib loads the entire file into memory during parsing. Files under 25 MB work well on most devices without issue.",
     },
     {
       question: "Can I compress password-protected PDFs?",
       answer:
-        "If the PDF requires a password to open, the browser cannot read its contents, so compression will not work. PDFs with permission-level restrictions (like print-only) may still be compressible depending on the encryption method.",
+        "If the PDF requires a password to open, the browser cannot read its contents and compression will not work. PDFs with permission-level restrictions (like print-only) may still be compressible depending on the encryption method, as the browser can still access the content.",
     },
     {
       question: "Does compression work on scanned PDFs?",
       answer:
-        "Yes, but the size reduction may be minimal. Scanned PDFs consist primarily of embedded images, which are already compressed in formats like JPEG. Object-stream optimisation primarily benefits the non-image structural data.",
+        "Yes, but the size reduction will typically be very small. Scanned PDFs consist primarily of embedded images already compressed in JPEG or FLATE format. Object-stream optimisation benefits the non-image structural data, which makes up a small fraction of a scan-heavy file.",
     },
     {
       question: "Can I compress multiple PDFs at once?",
       answer:
-        "Currently, the tool processes one PDF at a time. For multiple files, compress each one individually. You can also merge your PDFs first and then compress the combined document.",
-    },
-    {
-      question: "What technology powers the compression?",
-      answer:
-        "We use pdf-lib, a JavaScript library that runs in your browser. It loads the PDF, re-serialises it with object streams and cross-reference streams enabled, and produces a smaller output file — all without any server round-trip.",
+        "Currently the tool processes one PDF at a time. For multiple files, compress each one individually. If you have recently merged several PDFs into one document, you can also compress the merged result in a single pass.",
     },
   ],
   relatedTools: [
     {
       name: "Merge PDF",
       href: "/merge-pdf",
-      description: "Combine multiple PDFs into one",
+      description:
+        "After combining several documents into one, compress the merged result to keep the final file as small as possible before sharing or archiving.",
       icon: FileStack,
       accent: "from-blue-500 to-cyan-500",
     },
     {
       name: "Split PDF",
       href: "/split-pdf",
-      description: "Extract pages into separate files",
+      description:
+        "If only specific pages need to be shared, split the document first and then compress the individual page files you actually need to distribute.",
       icon: Scissors,
       accent: "from-pink-500 to-rose-500",
     },
     {
-      name: "PDF to JPG",
-      href: "/pdf-to-jpg",
-      description: "Convert PDF pages to images",
+      name: "Watermark PDF",
+      href: "/watermark-pdf",
+      description:
+        "Add a confidentiality stamp or copyright notice to your document before compressing — the watermark is embedded in the content before the structural re-encoding step.",
       icon: ImageIcon,
       accent: "from-violet-500 to-purple-500",
     },
