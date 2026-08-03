@@ -37,8 +37,8 @@ const contentData: ToolContentData = {
   whatIs: {
     heading: "What Is Image Compression?",
     paragraphs: [
-      "Image compression reduces the file size of a photograph or graphic so that it takes up less storage, loads faster on web pages, and fits within upload limits on forms and social platforms. Most images captured by cameras or exported from design tools contain far more pixel data than is needed for everyday viewing.",
-      "Our compressor works by re-encoding your image as a JPEG at the quality level you choose. The browser's Canvas API draws the original image onto an off-screen canvas, then exports it with the canvas.toBlob method using your selected quality parameter. Lower quality values apply stronger lossy compression, resulting in a smaller file. Higher values preserve more detail at the cost of a larger file. The entire operation happens in your browser — no pixels leave your device.",
+      "Image compression reduces the file size of a photograph or graphic so it loads faster on web pages, fits within upload limits on forms and social platforms, and occupies less storage on your device. The critical distinction is between the two families of compression: lossless, which preserves every pixel exactly, and lossy, which permanently discards some image data to achieve much smaller file sizes.",
+      "**How it works technically:** This tool applies lossy JPEG compression, implemented through the browser's Canvas API. When you upload an image, the browser decodes it into raw pixel data and draws it onto a hidden canvas. At the moment of export, the canvas.toBlob method re-encodes those pixels as a JPEG using the quality parameter you set on the slider — a value from 1 (maximum compression, smallest file) to 100 (minimum compression, highest fidelity). Lower quality values instruct the JPEG encoder to discard finer colour gradients and high-frequency detail. Higher values retain more of that detail at the cost of a larger file. The live size estimate updates every time you move the slider by running a trial compression at the current setting — so what you see before you click is what you actually get.",
     ],
   },
   howTo: {
@@ -47,17 +47,17 @@ const contentData: ToolContentData = {
       {
         title: "Upload your image",
         description:
-          "Drag and drop an image onto the upload area, or click to browse. The file is read into your browser's memory using the File API.",
+          "Drag and drop an image onto the upload area, or click to browse. The file is read into your browser's memory using the File API — it never leaves your device.",
       },
       {
-        title: "Adjust the quality slider",
+        title: "Set the quality level",
         description:
-          "Move the quality slider to balance file size against visual detail. The estimated output size updates in real time so you can find the right trade-off before committing.",
+          "Move the quality slider to find your target balance between file size and visual detail. Watch the estimated output size update in real time. A setting around 70 typically offers a strong reduction with very little visible difference from the original.",
       },
       {
         title: "Compress and download",
         description:
-          'Click "Compress Image" to re-encode the file at your chosen quality. Once finished, download the compressed JPEG directly to your device.',
+          'Click "Compress Image" to re-encode the file at your chosen quality. The compressed JPEG downloads directly to your device — no upload, no waiting, no cloud queue.',
       },
     ],
   },
@@ -68,128 +68,133 @@ const contentData: ToolContentData = {
         icon: ShieldCheck,
         title: "Completely private",
         description:
-          "All compression runs inside your browser using the Canvas API. Your images are never uploaded to any server.",
+          "Compression runs entirely inside your browser's sandboxed JavaScript environment. Your image data never travels over the network — not even a temporary upload.",
       },
       {
         icon: SlidersHorizontal,
-        title: "Adjustable quality",
+        title: "Adjustable quality slider",
         description:
-          "A quality slider lets you dial in exactly how much compression to apply — from maximum reduction to near-lossless output.",
+          "A 1–100 quality range lets you choose exactly how aggressively to compress. You are not locked into a preset — find the setting that works for your specific image.",
       },
       {
         icon: Eye,
-        title: "Live size preview",
+        title: "Live estimated output size",
         description:
-          "See the estimated output file size and percentage reduction update in real time as you adjust the quality slider.",
+          "The tool runs a real trial compression at your current slider position, so the size shown before you click is the actual size of the file you will download.",
       },
       {
         icon: Zap,
-        title: "Fast processing",
+        title: "Fast, native processing",
         description:
-          "Canvas re-encoding is handled natively by the browser engine. Most images compress in under a second.",
+          "The browser's built-in canvas encoder handles compression without plugins or server round-trips. Most images re-encode in under a second on any modern device.",
       },
       {
         icon: Cloud,
-        title: "No signup needed",
-        description: "The tool is free and open. No account, no email, no hidden charges.",
+        title: "No account or limits",
+        description:
+          "Compress as many images as you like. No signup, no usage cap, no watermark added to your output, no hidden charges.",
       },
       {
         icon: Smartphone,
         title: "Works on any device",
         description:
-          "Compress images on your phone, tablet, or desktop — the interface adapts to your screen.",
+          "The quality slider and size preview work on phone, tablet, and desktop equally. No app installation required.",
       },
     ],
   },
   useCases: {
     heading: "When to Compress Images",
-    intro: "Reducing image file size is useful in many everyday and professional workflows:",
+    intro:
+      "Lossy JPEG compression is the right choice when file size matters more than preserving every pixel exactly — which covers the majority of everyday image-sharing scenarios:",
     items: [
       {
-        label: "Speeding up web pages",
+        label: "Reducing a product photo for an e-commerce listing (Workflow Example)",
         description:
-          "Smaller images load faster, improving page performance and visitor experience on blogs, portfolios, and e-commerce sites.",
+          "A retailer exports a product photograph from their camera at roughly 8 MB. At quality 75, the compressor produces an estimate around 600–800 KB — a plausible reduction for a typical photographic image — keeping fine fabric texture readable in the browser without inflating page load time or failing platform upload validators.",
       },
       {
-        label: "Meeting upload limits",
+        label: "When NOT to use this tool",
         description:
-          "Job portals, government forms, and social media platforms often cap image uploads at a few megabytes. Compression gets you under the limit.",
+          "Do not use lossy JPEG compression on images that contain crisp text, thin lines, logos, or transparent backgrounds. JPEG encoding introduces visible artefacts around sharp edges and colour boundaries, and it flattens any transparency to solid white. For those assets, use a lossless format like PNG instead.",
       },
       {
-        label: "Reducing email size",
+        label: "Meeting upload size caps",
         description:
-          "Compress photos before attaching them to emails so recipients can download them quickly, even on mobile connections.",
+          "Job portals, government applications, and social platforms frequently cap image uploads at 1–5 MB. Compress a large photograph to stay under the limit without cropping or resizing.",
       },
       {
-        label: "Saving device storage",
+        label: "Pre-compressing before platform re-encoding",
         description:
-          "Batch-compress holiday photos or screenshots to free up space on your phone or laptop without deleting files.",
+          "Social platforms apply their own compression on upload, which can introduce unpredictable artefacts. Pre-compressing to a controlled quality setting gives you a known starting point and often produces a cleaner final result on-platform.",
       },
       {
-        label: "Preparing social media posts",
+        label: "Reducing email attachment size",
         description:
-          "Platforms re-compress images on upload, often reducing quality unpredictably. Pre-compressing to a controlled quality gives you a cleaner result.",
+          "Compressing photos before attaching them to an email ensures recipients can open them quickly on slow mobile connections, and avoids hitting mailbox attachment limits.",
       },
     ],
   },
   privacy: {
-    heading: "Private Image Compression",
+    heading: "Private, Browser-Only Compression",
     paragraphs: [
-      "When you compress an image on ConvertPDF, the file is read directly into your browser's memory using the File API. The browser's Canvas API draws the image onto a hidden canvas element and re-encodes it as a JPEG at your chosen quality level — all within the browser's sandboxed JavaScript environment.",
-      "No image data is sent over the internet. There are no background uploads, no cloud queues, and no server-side processing. Once you close the tab, all in-memory pixel data is released. Whether you are compressing personal photos, client assets, or confidential documents, your images stay on your device.",
+      "When you compress an image here, the file is read from your disk into browser memory using the File API. A hidden HTML canvas element renders the image and re-encodes it via canvas.toBlob at your chosen quality level — a process that runs entirely inside the browser's sandboxed JavaScript environment. No pixel data is transmitted to any server, not even for the live size estimate, which is computed by a local trial compression.",
+      "There are no background uploads, no server-side processing queues, and no file retention of any kind. Whether the image is a personal photo, a client asset, or a confidential internal document, it stays on your device from the moment you upload it to the moment you download the compressed result. Closing the tab immediately releases all in-memory data.",
     ],
   },
   faqs: [
     {
+      question: "How does the quality slider actually affect the file?",
+      answer:
+        "The slider maps directly to the quality parameter passed to canvas.toBlob, which controls how aggressively the JPEG encoder discards image data. Lower values tell the encoder to merge colour blocks more coarsely, removing subtle gradients and fine detail to shrink the file. Higher values preserve more of that detail at the cost of a larger output file. The relationship is not perfectly linear — the reduction at a given setting depends heavily on the content of your specific image.",
+    },
+    {
       question: "What image formats can I compress?",
       answer:
-        "You can upload any image format supported by your browser, including JPEG, PNG, WebP, GIF, and BMP. The output is always saved as a JPEG, which provides efficient lossy compression for photographic content.",
+        "You can upload any format your browser supports as an image source, including JPEG, PNG, WebP, GIF, and BMP. Regardless of input format, the output is always saved as a JPEG file, because JPEG's lossy encoding achieves far smaller file sizes than PNG for photographic content.",
     },
     {
-      question: "How does the quality slider affect the result?",
+      question: "Why does my PNG get saved as a JPEG?",
       answer:
-        "The slider controls the quality parameter passed to the browser's canvas.toBlob method. Lower values (for example 30–50) produce smaller files with visible compression artefacts. Higher values (70–90) keep most visual detail while still reducing size. A setting of 100 retains maximum quality with minimal compression.",
+        "JPEG's lossy compression algorithm was designed for photographic images with smooth colour gradients, where small pixel-level approximations are imperceptible. PNG uses lossless compression, which preserves every pixel but produces much larger files. This tool re-encodes in JPEG because lossy compression is what actually shrinks file size. If you need to retain PNG format — for example, to preserve transparency — use a dedicated PNG optimiser or our JPG to PNG converter instead.",
     },
     {
-      question: "Will compression change the dimensions of my image?",
+      question: "Will compression change the pixel dimensions of my image?",
       answer:
-        "No. The compressor preserves the original pixel dimensions. Only the encoding quality changes, which affects file size but not the width or height of the image.",
+        "No. The compressor preserves the original width and height in pixels exactly. Only the encoding quality changes, which reduces file size without altering how large the image appears or how many pixels it contains.",
     },
     {
-      question: "Why is the output a JPEG even if I upload a PNG?",
+      question: "Is the estimated size shown before I compress accurate?",
       answer:
-        "JPEG compression is specifically designed for photographic images and achieves much smaller file sizes than PNG through lossy encoding. If you need to keep PNG format with transparency, consider using our Resize tool or format converter instead.",
-    },
-    {
-      question: "Is the estimated size shown before compression accurate?",
-      answer:
-        "The estimate is generated by performing a trial compression at your current quality setting. The final file size will match the estimate because the same quality parameter is used for the actual compression.",
+        "Yes. The estimate is produced by performing a real trial compression at your current quality setting. Because the actual compression run uses the same quality parameter, the downloaded file will match the estimated size shown in the interface.",
     },
     {
       question: "Do my images get uploaded to a server?",
       answer:
-        "No. ConvertPDF processes everything inside your web browser using the Canvas API. Your images are read from disk into browser memory, re-encoded locally, and then downloaded. No network requests are made with your image data.",
+        "No. ConvertPDF processes everything inside your web browser using the Canvas API. Your images are read from disk into browser memory, re-encoded locally, and downloaded. No network requests are made with your image data at any point — including during the live size estimation.",
     },
   ],
   relatedTools: [
     {
       name: "Resize Image",
       href: "/resize-image",
-      description: "Scale images to custom dimensions",
+      description:
+        "If your image is larger than it needs to be in pixel dimensions, resize it first — fewer pixels means a smaller file even before compression.",
       icon: Maximize2,
       accent: "from-rose-500 to-pink-500",
     },
     {
       name: "Crop Image",
       href: "/crop-image",
-      description: "Trim images to any area",
+      description:
+        "Remove unwanted edges or background before compressing — a tighter composition means fewer pixels to encode and a smaller output file.",
       icon: Crop,
       accent: "from-sky-500 to-blue-500",
     },
     {
       name: "JPG to PNG",
       href: "/jpg-to-png",
-      description: "Convert to lossless PNG format",
+      description:
+        "If your image requires a transparent background or lossless quality, convert to PNG instead of compressing as a JPEG.",
       icon: ArrowLeftRight,
       accent: "from-teal-500 to-cyan-500",
     },
