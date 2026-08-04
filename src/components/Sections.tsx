@@ -116,7 +116,6 @@ export function HowItWorks() {
   );
 }
 
-
 export function FAQ() {
   const faqs = [
     {

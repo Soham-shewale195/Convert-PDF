@@ -127,7 +127,6 @@ function Index() {
               <Converter mode={converterMode} setMode={setConverterMode} />
             </motion.div>
           </div>
-
         </div>
       </section>
 

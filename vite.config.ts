@@ -23,7 +23,6 @@ export default defineConfig({
           // Obfuscate output filenames with content hashes
           chunkFileNames: "assets/[hash].js",
           assetFileNames: "assets/[hash][extname]",
-
         },
       },
     },

@@ -1,42 +1,22 @@
-import { useState, useCallback, useRef, useEffect } from "react";
-import { checkRequiresAd, recordTaskCompletion } from "@/utils/monetization";
+import { useState, useCallback, useRef } from "react";
 import { downloadBlob } from "@/lib/image-utils";
 import { toast } from "sonner";
-import { RewardedAdProvider } from "@/components/ads/providers/RewardedAdProvider";
-import { FreeBadge, PremiumBadge } from "@/components/ads/MonetizationBadges";
+import { FreeBadge } from "@/components/ads/MonetizationBadges";
 import { Download, FileImage } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface ReadyFile {
   blob: Blob;
   name: string;
-  requiresAd: boolean;
 }
 
 export function useRewardedDownload() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [readyFile, setReadyFile] = useState<ReadyFile | null>(null);
   const isDownloading = useRef(false);
 
-  // Sync state if other tabs update monetization data
-  useEffect(() => {
-    const handleSync = () => {
-      if (readyFile && readyFile.requiresAd) {
-        // Re-check requirement in case they finished tasks in another tab
-        const stillRequires = checkRequiresAd(readyFile.blob.size);
-        if (!stillRequires) {
-          setReadyFile({ ...readyFile, requiresAd: false });
-        }
-      }
-    };
-    window.addEventListener("convertease:usage_updated", handleSync);
-    return () => window.removeEventListener("convertease:usage_updated", handleSync);
-  }, [readyFile]);
-
   const prepareDownload = useCallback((blob: Blob, name: string): Promise<boolean> => {
     return new Promise((resolve) => {
-      const requiresAd = checkRequiresAd(blob.size);
-      setReadyFile({ blob, name, requiresAd });
+      setReadyFile({ blob, name });
       resolve(true); // Return true to let tool know it can set state="success"
     });
   }, []);
@@ -44,44 +24,16 @@ export function useRewardedDownload() {
   const executeDownload = useCallback(() => {
     if (!readyFile || isDownloading.current) return;
 
-    if (readyFile.requiresAd) {
-      setIsModalOpen(true);
-    } else {
-      isDownloading.current = true;
-      recordTaskCompletion();
-      downloadBlob(readyFile.blob, readyFile.name);
-      toast.success("Downloaded Successfully");
-      setTimeout(() => {
-        window.location.href = "/";
-      }, 1500);
-    }
+    isDownloading.current = true;
+    downloadBlob(readyFile.blob, readyFile.name);
+    toast.success("Downloaded Successfully");
+    setTimeout(() => {
+      window.location.href = "/";
+    }, 1500);
   }, [readyFile]);
 
-  const handleAdComplete = useCallback(() => {
-    if (readyFile && !isDownloading.current) {
-      isDownloading.current = true;
-      recordTaskCompletion();
-      downloadBlob(readyFile.blob, readyFile.name);
-      toast.success("Unlocked & Downloaded Successfully");
-      setTimeout(() => {
-        window.location.href = "/";
-      }, 1500);
-    }
-    setIsModalOpen(false);
-  }, [readyFile]);
-
-  const handleAdClose = useCallback(() => {
-    setIsModalOpen(false);
-    toast.error("Download Cancelled. Please wait for the unlock timer.");
-  }, []);
-
-  const renderModal = () => (
-    <RewardedAdProvider
-      isOpen={isModalOpen}
-      onClose={handleAdClose}
-      onComplete={handleAdComplete}
-    />
-  );
+  // Preserve API signature so callers don't need changes
+  const renderModal = () => null;
 
   const renderStatusCard = () => {
     if (!readyFile) return null;
@@ -118,7 +70,7 @@ export function useRewardedDownload() {
             </div>
 
             <div className="shrink-0">
-              {readyFile.requiresAd ? <PremiumBadge /> : <FreeBadge />}
+              <FreeBadge />
             </div>
           </div>
 
@@ -127,7 +79,7 @@ export function useRewardedDownload() {
             className="relative z-10 w-full btn-gradient py-3.5 sm:py-4 rounded-xl font-semibold text-sm sm:text-base shadow-[0_0_20px_rgba(139,92,246,0.3)] hover:shadow-[0_0_30px_rgba(139,92,246,0.5)] transition-all flex items-center justify-center gap-2 group"
           >
             <Download className="w-4 h-4 sm:w-5 sm:h-5 group-hover:-translate-y-0.5 transition-transform" />
-            {readyFile.requiresAd ? "Unlock & Download" : "Free Download"}
+            Free Download
           </button>
         </motion.div>
       </AnimatePresence>
