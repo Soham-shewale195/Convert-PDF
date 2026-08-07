@@ -8,6 +8,8 @@ import {
   FileImage,
   Layers,
   Download,
+  Scissors,
+  Minimize2,
 } from "lucide-react";
 import ToolPageLayout from "@/components/ToolPageLayout";
 import PdfToJpgPanel from "@/components/tools/PdfToJpgPanel";
@@ -21,13 +23,13 @@ export const Route = createFileRoute("/pdf-to-jpg")({
       {
         name: "description",
         content:
-          "Convert PDF pages into JPG images instantly in your browser. Private, secure, and generates a convenient ZIP file download.",
+          "Turn a whole PDF into one tall JPG image, rendered at 2x scale in your browser. Every page stacked into a single shareable file.",
       },
       { property: "og:title", content: "PDF to JPG Converter Online Free | ConvertPDF" },
       {
         property: "og:description",
         content:
-          "Convert PDF pages into JPG images instantly in your browser. Private, secure, and generates a convenient ZIP file download.",
+          "Turn a whole PDF into one tall JPG image, rendered at 2x scale in your browser. Every page stacked into a single shareable file.",
       },
     ],
     links: [{ rel: "canonical", href: "https://converttpdf.com/pdf-to-jpg" }],
@@ -39,8 +41,8 @@ const contentData: ToolContentData = {
   whatIs: {
     heading: "What Is PDF to JPG Conversion?",
     paragraphs: [
-      "PDF to JPG conversion transforms the pages of a document into standard, web-friendly image files. While PDFs are excellent for preserving complex layouts and multi-page documents, they can be difficult to embed in emails, upload to social media, or insert into presentations.",
-      "By converting your document to JPG format, each page becomes a standalone image. Our converter uses pdf.js to render the vector shapes, text, and embedded graphics of your PDF onto an HTML5 Canvas, which is then exported as a high-quality JPG image right in your browser.",
+      "PDF to JPG conversion transforms the pages of a document into a standard, web-friendly image file. While PDFs are excellent for preserving complex layouts and multi-page documents, they can be difficult to embed in emails, upload to social media, or insert into presentations.",
+      "This converter works differently from most: rather than handing you a folder of separate files, it renders every page with Mozilla's pdf.js at 2x scale and stacks them vertically onto one HTML5 Canvas, centring any narrower pages. The result is exported as a single continuous JPG — one file, read top to bottom, like a contact sheet of your whole document.",
     ],
   },
   howTo: {
@@ -52,14 +54,14 @@ const contentData: ToolContentData = {
           "Choose a PDF file from your device. The document is loaded securely into your local browser environment without being sent to any server.",
       },
       {
-        title: "Generate images",
+        title: "Render and stack the pages",
         description:
-          "Click the convert button. The tool instantly renders every page of your PDF into a high-resolution JPG image.",
+          "Click convert. Each page is rendered at double scale onto its own canvas, then composited one below the next onto a single tall canvas with a white background.",
       },
       {
-        title: "Download the ZIP archive",
+        title: "Download the JPG",
         description:
-          "Once conversion finishes, all the JPG files are packaged into a single ZIP file. Download it to access all your pages as images.",
+          "The stacked canvas is encoded to JPG at 90% quality and offered as one image file, named after your original document.",
       },
     ],
   },
@@ -68,39 +70,39 @@ const contentData: ToolContentData = {
     items: [
       {
         icon: ShieldCheck,
-        title: "Utmost privacy",
+        title: "Your document stays put",
         description:
-          "Your PDF is processed locally on your device. We never upload or see your files.",
+          "Rendering happens on your device. The PDF itself is never uploaded, transmitted, or stored anywhere by us.",
       },
       {
         icon: Layers,
-        title: "Every page extracted",
+        title: "One file, not a folder",
         description:
-          "Whether your document has one page or fifty, the tool extracts every single one as a separate image.",
+          "Every page is composited into a single continuous JPG. Nothing to unzip, and nothing to reassemble in the right order at the other end.",
       },
       {
         icon: Download,
-        title: "Convenient ZIP format",
+        title: "Rendered at 2x scale",
         description:
-          "We package all the generated JPGs into a single ZIP archive so you don't have to download them one by one.",
+          "Pages are rasterised at double their nominal size before encoding, so body text stays legible when the image is viewed or printed.",
       },
       {
         icon: Zap,
-        title: "Blazing fast",
+        title: "Layout preserved exactly",
         description:
-          "Client-side rendering utilizing pdf.js is incredibly fast, turning pages into pixels in seconds.",
+          "pdf.js paints the real vector and font data rather than screenshotting, so spacing, kerning, and graphics match the source document.",
       },
       {
         icon: Cloud,
-        title: "No registration required",
+        title: "White matte, no alpha",
         description:
-          "Start converting immediately without creating an account or providing an email address.",
+          "The canvas is filled white before painting, so transparent regions become solid rather than the black JPG normally produces.",
       },
       {
         icon: Smartphone,
-        title: "Cross-device support",
+        title: "Best for short documents",
         description:
-          "Convert documents to images on your desktop, tablet, or smartphone without installing software.",
+          "Because the output is one tall image held in memory, this suits flyers, invoices, and short reports far better than long reports.",
       },
     ],
   },
@@ -138,25 +140,25 @@ const contentData: ToolContentData = {
   privacy: {
     heading: "Safe, Client-Side Rendering",
     paragraphs: [
-      "When converting a PDF to JPGs with ConvertPDF, no external servers are involved. The Mozilla pdf.js library runs entirely within your browser, interpreting the PDF's internal structure and painting it onto an invisible HTML5 canvas element. The canvas data is then exported directly to JPG format.",
-      "JSZip is subsequently used to bundle these images into a downloadable archive. Your original document and the resulting images reside exclusively in your computer's RAM during this process. Closing the tab permanently clears the data.",
+      "Your file itself never leaves your device. The Mozilla pdf.js library runs inside your browser, interpreting the PDF's internal structure and painting it onto an HTML5 canvas element, which is then encoded to JPG. At no point is the document, or any part of it, sent anywhere.",
+      "One transparency note, in the interest of being accurate rather than absolute: pdf.js relies on a separate worker script, and this page loads that script from the jsDelivr public CDN. That is a request for program code only — it never carries your document — but it does mean your browser contacts jsDelivr, which can see your IP address like any website request. Your PDF and the resulting image stay in your computer's RAM throughout, and closing the tab clears them.",
     ],
   },
   faqs: [
     {
       question: "Are the generated JPGs high quality?",
       answer:
-        "Yes, the tool renders the PDF at a high scale factor before exporting it to JPG. This ensures that text remains crisp and embedded images look sharp, suitable for both digital sharing and standard printing.",
+        "Pages are rendered at 2x their nominal size and the final image is encoded at 90% JPG quality. That combination keeps body text crisp and embedded graphics sharp for on-screen sharing and everyday printing. JPG is a lossy format, so it remains a better fit for sharing than for archival masters.",
+    },
+    {
+      question: "Do I get one image per page, or one image in total?",
+      answer:
+        "One image in total. Every page is rendered and then stacked vertically into a single tall JPG, so a ten-page PDF produces one image roughly ten pages tall rather than ten separate files. If you need each page as its own file, crop the result or split the PDF first and convert each part separately.",
     },
     {
       question: "Can I convert just one specific page?",
       answer:
-        "The converter processes the entire document and outputs a ZIP file containing every page. If you only need one image, simply extract that specific file from the downloaded ZIP archive.",
-    },
-    {
-      question: "Why do I get a ZIP file instead of a JPG?",
-      answer:
-        "A PDF usually contains multiple pages, and standard JPG files can only hold a single image. To deliver all your pages in one click without spamming your browser with multiple download prompts, we package them neatly into a ZIP archive.",
+        "Not directly — the tool always renders the whole document into one stacked image. To isolate a single page, use our Split PDF tool to extract that page first, then run the resulting one-page PDF through this converter.",
     },
     {
       question: "What happens if my PDF has a transparent background?",
@@ -169,9 +171,9 @@ const contentData: ToolContentData = {
         "No, this tool renders the entire page exactly as it appears (including text and formatting) into a single flat image. It does not extract individual photos hidden within the document structure.",
     },
     {
-      question: "Is there a file size limit?",
+      question: "Is there a limit on how many pages I can convert?",
       answer:
-        "There are no hard limits on file size, but because the rendering happens in your browser's memory, extremely large PDFs (e.g., hundreds of pages) may cause older devices to run out of RAM and crash the tab.",
+        "The tool imposes no page limit itself, but the design has a practical ceiling worth knowing about. Because every page is stacked onto one canvas, the image grows taller with each page, and browsers cap how large a single canvas may be. Past that point the conversion fails or produces a blank image rather than warning you. The exact threshold depends on your browser, device, and page size — mobile browsers cap far lower than desktop ones — so this tool is best suited to short documents. For long ones, split the PDF first.",
     },
     {
       question: "Does it work with password-protected PDFs?",
@@ -187,8 +189,22 @@ const contentData: ToolContentData = {
       icon: FileImage,
       accent: "from-amber-500 to-orange-500",
     },
+    {
+      name: "Split PDF",
+      href: "/split-pdf",
+      description: "Extract single pages first",
+      icon: Scissors,
+      accent: "from-pink-500 to-rose-500",
+    },
+    {
+      name: "Compress Image",
+      href: "/compress-image",
+      description: "Shrink the resulting JPG",
+      icon: Minimize2,
+      accent: "from-emerald-500 to-teal-500",
+    },
   ],
-  relatedArticleSlugs: ["best-free-pdf-tools", "browser-pdf-converter-privacy"],
+  relatedArticleSlugs: ["jpg-vs-png-guide", "browser-pdf-converter-privacy"],
 };
 
 const howToSteps = contentData.howTo.steps.map((s) => ({ name: s.title, text: s.description }));

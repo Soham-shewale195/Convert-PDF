@@ -28,14 +28,25 @@ export default function ExcelToPdfPanel() {
         pdf.setFontSize(9);
         const cols = Math.max(1, ...rows.map((r) => r.length));
         const colW = (pageW - margin * 2) / cols;
+        const lineH = 14;
+        const cellPad = 4;
         let y = margin + 24;
         for (const row of rows) {
+          // Wrap each cell to the column width so no content is lost
+          const cells: string[][] = [];
+          let maxLines = 1;
           for (let c = 0; c < cols; c++) {
             const v = row[c] == null ? "" : String(row[c]);
-            const text = v.length > 30 ? v.slice(0, 28) + "…" : v;
-            pdf.text(text, margin + c * colW, y);
+            const lines: string[] = v === "" ? [""] : pdf.splitTextToSize(v, colW - cellPad);
+            cells.push(lines);
+            if (lines.length > maxLines) maxLines = lines.length;
           }
-          y += 14;
+          for (let c = 0; c < cols; c++) {
+            for (let li = 0; li < cells[c].length; li++) {
+              pdf.text(cells[c][li], margin + c * colW, y + li * lineH);
+            }
+          }
+          y += maxLines * lineH;
           if (y > pageH - margin) {
             pdf.addPage();
             y = margin;

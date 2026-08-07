@@ -68,37 +68,39 @@ const contentData: ToolContentData = {
     items: [
       {
         icon: ShieldCheck,
-        title: "Entirely private",
+        title: "No network calls at all",
         description:
-          "Rotation is performed inside your browser. Your PDF is never uploaded or shared with any server.",
+          "This tool runs on pdf-lib alone, which ships inside the page. Once loaded, rotating makes no request of any kind — not even for a helper script.",
       },
       {
         icon: Eye,
-        title: "Zero quality loss",
+        title: "Content stream untouched",
         description:
-          "Rotation updates page metadata, not the content itself. Every pixel, character, and vector stays identical.",
+          "Only the page's rotation attribute is rewritten. Text, fonts, vectors, and embedded images are copied through without re-encoding.",
       },
       {
         icon: SlidersHorizontal,
-        title: "Three angle options",
-        description: "Choose 90°, 180°, or 270° clockwise to correct any orientation issue.",
+        title: "Rotation stacks, not resets",
+        description:
+          "Your angle is added to whatever rotation the page already had, so a page saved at 90° and rotated 270° lands correctly at 0°.",
       },
       {
         icon: Zap,
-        title: "Instant results",
+        title: "No re-rendering step",
         description:
-          "Metadata changes are near-instantaneous. Even large PDFs rotate in under a second.",
+          "Because nothing is rasterised or recompressed, the work scales with document structure rather than page complexity or image count.",
       },
       {
         icon: Cloud,
-        title: "No account needed",
-        description: "Free to use, no registration, no email capture, no watermarks on output.",
+        title: "Nothing added to the file",
+        description:
+          "No account, no email, and no badge or watermark stamped onto your pages — the output carries only your original content.",
       },
       {
         icon: Smartphone,
-        title: "Mobile compatible",
+        title: "Built for scanner apps",
         description:
-          "Rotate PDFs directly from your phone — useful for fixing photos scanned with a mobile app.",
+          "Phone scanning apps frequently save pages sideways. Fix them on the same device that produced them, without a desktop round trip.",
       },
     ],
   },
@@ -196,7 +198,7 @@ const contentData: ToolContentData = {
       accent: "from-cyan-500 to-blue-500",
     },
   ],
-  relatedArticleSlugs: ["best-free-pdf-tools"],
+  relatedArticleSlugs: ["how-to-rotate-pdf-pages", "best-free-pdf-tools"],
 };
 
 const howToSteps = contentData.howTo.steps.map((s) => ({ name: s.title, text: s.description }));

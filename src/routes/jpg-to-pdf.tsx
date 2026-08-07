@@ -40,7 +40,7 @@ const contentData: ToolContentData = {
     heading: "What Is JPG to PDF Conversion?",
     paragraphs: [
       "JPG to PDF conversion is the process of taking one or more standalone image files (like JPG, JPEG, or PNG) and embedding them into a standardized PDF document. While images are great for viewing photos, a PDF is the universally accepted format for sharing documents, applications, and professional portfolios.",
-      "Our converter takes your selected photos and builds a new PDF document from scratch using pdf-lib. Each image is placed onto its own page, automatically scaled to fit standard document dimensions while preserving its original aspect ratio, resulting in a neat, printable file.",
+      "Our converter builds a new PDF from scratch with pdf-lib, and it makes one deliberate choice most converters don't: each page is created at the exact pixel dimensions of the image it holds. Nothing is scaled down to A4, nothing is letterboxed with white margins, and no pixels are resampled — the page simply is the photo, at full size.",
     ],
   },
   howTo: {
@@ -52,9 +52,9 @@ const contentData: ToolContentData = {
           "Upload one or more JPG, JPEG, or PNG files from your device. You can drag and drop multiple photos at once.",
       },
       {
-        title: "Arrange the sequence",
+        title: "Check the list",
         description:
-          "Review your images in the tool. If you are combining multiple photos, you can preview the order before conversion.",
+          "Your files appear as a numbered list showing each name and size, and pages are written in that order. You can remove any file you didn't mean to include; to change the order, reselect the files in the order you want.",
       },
       {
         title: "Generate the document",
@@ -68,39 +68,39 @@ const contentData: ToolContentData = {
     items: [
       {
         icon: ShieldCheck,
-        title: "Uncompromised privacy",
+        title: "Passport scans stay local",
         description:
-          "Your personal photos and scans are never uploaded to our servers; they stay on your device.",
+          "pdf-lib is bundled into this page, so photographing an ID or a medical form and wrapping it in a PDF involves no upload and no runtime request anywhere.",
       },
       {
         icon: BookOpen,
-        title: "Multi-image bundling",
+        title: "One page per image, in order",
         description:
-          "Combine multiple loose photos into a single, cohesive PDF document, perfect for sharing.",
+          "Files are written as pages in the order they appear in the list, so a batch of receipts arrives as one document rather than twenty attachments.",
       },
       {
         icon: ImageIcon,
-        title: "Supports JPG & PNG",
+        title: "JPEG and PNG, chosen by extension",
         description:
-          "The tool accepts the most common image formats, including both JPG/JPEG and PNG files.",
+          "Files ending in .png are embedded as PNG and everything else as JPEG. Other formats such as WebP or HEIC are not supported and will report an error.",
       },
       {
         icon: Zap,
-        title: "Instant generation",
+        title: "No recompression",
         description:
-          "Because the PDF is constructed in your browser using JavaScript, the conversion is near-instantaneous.",
+          "Image bytes are embedded as-is rather than decoded and re-encoded, so the photo inside the PDF is the same data as the file you selected.",
       },
       {
         icon: Cloud,
-        title: "100% Free",
+        title: "Alpha channels survive",
         description:
-          "Convert as many images as you need without paying, registering, or dealing with watermarks.",
+          "PNG transparency is carried into the PDF intact instead of being flattened onto a white background.",
       },
       {
         icon: Smartphone,
-        title: "Mobile friendly",
+        title: "Straight from the camera roll",
         description:
-          "Turn photos taken on your smartphone directly into PDFs without needing a computer.",
+          "Phone cameras already produce JPEG, so photos can go from camera roll to submission-ready PDF on the same device.",
       },
     ],
   },
@@ -161,12 +161,17 @@ const contentData: ToolContentData = {
     {
       question: "What page size is the final PDF?",
       answer:
-        "The tool typically creates standard-sized pages (like A4 or Letter) and scales the image to fit within those bounds while maintaining its original aspect ratio, ensuring no distortion occurs.",
+        "There is no fixed page size. Each page is created at exactly the pixel dimensions of the image placed on it, so a 4000x3000 photo produces a 4000x3000 page. This means no cropping, no white margins, and no distortion — but it also means pages in a mixed batch will differ in size, and the document is not pre-formatted for A4 or Letter printing.",
+    },
+    {
+      question: "Why did my WebP or HEIC image fail?",
+      answer:
+        "Only JPEG and PNG can be embedded. The file picker is permissive and will let you select other image types, but the tool decides how to embed a file from its extension — .png is treated as PNG, anything else is attempted as JPEG — so a WebP, HEIC, or GIF will fail with a generic error. Convert those to JPG or PNG first.",
     },
     {
       question: "Is there a limit on the number of images I can upload?",
       answer:
-        "There is no hard limit built into the tool. However, because the PDF is constructed in your browser's memory, trying to combine hundreds of high-resolution photos at once might cause your browser to slow down or crash.",
+        "No limit is built into the tool. Because pages are created at each image's full pixel dimensions and nothing is downscaled, the output grows quickly with high-resolution photos — a large batch straight from a modern camera can produce a very large PDF and put real pressure on browser memory. Converting in smaller batches is more reliable on phones and older machines.",
     },
     {
       question: "Are my photos uploaded to a cloud server?",
@@ -195,7 +200,7 @@ const contentData: ToolContentData = {
       accent: "from-emerald-500 to-teal-500",
     },
   ],
-  relatedArticleSlugs: ["browser-pdf-converter-privacy", "best-free-pdf-tools"],
+  relatedArticleSlugs: ["how-to-convert-images-to-pdf", "browser-pdf-converter-privacy"],
 };
 
 const howToSteps = contentData.howTo.steps.map((s) => ({ name: s.title, text: s.description }));

@@ -22,13 +22,13 @@ export const Route = createFileRoute("/watermark-pdf")({
       {
         name: "description",
         content:
-          "Add custom text watermarks to your PDF documents online for free. Highly customizable, private, and instant in your browser.",
+          "Stamp any text across every page of a PDF for free. Preset styling, embedded into the page content, private and instant in your browser.",
       },
       { property: "og:title", content: "Watermark PDF Online Free | ConvertPDF" },
       {
         property: "og:description",
         content:
-          "Add custom text watermarks to your PDF documents online for free. Highly customizable, private, and instant in your browser.",
+          "Stamp any text across every page of a PDF for free. Preset styling, embedded into the page content, private and instant in your browser.",
       },
     ],
     links: [{ rel: "canonical", href: "https://converttpdf.com/watermark-pdf" }],
@@ -41,7 +41,7 @@ const contentData: ToolContentData = {
     heading: "What Is PDF Watermarking?",
     paragraphs: [
       "PDF watermarking is the process of superimposing text or an image onto every page of a document. A watermark acts as a visible stamp — such as 'CONFIDENTIAL' or 'DRAFT' — that indicates the document's status, ownership, or intended use, helping to prevent unauthorized distribution or clarify its context.",
-      "Our watermarking tool embeds your chosen text directly into the PDF content stream using pdf-lib. It modifies the document structure in your browser to permanently draw the text with your selected opacity, color, size, and rotation angle over the existing page contents.",
+      "Our watermarking tool embeds your text directly into the PDF content stream using pdf-lib. You supply the wording; the tool applies a single fixed house style to it — semi-transparent red, angled across the page, and scaled to the page size — drawing it over the existing contents of every page.",
     ],
   },
   howTo: {
@@ -53,9 +53,9 @@ const contentData: ToolContentData = {
           "Select or drag and drop your document into the tool. The file loads securely and privately into your browser's memory.",
       },
       {
-        title: "Customize your watermark",
+        title: "Type your watermark text",
         description:
-          "Type your watermark text, then adjust the size, color, opacity, and rotation angle. The settings will apply consistently to every page.",
+          'Replace the default "CONFIDENTIAL" with any wording you need. Styling is preset, so the text is the only thing to decide — and it applies identically to every page.',
       },
       {
         title: "Apply and download",
@@ -69,38 +69,39 @@ const contentData: ToolContentData = {
     items: [
       {
         icon: ShieldCheck,
-        title: "100% Private",
+        title: "Contracts never transit",
         description:
-          "Watermarking happens entirely on your device. Your sensitive documents never leave your browser.",
+          "pdf-lib is bundled into the page, so marking an NDA or offer letter involves no upload and no runtime request to any server.",
       },
       {
         icon: Type,
-        title: "Fully customizable",
+        title: "One decision to make",
         description:
-          "Control exactly how your watermark looks by adjusting its text, color, rotation, opacity, and size.",
+          "Colour, angle, opacity, and size are preset to a legible standard. You choose the wording; everything else is already settled.",
       },
       {
         icon: Eye,
-        title: "High visibility",
+        title: "Part of the page, not a layer",
         description:
-          "The watermark is embedded directly into the page content stream, ensuring it prints and displays reliably.",
+          "The text is written into the page's content stream rather than added as an annotation, so it cannot be hidden by toggling layers off in a viewer.",
       },
       {
         icon: Zap,
-        title: "Instant processing",
+        title: "Scales to the page",
         description:
-          "No waiting for uploads or server queues. The text is drawn onto the pages in milliseconds.",
+          "Font size is derived from each page's own dimensions, so the stamp stays proportionate across mixed A4, Letter, and landscape pages in one document.",
       },
       {
         icon: Cloud,
-        title: "Free forever",
-        description: "No subscriptions, no hidden fees, and no account required to use the tool.",
+        title: "Unlimited documents",
+        description:
+          "No subscription, no per-file quota, and no trial watermark of ours layered on top of yours.",
       },
       {
         icon: Smartphone,
-        title: "Mobile friendly",
+        title: "Mark before you forward",
         description:
-          "Apply watermarks to contracts or drafts directly from your smartphone or tablet.",
+          "Stamp a draft as DRAFT on your phone in the moment you're about to send it, rather than waiting to get back to a desktop.",
       },
     ],
   },
@@ -152,12 +153,17 @@ const contentData: ToolContentData = {
     {
       question: "Will the watermark cover up important text?",
       answer:
-        "You can adjust the opacity (transparency) of the watermark text. By lowering the opacity, the text beneath the watermark will remain perfectly visible and readable.",
+        "The watermark is drawn at 25% opacity, so the page content underneath stays visible and readable through it. That opacity is a fixed part of the preset and is not adjustable in this tool.",
+    },
+    {
+      question: "Can I change the colour, angle, size, or opacity?",
+      answer:
+        "No. This tool deliberately ships one preset: red at 25% opacity, rotated -35°, with the font size derived from each page's smaller dimension. The watermark text itself is the only input. If you need brand-specific styling, you will want a desktop PDF editor.",
     },
     {
       question: "Does the tool support image watermarks like logos?",
       answer:
-        "Currently, this tool is designed specifically for text-based watermarks. You can type any text, adjust its appearance, and apply it across your document.",
+        "No. This tool draws text only. There is no image or logo upload — you type the wording and it is rendered with the built-in Helvetica Bold font.",
     },
     {
       question: "Can I choose which pages receive the watermark?",
@@ -177,7 +183,12 @@ const contentData: ToolContentData = {
     {
       question: "Are the watermarks centered automatically?",
       answer:
-        "Yes, the tool calculates the dimensions of each page individually and centers the watermark text, accounting for your chosen rotation angle and font size.",
+        "The tool reads each page's dimensions and positions the text from the page centre, estimating the horizontal offset from your text's character count. It is a close approximation rather than true glyph-measured centring, so very short or very long wording can sit slightly off-centre.",
+    },
+    {
+      question: "Can I use non-Latin text, such as Cyrillic or Chinese?",
+      answer:
+        "No. The watermark is drawn with pdf-lib's built-in Helvetica Bold, which only covers the Latin-1 character set. Accented Western European characters work, but Cyrillic, Greek, Arabic, and CJK text will cause the operation to fail with a generic error rather than produce a watermark.",
     },
   ],
   relatedTools: [
@@ -196,7 +207,7 @@ const contentData: ToolContentData = {
       accent: "from-pink-500 to-rose-500",
     },
   ],
-  relatedArticleSlugs: ["best-free-pdf-tools", "browser-pdf-converter-privacy"],
+  relatedArticleSlugs: ["how-to-watermark-pdf-documents", "best-free-pdf-tools"],
 };
 
 const howToSteps = contentData.howTo.steps.map((s) => ({ name: s.title, text: s.description }));
