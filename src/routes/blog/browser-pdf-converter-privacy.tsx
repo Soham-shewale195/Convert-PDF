@@ -77,12 +77,12 @@ const faqs = [
   {
     question: "What is WebAssembly and why does it matter for PDF privacy?",
     answer:
-      "WebAssembly (WASM) is a technology that allows complex software to run natively in a browser at near-native speeds. ConvertPDF uses WebAssembly to run PDF processing libraries directly in your browser, eliminating the need to send files to a server.",
+      "WebAssembly (WASM) is a technology that allows complex software to run natively in a browser at near-native speeds. It is one of the technologies that made in-browser document processing viable. ConvertPDF itself runs on JavaScript PDF libraries such as pdf-lib and pdf.js rather than WebAssembly, but the effect is the same: your file is processed locally and never sent to a server.",
   },
   {
     question: "Are there file size limits with browser-based converters?",
     answer:
-      "Yes — browser-based tools are limited by your device's available memory. ConvertPDF supports files up to 25 MB, which covers the vast majority of everyday documents. Very large files (100+ MB) may be more practical to handle with desktop software.",
+      "Yes — browser-based tools are limited by your device's available memory. ConvertPDF's PDF ↔ Word converter caps uploads at 25 MB; the dedicated tool pages impose no fixed cap and are bounded by your device's memory instead. Very large files (100+ MB) may be more practical to handle with desktop software.",
   },
 ];
 
@@ -189,7 +189,7 @@ function BrowserPdfPrivacy() {
                 "None — nothing to trust",
               ],
               ["Processing speed", "Depends on server load", "Depends on your device"],
-              ["File size limits", "Often 10–50 MB", "Up to 25 MB (device memory)"],
+              ["File size limits", "Often 10–50 MB", "Bounded by device memory"],
               ["Works offline (after load)?", "No", "Yes"],
               ["Cost", "Often paid for large files", "Free"],
             ].map(([a, s, b]) => (
@@ -257,7 +257,9 @@ function BrowserPdfPrivacy() {
         WebAssembly allows compiled code (originally written in C, C++, or Rust) to run in the
         browser at near-native speed. Libraries that used to require a server — like PDF parsing
         engines, image processors, and document converters — can now run directly in your browser
-        tab. ConvertPDF uses WebAssembly to power its PDF processing capabilities.
+        tab. ConvertPDF does not use WebAssembly itself; its processing runs on JavaScript libraries
+        such as pdf-lib and pdf.js. WebAssembly matters here because it proved that serious document
+        work belongs in the browser at all.
       </p>
 
       <h3 className="text-xl font-semibold text-white mt-6 mb-3">2. Modern JavaScript APIs</h3>

@@ -47,7 +47,7 @@ const faqs = [
   {
     question: "Is it safe to split sensitive PDFs online?",
     answer:
-      "Yes, provided you use a browser-based tool like ConvertPDF. Because the splitting process happens locally on your device via JavaScript and WebAssembly, your sensitive documents are never uploaded to an external server.",
+      "Yes, provided you use a browser-based tool like ConvertPDF. Because the splitting process happens locally on your device via JavaScript libraries running in your browser, your sensitive documents are never uploaded to an external server.",
   },
   {
     question: "Can I extract non-consecutive pages from a PDF?",
@@ -184,11 +184,11 @@ function HowToSplitPdfPages() {
       </p>
       <p>
         At ConvertPDF, we solved both the privacy and the speed problem by utilizing{" "}
-        <strong>client-side processing</strong>. Powered by WebAssembly (Wasm), our tools run the
-        PDF processing engine directly inside your browser. Your files never leave your computer.
-        There are no uploads, no cloud storage, and no data harvesting. It is as private and as fast
-        as downloading a dedicated desktop application, but without the installation hassle. You can
-        read more about this technology in our deep dive on{" "}
+        <strong>client-side processing</strong>. Powered by JavaScript libraries such as pdf-lib,
+        our tools run the PDF processing engine directly inside your browser. Your files never leave
+        your computer. There are no uploads, no cloud storage, and no data harvesting. It is as
+        private and as fast as downloading a dedicated desktop application, but without the
+        installation hassle. You can read more about this technology in our deep dive on{" "}
         <Link to="/blog/browser-pdf-converter-privacy">browser-based PDF privacy</Link>.
       </p>
 

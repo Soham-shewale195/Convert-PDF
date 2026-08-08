@@ -217,8 +217,8 @@ function WhyCompressPdfsForEmail() {
       <ol>
         <li>
           <strong>Open the Client-Side Tool:</strong> Navigate to the ConvertPDF{" "}
-          <Link to="/compress-pdf">PDF Compressor</Link>. Because this tool uses WebAssembly, it
-          executes the compression mathematically on your own CPU.
+          <Link to="/compress-pdf">PDF Compressor</Link>. Because this tool runs the pdf-lib library
+          directly in your browser, it executes the compression on your own CPU.
         </li>
         <li>
           <strong>Load the File:</strong> Drag your massive, bloated PDF into the browser.

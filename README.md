@@ -43,7 +43,7 @@
 
 ### The Problem It Solves:
 
-Traditional document converters require users to upload sensitive files to remote servers, risking data privacy and consuming high bandwidth. Convert PDF solves this by bringing the conversion engine directly into the user's browser using WebAssembly and native web APIs.
+Traditional document converters require users to upload sensitive files to remote servers, risking data privacy and consuming high bandwidth. Convert PDF solves this by bringing the conversion engine directly into the user's browser using JavaScript processing libraries and native web APIs.
 
 ### Target Audience:
 
@@ -54,10 +54,10 @@ Traditional document converters require users to upload sensitive files to remot
 ### Key Highlights:
 
 - **100% Client-Side:** Files never leave your device. All processing happens in-memory.
-- **Lightning Fast:** Powered by WebAssembly and local hardware.
+- **Lightning Fast:** Powered by local hardware — no network round-trip.
 - **Rich Toolkit:** PDF ↔ Word conversion, PDF manipulation (merge, split, rotate), and comprehensive Image Tools (crop, resize, convert).
 - **Glassmorphism UI:** Stunning, responsive, and modern aesthetic powered by Tailwind CSS v4 and Framer Motion.
-- **Fair Monetization:** Free instant downloads for small files (< 10 MB); requires a short rewarded ad for medium files (10 MB - 25 MB).
+- **Monetization:** Ad-supported via Google AdSense Auto Ads. Downloads are never gated, delayed, or conditioned on ad interaction.
 
 ---
 
@@ -101,10 +101,10 @@ Since privacy and speed are the top priorities, moving all business logic (docum
 [ User Interface (React / Radix UI) ]
          │
          ▼
-[ Event Handlers & Hooks (useRewardedDownload) ] ──▶ [ Monetization Ad Network ]
+[ Event Handlers & Hooks (useRewardedDownload) ]
          │
          ▼
-[ In-Browser Converters (WASM / JS) ]
+[ In-Browser Converters (JavaScript) ]
  ├─ pdf-lib (Merge, Split, Rotate)
  ├─ mammoth (Word to HTML/PDF)
  ├─ docx (HTML to Word)
@@ -120,7 +120,7 @@ Since privacy and speed are the top priorities, moving all business logic (docum
 **Layer Roles:**
 
 1. **UI Layer:** Handles drag-and-drop, file selection, and visually renders progress using Framer Motion.
-2. **Logic / Hook Layer:** Manages application state, validates files, handles file size thresholds, and orchestrates ad displays before downloads are unlocked.
+2. **Logic / Hook Layer:** Manages application state and validates files. Downloads are never gated on ad interaction.
 3. **Processing Engine Layer:** Takes the raw `ArrayBuffer` of the uploaded file, applies the requested transformations using specialized libraries, and outputs a new binary string/Blob.
 4. **Delivery Layer:** Generates a temporary `URL.createObjectURL` and triggers an automatic local browser download.
 
@@ -132,10 +132,8 @@ Since privacy and speed are the top priorities, moving all business logic (docum
 📁 src/
 ├── 📁 components/         → Reusable React UI components and layout sections
 │   ├── 📁 ads/            → Monetization components and providers
-│   │   ├── 📁 providers/  → Context providers for ad state (Banner, Rewarded)
-│   │   ├── MonetizationBadges.tsx
-│   │   ├── PremiumAd.tsx
-│   │   └── RewardedAdModal.tsx
+│   │   ├── 📁 providers/  → Ad provider components (Banner, SponsoredCard)
+│   │   └── MonetizationBadges.tsx
 │   ├── 📁 ui/             → Radix-based atomic UI components (buttons, dialogs, etc.)
 │   ├── Background.tsx     → Animated background component
 │   ├── Converter.tsx      → Main PDF ↔ Word conversion engine UI
@@ -146,11 +144,11 @@ Since privacy and speed are the top priorities, moving all business logic (docum
 │   └── Tools.tsx          → PDF manipulation tools grid (Merge, Split, etc.)
 ├── 📁 config/             → Global configurations
 │   ├── ads.ts             → Ad network configuration
-│   └── 📁 monetization/   → Threshold configs (e.g., max free file size)
+│   └── 📁 monetization/   → Monetization feature flags and size thresholds
 ├── 📁 hooks/              → Custom React Hooks
 │   ├── use-mobile.tsx     → Hook for responsive design queries
 │   └── 📁 monetization/
-│       └── useRewardedDownload.tsx → Orchestrates ad display vs instant downloads
+│       └── useRewardedDownload.tsx → Renders the download card and delivers the file
 ├── 📁 lib/                → Core utilities and helpers
 │   ├── error-capture.ts   → Global error tracking setup
 │   ├── error-page.ts      → Error boundary fallback UI
@@ -180,13 +178,10 @@ Since privacy and speed are the top priorities, moving all business logic (docum
 3. **Processing:**
    - `pdfjs-dist` parses the PDF text.
    - `docx` library structures the extracted text into paragraphs and builds a valid `.docx` document in-memory.
-4. **Threshold Check (`useRewardedDownload`):**
-   - If file < 10 MB: Skips to step 6.
-   - If file 10 MB - 25 MB: Halts process, mounts `<RewardedAdModal />`, and waits for the user to finish watching the ad.
-   - If file > 25 MB: Rejects upload to prevent browser memory crashes.
-5. **Ad Completion:** The ad provider resolves a promise, signaling the hook to proceed.
+4. **Size Check (`<Converter />`):** Files over 25 MB are rejected up front to prevent browser memory crashes. There is no ad threshold and no download gate.
+5. **Ready State (`useRewardedDownload`):** `prepareDownload` stores the finished Blob and renders the "Ready to Download" card.
 6. **Download:** The generated `.docx` Blob is converted to a URL. An invisible `<a>` tag is clicked programmatically, downloading the file to the user's hard drive.
-7. **Cleanup:** React state is reset, and the user is redirected or shown a success card.
+7. **Cleanup:** A success toast is shown and the user stays on the current page.
 
 ---
 
@@ -215,8 +210,8 @@ Since privacy and speed are the top priorities, moving all business logic (docum
 ### 4. `useRewardedDownload.tsx`
 
 - **Location:** `src/hooks/monetization/useRewardedDownload.tsx`
-- **Purpose:** Monetization gatekeeper.
-- **Logic:** Evaluates `file.size`. Intercepts the download action to mount a Radix UI Dialog containing the Ad logic if the size exceeds `adRequiredSizeMB` (10MB).
+- **Purpose:** Download delivery. Despite the historical name, it gates nothing.
+- **Logic:** `prepareDownload` stores the finished Blob and resolves immediately; `renderStatusCard` renders the "Ready to Download" card; `executeDownload` writes the file and shows a success toast, leaving the user on the current page. `renderModal` is retained as a no-op so callers need no changes.
 
 ### 5. `Navbar.tsx` & `Sections.tsx`
 
@@ -237,9 +232,9 @@ Convert PDF is a strictly stateless, client-side application. No user data, file
 ## 🔌 Third-Party Integrations & External Services
 
 1. **Monetization Networks:**
-   - Integrated via the `src/components/ads/` directory. Provides Banner and Rewarded Video APIs to monetize high-bandwidth conversions locally.
-2. **WebAssembly Document Parsers:**
-   - `pdfjs-dist`: Mozilla's robust PDF parsing engine.
+   - Google AdSense Auto Ads, loaded from a single script tag in `src/routes/__root.tsx`. No manual ad units, and no ad is tied to a download.
+2. **JavaScript Document Parsers:**
+   - `pdfjs-dist`: Mozilla's robust PDF parsing engine. Its worker is loaded from the jsDelivr CDN.
    - `mammoth`: High-quality Word document (`.docx`) to HTML parsing.
 
 ---
@@ -299,7 +294,7 @@ _N/A - Convert PDF operates without a backend API. All logic executes via native
 ## 🛠️ Configuration
 
 - **`vite.config.ts`**: Configures Vite with TanStack router plugins and Cloudflare workers compatibility.
-- **`src/config/monetization/index.ts`**: Contains critical business rules, such as `adRequiredSizeMB = 10`, dictating when users are prompted to watch an ad.
+- **`src/config/monetization/index.ts`**: Monetization flags and size thresholds. Only `warningSizeMB` (100) is read at runtime, to show a performance notice on large image files; the ad-threshold fields are legacy and unused.
 - **`src/styles.css`**: Tailwind v4 configuration utilizing `@theme` directives to define the global color palette, glassmorphism utilities (`.glass-strong`, `.mobile-menu-glass`), and animations.
 
 ---
@@ -336,7 +331,7 @@ _(Add screenshots here)_
 
 ## ⚠️ Known Issues / Limitations
 
-- **File Size Limits:** Files over 25 MB are blocked because browsers typically limit the amount of memory a single tab can allocate. Trying to parse massive PDFs in memory can crash mobile browsers.
+- **File Size Limits:** The PDF ↔ Word converter (`Converter.tsx`) blocks files over 25 MB, because browsers limit the memory a single tab can allocate and parsing massive PDFs in memory can crash mobile browsers. The dedicated tool pages do not enforce a fixed cap and are bounded by available device memory; image tools show a performance notice above 100 MB.
 - **Scanned PDFs:** The current converter relies on embedded text layers. It does not perform Optical Character Recognition (OCR), meaning image-only scanned PDFs will output as blank or image-filled Word documents.
 
 ---
@@ -379,5 +374,5 @@ This project is licensed under the MIT License.
 ---
 
 <div align="center">
-  <sub>Built with ❤️ and WebAssembly.</sub>
+  <sub>Built with ❤️ in the browser.</sub>
 </div>

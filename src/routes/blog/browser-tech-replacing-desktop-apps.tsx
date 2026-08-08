@@ -55,7 +55,7 @@ const faqs = [
   {
     question: "What is WebAssembly (Wasm)?",
     answer:
-      "WebAssembly is a revolutionary web technology that allows developers to write high-performance code (like C++ or Rust) and run it inside a web browser at near-native desktop speeds. It is the engine that allows complex apps like Photoshop, AutoCAD, and ConvertPDF to run in your browser without lagging.",
+      "WebAssembly is a revolutionary web technology that allows developers to write high-performance code (like C++ or Rust) and run it inside a web browser at near-native desktop speeds. It is the engine behind browser versions of complex apps like Photoshop and AutoCAD. ConvertPDF takes the same client-side approach using JavaScript libraries rather than WebAssembly.",
   },
   {
     question: "Are web apps as secure as desktop software?",
@@ -65,7 +65,7 @@ const faqs = [
   {
     question: "Can I use heavy web applications if my Wi-Fi is slow?",
     answer:
-      "Yes. The beauty of client-side web apps is that the internet is only required to load the initial webpage (which is usually less than 1 Megabyte). Once the WebAssembly engine is downloaded to your browser, all the heavy lifting (like compressing a 50MB PDF) is done by your local CPU. Your Wi-Fi speed is irrelevant to the processing speed.",
+      "Yes. The beauty of client-side web apps is that the internet is only required to load the initial webpage. Once the processing libraries have been downloaded to your browser, all the heavy lifting is done by your local CPU. Your Wi-Fi speed is irrelevant to the processing speed.",
   },
   {
     question: "What is the HTML5 Canvas API?",
@@ -80,7 +80,7 @@ const faqs = [
 ];
 
 const ctas = [
-  { label: "Merge PDF", href: "/merge-pdf", description: "Try WebAssembly locally" },
+  { label: "Merge PDF", href: "/merge-pdf", description: "Try local processing" },
   { label: "Compress Image", href: "/compress-image", description: "Test the Canvas API" },
   { label: "Split PDF", href: "/split-pdf", description: "Extract pages instantly" },
 ];
@@ -158,10 +158,10 @@ function BrowserTechReplacingDesktopApps() {
       </p>
       <p>
         When you use a <Link to="/blog/what-is-client-side-processing">Client-Side tool</Link> like
-        our <Link to="/compress-pdf">PDF Compressor</Link>, the browser instantly downloads a tiny
-        WebAssembly engine. This engine runs directly on your computer's local CPU, performing
-        complex mathematical compressions at near-native desktop speeds. It entirely eliminates the
-        need to upload files to a server or download a desktop application.
+        our <Link to="/compress-pdf">PDF Compressor</Link>, the browser downloads a small processing
+        library — in our case the JavaScript library pdf-lib rather than a WebAssembly module. It
+        runs directly on your computer's local CPU, and it entirely eliminates the need to upload
+        files to a server or download a desktop application.
       </p>
 
       <h2 className="text-2xl sm:text-3xl font-bold text-white mt-10 mb-6">

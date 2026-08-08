@@ -46,8 +46,8 @@ function PrivacyPolicy() {
       <h2 className="text-xl font-semibold text-foreground mt-8 mb-4">3. Local Processing</h2>
       <p>
         All text extraction, image processing, and PDF generation occur locally using your device's
-        processing power via WebAssembly and modern browser APIs. Once you close the tab, all
-        temporary data is instantly erased from your device's memory.
+        processing power via JavaScript libraries and modern browser APIs. Once you close the tab,
+        all temporary data is instantly erased from your device's memory.
       </p>
 
       <h2 className="text-xl font-semibold text-foreground mt-8 mb-4">4. Data Security</h2>

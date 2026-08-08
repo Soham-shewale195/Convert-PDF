@@ -151,9 +151,9 @@ function HowToConvertImagesToPdf() {
       <p>
         <strong>Crucial Security Note:</strong> If the photos you are converting include scans of
         your passport, driver's license, or sensitive financial receipts, you MUST ensure you are
-        using a client-side tool like ConvertPDF. Our tool uses WebAssembly to combine the images
-        locally in your browser. Traditional converters upload your personal photos to a remote
-        cloud server, which is a massive privacy risk.
+        using a client-side tool like ConvertPDF. Our tool uses the JavaScript library pdf-lib to
+        combine the images locally in your browser. Traditional converters upload your personal
+        photos to a remote cloud server, which is a massive privacy risk.
       </p>
 
       <h3>Step 2: Upload and Organize</h3>

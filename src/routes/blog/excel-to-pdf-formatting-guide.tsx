@@ -215,7 +215,7 @@ function ExcelToPdfGuide() {
       <h3>Step 1: Open the Converter</h3>
       <p>
         Navigate to the <Link to="/excel-to-pdf">Excel to PDF tool</Link>. Ensure you are using a
-        modern browser like Chrome, Edge, Safari, or Firefox for optimal WebAssembly performance.
+        modern browser like Chrome, Edge, Safari, or Firefox for optimal performance.
       </p>
 
       <h3>Step 2: Load Your Excel File</h3>

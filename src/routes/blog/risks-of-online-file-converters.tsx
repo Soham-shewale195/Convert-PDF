@@ -65,7 +65,7 @@ const faqs = [
   {
     question: "What is client-side processing?",
     answer:
-      "Client-side processing means the software runs entirely on your own device (the 'client'). When you use a client-side tool like ConvertPDF, your web browser downloads the processing engine (via WebAssembly) and modifies the document locally. The file never leaves your computer, making it 100% private.",
+      "Client-side processing means the software runs entirely on your own device (the 'client'). When you use a client-side tool like ConvertPDF, your web browser downloads the processing engine (a set of JavaScript libraries) and modifies the document locally. The file never leaves your computer, making it 100% private.",
   },
   {
     question: "How can I tell if a website uses client-side processing?",
@@ -215,9 +215,9 @@ function RisksOfOnlineFileConverters() {
       </p>
 
       <p>
-        This is the exact technology that powers ConvertPDF. We flipped the architecture upside
-        down. Instead of sending your sensitive documents to our servers, we send our software to
-        your computer.
+        ConvertPDF is built on the same idea, using JavaScript processing libraries rather than
+        WebAssembly. We flipped the architecture upside down. Instead of sending your sensitive
+        documents to our servers, we send our software to your computer.
       </p>
 
       <h3>How ConvertPDF Protects You</h3>

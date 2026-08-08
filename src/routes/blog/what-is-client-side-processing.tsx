@@ -146,7 +146,7 @@ function WhatIsClientSideProcessing() {
         When you navigate to a tool like our <Link to="/compress-pdf">PDF Compressor</Link>, the
         ConvertPDF web server does not wait for you to upload a file. Instead, the moment the web
         page loads, our server immediately downloads a tiny packet of code (built using React and
-        WebAssembly) directly into your browser's local memory.
+        JavaScript processing libraries) directly into your browser's local memory.
       </p>
       <p>
         Your web browser—whether it is Chrome, Safari, or Edge—temporarily transforms into a fully
@@ -160,7 +160,7 @@ function WhatIsClientSideProcessing() {
           data of the PDF directly from your hard drive into your computer's RAM.
         </li>
         <li>
-          <strong>Local Execution:</strong> The WebAssembly engine (the software we sent you)
+          <strong>Local Execution:</strong> The processing library (the software we sent you)
           analyzes the PDF, mathematically compresses the images, and rewrites the file structure.
           This heavy lifting is done entirely by your computer's own CPU.
         </li>

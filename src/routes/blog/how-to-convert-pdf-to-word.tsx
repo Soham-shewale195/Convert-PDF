@@ -175,7 +175,7 @@ function HowToConvertPdfToWord() {
       <h3 className="text-xl font-semibold text-white mt-8 mb-3">Step 4: Convert and Download</h3>
       <p>
         Click the <strong>"Convert to Word"</strong> button. The conversion happens in seconds using
-        WebAssembly-powered processing in your browser. Once complete, click{" "}
+        JavaScript-based processing in your browser. Once complete, click{" "}
         <strong>"Download .docx"</strong> to save the file to your computer.
       </p>
 
@@ -263,8 +263,8 @@ function HowToConvertPdfToWord() {
       </p>
       <p className="mt-4">
         ConvertPDF is designed differently. The entire conversion process runs inside your browser
-        using modern JavaScript and WebAssembly. Your PDF file never leaves your device. There are
-        no uploads, no server logs, and no data retention. What you process stays entirely on your
+        using modern JavaScript libraries. Your PDF file never leaves your device. There are no
+        uploads, no server logs, and no data retention. What you process stays entirely on your
         machine.
       </p>
       <p className="mt-4">
@@ -335,7 +335,7 @@ function HowToConvertPdfToWord() {
         </li>
         <li>
           <strong>Use a modern browser</strong> — Chrome, Firefox, Edge, and Safari all support the
-          WebAssembly technology ConvertPDF uses. Keep your browser updated for best performance.
+          browser APIs ConvertPDF relies on. Keep your browser updated for best performance.
         </li>
       </ul>
 

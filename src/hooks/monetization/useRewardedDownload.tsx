@@ -27,8 +27,10 @@ export function useRewardedDownload() {
     isDownloading.current = true;
     downloadBlob(readyFile.blob, readyFile.name);
     toast.success("Downloaded Successfully");
+    // Release the re-entrancy guard so the user can download again without
+    // leaving the tool page. Previously this window was ended by a redirect to "/".
     setTimeout(() => {
-      window.location.href = "/";
+      isDownloading.current = false;
     }, 1500);
   }, [readyFile]);
 

@@ -163,9 +163,9 @@ function HowToWatermarkPdfDocuments() {
 
       <p>
         The only safe way to watermark a PDF online is to use a{" "}
-        <strong>client-side processing tool</strong>. Tools built with `pdf-lib` and WebAssembly
-        execute the entire watermarking process locally inside your own web browser. The document
-        never leaves your hard drive, ensuring total, mathematical privacy.
+        <strong>client-side processing tool</strong>. Tools built with JavaScript libraries such as
+        `pdf-lib` execute the entire watermarking process locally inside your own web browser. The
+        document never leaves your hard drive, ensuring total, mathematical privacy.
       </p>
 
       <h2 className="text-2xl sm:text-3xl font-bold text-white mt-10 mb-6">

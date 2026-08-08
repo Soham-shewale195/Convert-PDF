@@ -45,12 +45,13 @@ function HowItWorksPage() {
           </div>
           <div>
             <h3 className="text-xl font-semibold text-foreground mb-2">
-              2. Local Processing (WebAssembly)
+              2. Local Processing (JavaScript Libraries)
             </h3>
             <p className="text-muted-foreground">
-              This is where the magic happens. We use WebAssembly (Wasm) to run complex conversion
-              algorithms directly inside your browser. Whether it's extracting text, rendering PDF
-              pages, or compressing images, your device's CPU handles all the heavy lifting
+              This is where the magic happens. Open-source JavaScript libraries — pdf-lib, pdf.js,
+              jsPDF, docx and SheetJS — run the conversion algorithms directly inside your browser,
+              alongside the HTML5 Canvas API for image work. Whether it's extracting text, rendering
+              PDF pages, or compressing images, your device's CPU handles all the heavy lifting
               instantly.
             </p>
           </div>
@@ -77,8 +78,9 @@ function HowItWorksPage() {
           <strong>Zero Data Breaches:</strong> Hackers cannot steal what is never stored.
         </li>
         <li>
-          <strong>Unlimited File Size (Theoretically):</strong> You are only limited by your
-          device's RAM, not our server capacity.
+          <strong>Bounded by Your Device, Not Our Servers:</strong> The dedicated tool pages impose
+          no fixed size cap — the practical limit is your device's available memory. The PDF ↔ Word
+          converter on the home page caps files at 25 MB to avoid exhausting browser memory.
         </li>
         <li>
           <strong>Blazing Fast:</strong> By eliminating network latency, conversions happen as fast

@@ -13,13 +13,13 @@ export const Route = createFileRoute("/compress-pdf")({
       {
         name: "description",
         content:
-          "Reduce PDF file size online for free using lossless compression. No uploads, no signup — your PDF stays on your device.",
+          "Reduce PDF file size online for free. Choose lossless structural optimisation or image recompression. No uploads, no signup — your PDF stays on your device.",
       },
       { property: "og:title", content: "Compress PDF Online Free | ConvertPDF" },
       {
         property: "og:description",
         content:
-          "Reduce PDF file size online for free using lossless compression. No uploads, no signup — your PDF stays on your device.",
+          "Reduce PDF file size online for free. Choose lossless structural optimisation or image recompression. No uploads, no signup — your PDF stays on your device.",
       },
     ],
     links: [{ rel: "canonical", href: "https://converttpdf.com/compress-pdf" }],
@@ -32,7 +32,8 @@ const contentData: ToolContentData = {
     heading: "What Is PDF Compression?",
     paragraphs: [
       "PDF compression reduces the file size of a PDF document so it transfers faster, fits within email attachment limits, and occupies less storage. The key detail is that not all PDFs are bloated for the same reason: some are large because they contain high-resolution images; others are large because of unoptimised internal structure, redundant object dictionaries, and legacy cross-reference tables that accumulate during document generation.",
-      "**How this tool works technically:** This compressor calls pdf-lib's save method with the useObjectStreams flag set to true. That instruction tells pdf-lib to re-serialise your PDF using cross-reference streams and object streams — a structural optimisation introduced in PDF 1.5 and defined in the ISO 32000 specification. The tool parses every internal object in the document, repacks multiple objects together into compressed streams, and replaces uncompressed flat xref tables with a compressed cross-reference stream. Crucially, this is a lossless structural operation: no text is reworded, no image is resampled, no font is modified. Every visible element of the document is preserved exactly.",
+      "**How this tool works technically:** Every preset calls pdf-lib's save method with the useObjectStreams flag set to true. That instruction tells pdf-lib to re-serialise your PDF using cross-reference streams and object streams — a structural optimisation introduced in PDF 1.5 and defined in the ISO 32000 specification. The tool parses every internal object in the document, repacks multiple objects together into compressed streams, and replaces uncompressed flat xref tables with a compressed cross-reference stream. This structural step is lossless: no text is reworded, no font is modified.",
+      "**Three presets, and what each one really does:** The **Low** preset performs the structural re-save described above and nothing else — it is fully lossless, and your images come through untouched. **Medium**, which is the preset selected by default, additionally re-encodes embedded raster images as JPEG at 75% quality. **High** does the same at 50% quality. Medium and High are therefore lossy operations on images: they discard image data permanently in exchange for a substantially smaller file. Text, fonts and vector content are never altered by any preset. If you need a byte-faithful result, choose Low before compressing.",
     ],
   },
   howTo: {
@@ -44,9 +45,9 @@ const contentData: ToolContentData = {
           "Drag and drop your PDF file onto the upload area above, or click to browse your device. The file is loaded directly into your browser's memory.",
       },
       {
-        title: "Compress",
+        title: "Pick a preset and compress",
         description:
-          'Click the "Compress PDF" button. The tool re-saves your document with optimised object streams using pdf-lib, entirely within your browser.',
+          'Choose Low for a fully lossless re-save, or Medium (the default) or High to also recompress embedded images. Click "Compress PDF" and the work happens entirely within your browser.',
       },
       {
         title: "Download the result",
@@ -71,9 +72,9 @@ const contentData: ToolContentData = {
       },
       {
         icon: FileText,
-        title: "Lossless quality",
+        title: "You choose the trade-off",
         description:
-          "Text, fonts, and images remain identical to the original. Only the internal PDF encoding structure changes.",
+          "Text and fonts are never altered. Pick Low for a fully lossless re-save, or Medium (the default) and High to recompress embedded images for a smaller file.",
       },
       {
         icon: Cloud,
@@ -108,7 +109,7 @@ const contentData: ToolContentData = {
       {
         label: "When NOT to use this tool",
         description:
-          "Do not use this tool if your goal is to reduce the size of a scanned PDF or a heavily image-laden document. Scanned PDFs store their content as embedded JPEG or FLATE-compressed images, which are already tightly compressed at the image level. Object-stream re-encoding cannot shrink image data further. For meaningful size reduction on image-heavy PDFs you would need a tool that resamples embedded images at lower resolution — which this compressor does not do, by design.",
+          "The Low preset alone will do little for a scanned PDF or a heavily image-laden document: those files store their content as embedded JPEG or FLATE-compressed images, and structural re-encoding cannot shrink image data. Medium and High will reduce such files by re-encoding those images as JPEG at 75% or 50% quality — but they reduce encoding quality rather than pixel dimensions, so a very high-resolution scan may still remain large. If you need true downsampling to a lower resolution, this compressor does not do that.",
       },
       {
         label: "Meeting email attachment limits",
@@ -143,7 +144,7 @@ const contentData: ToolContentData = {
     {
       question: "Does compressing a PDF reduce the quality of images or text?",
       answer:
-        "No. The compressor calls pdf-lib's save method with useObjectStreams: true, which rewrites the internal object structure without touching any visible content. Text, fonts, vector graphics, and embedded images are passed through unchanged. This is a structural operation, not a content operation.",
+        "Text, fonts, and vector graphics are never altered by any preset — those are only ever restructured, not re-rendered. Images depend on the preset you choose. Low passes embedded images through unchanged and is fully lossless. Medium, which is selected by default, re-encodes embedded raster images as JPEG at 75% quality, and High does so at 50% quality; both discard some image data permanently. Choose Low if you need the images preserved exactly.",
     },
     {
       question: "What kind of size reduction can I expect?",
@@ -163,7 +164,7 @@ const contentData: ToolContentData = {
     {
       question: "Does compression work on scanned PDFs?",
       answer:
-        "Yes, but the size reduction will typically be very small. Scanned PDFs consist primarily of embedded images already compressed in JPEG or FLATE format. Object-stream optimisation benefits the non-image structural data, which makes up a small fraction of a scan-heavy file.",
+        "Yes. With the Low preset the reduction will typically be very small, because scanned PDFs consist primarily of embedded images and structural optimisation only benefits the non-image data. Medium and High re-encode those embedded images as JPEG, so they can reduce a scanned file meaningfully — at the cost of some image quality.",
     },
     {
       question: "Can I compress multiple PDFs at once?",
@@ -209,7 +210,7 @@ function CompressPdfPage() {
       <HowToSchema name="How to Compress a PDF Online" steps={howToSteps} />
       <ToolPageLayout
         title="Compress PDF"
-        description="Reduce PDF file size while maintaining quality — entirely in your browser."
+        description="Reduce PDF file size with your choice of lossless or lossy compression — entirely in your browser."
         icon={Minimize2}
         accent="from-emerald-500 to-teal-500"
         contentSections={<ToolContentSections data={contentData} />}

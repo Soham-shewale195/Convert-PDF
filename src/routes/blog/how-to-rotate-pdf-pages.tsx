@@ -194,8 +194,9 @@ function HowToRotatePdfPages() {
       <h3>Step 4: Save Permanently</h3>
       <p>
         Once you have visually confirmed that all pages are oriented correctly, click the final
-        action button to process the file. The browser's WebAssembly engine will instantly rewrite
-        the PDF metadata. You can then download the newly generated, permanently rotated file.
+        action button to process the file. The pdf-lib library running in your browser will
+        instantly rewrite the PDF metadata. You can then download the newly generated, permanently
+        rotated file.
       </p>
 
       <div className="callout">
