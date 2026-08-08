@@ -264,6 +264,9 @@ Allow: /
 Sitemap: https://converttpdf.com/sitemap.xml
 `;
 
+const ADS_TXT = `google.com, pub-5782225557161078, DIRECT, f08c47fec0942fa0
+`;
+
 export default {
   async fetch(request: Request, env: unknown, ctx: unknown) {
     const url = new URL(request.url);
@@ -272,6 +275,19 @@ export default {
     if (url.pathname === "/robots.txt") {
       return addSecurityHeaders(
         new Response(ROBOTS_TXT, {
+          status: 200,
+          headers: {
+            "content-type": "text/plain; charset=utf-8",
+            "cache-control": "public, max-age=86400",
+          },
+        }),
+      );
+    }
+
+    // Serve ads.txt directly — bypass TanStack Start for this static resource
+    if (url.pathname === "/ads.txt") {
+      return addSecurityHeaders(
+        new Response(ADS_TXT, {
           status: 200,
           headers: {
             "content-type": "text/plain; charset=utf-8",
