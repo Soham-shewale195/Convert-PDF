@@ -122,13 +122,6 @@ function WhatIsClientSideProcessing() {
         cost: <strong>privacy</strong>.
       </p>
 
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: Technical diagram contrasting a traditional Server-Side upload
-          architecture with a modern Client-Side local architecture]
-        </span>
-      </div>
-
       <p>
         If you needed to <Link to="/merge-pdf">merge two highly sensitive legal contracts</Link>,
         you were forced to upload those unencrypted contracts to a server owned by a third-party

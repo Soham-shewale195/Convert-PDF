@@ -119,13 +119,6 @@ function HowToRotatePdfPages() {
         that file to your boss, they reply immediately: <em>"Why is this sideways?"</em>
       </p>
 
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: Illustration showing a frustrated user tilting their head to read a
-          sideways PDF on a monitor]
-        </span>
-      </div>
-
       <p>
         The harsh reality of PDF files is that "view rotation" is a temporary illusion. Standard PDF
         viewers like Google Chrome's built-in reader or Apple's Preview app only rotate the document
@@ -181,13 +174,6 @@ function HowToRotatePdfPages() {
         meaning even massive scanned textbooks will load in milliseconds, and your sensitive data
         remains completely private.
       </p>
-
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: Screenshot of the Rotate PDF visual interface showing thumbnails of
-          pages]
-        </span>
-      </div>
 
       <h3>Step 3: Apply the Rotation</h3>
       <p>

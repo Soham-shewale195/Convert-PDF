@@ -120,13 +120,6 @@ function PdfVsWordDifferences() {
         block?
       </p>
 
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: Split-screen graphic showing a fluid Word document versus a rigid PDF
-          document]
-        </span>
-      </div>
-
       <p>
         These frustrations stem from using the wrong format for the wrong job. Understanding the
         fundamental architectural differences between Word and PDF will save you hours of formatting
@@ -230,13 +223,6 @@ function PdfVsWordDifferences() {
         The text doesn't flow, paragraphs don't wrap, and hitting "Enter" often breaks the alignment
         of the entire page.
       </p>
-
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: Workflow diagram showing a PDF being securely converted back into an
-          editable Word document]
-        </span>
-      </div>
 
       <p>
         The correct workflow is to use a secure conversion tool. While ConvertPDF specializes in

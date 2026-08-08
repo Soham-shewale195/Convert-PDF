@@ -122,13 +122,6 @@ function HowToWatermarkPdfDocuments() {
         stolen by a competitor, or claimed as someone else's work.
       </p>
 
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: Illustration showing a "CONFIDENTIAL" watermark stamped diagonally
-          across a sensitive corporate document]
-        </span>
-      </div>
-
       <p>
         The most effective deterrent against document misuse is a watermark. A watermark is a
         recognizable image or text pattern superimposed over a document. It serves a dual purpose:
@@ -216,13 +209,6 @@ function HowToWatermarkPdfDocuments() {
           <strong>Your Name / Company:</strong> For blueprints, photography, and portfolios.
         </li>
       </ul>
-
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: Screenshot of the ConvertPDF Watermark settings panel showing text
-          input, opacity, and rotation controls]
-        </span>
-      </div>
 
       <h3>Step 4: Configure the Styling</h3>
       <p>

@@ -116,13 +116,6 @@ function HowToConvertWebpToJpg() {
         frustration begins.
       </p>
 
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: A frustrated user staring at a computer screen showing an "Unsupported
-          File Format" error dialog box]
-        </span>
-      </div>
-
       <p>
         Your default photo viewer might refuse to open it. When you try to drag the file into an
         older version of Microsoft Word or a legacy email client, you are met with an "Unsupported
@@ -204,13 +197,6 @@ function HowToConvertWebpToJpg() {
         <strong>not uploaded</strong> to a cloud server. This means the process is instantaneous and
         completely private.
       </p>
-
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: Screenshot showing a WEBP file being dragged into the WEBP to JPG
-          conversion interface]
-        </span>
-      </div>
 
       <h3>Step 3: Process the Image</h3>
       <p>

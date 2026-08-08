@@ -127,13 +127,6 @@ function HowToResizeImagesSocialMedia() {
         social media platforms.
       </p>
 
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: A side-by-side comparison of a crisp original photo vs a blurry,
-          compressed social media upload]
-        </span>
-      </div>
-
       <p>
         Social media companies handle billions of photo uploads every single day. To prevent their
         server farms from crashing and to ensure images load quickly for users on slow mobile
@@ -280,13 +273,6 @@ function HowToResizeImagesSocialMedia() {
         is locked, changing the width will automatically calculate the correct height, preventing
         your image from becoming stretched or squashed.
       </p>
-
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: Screenshot highlighting the 'Lock Proportions' toggle in the Resize
-          Image tool]
-        </span>
-      </div>
 
       <h3>Step 3: Enter the Target Width</h3>
       <p>

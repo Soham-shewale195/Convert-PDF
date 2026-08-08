@@ -122,13 +122,6 @@ function HowToWatermarkPhotosOnline() {
         likes and free engagement for a corporation, and you received absolutely nothing in return.
       </p>
 
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: A split screen showing an original photographer's post vs an
-          unauthorized corporate repost]
-        </span>
-      </div>
-
       <p>
         In the era of "right-click, save as," image theft is rampant. Whether you are a professional
         photographer trying to protect your livelihood, a digital artist defending your portfolio,
@@ -201,13 +194,6 @@ function HowToWatermarkPhotosOnline() {
         The industry standard is to use the copyright symbol (©) followed by the year and your brand
         name. Example: <code>© 2025 Jane Doe Photography</code>.
       </p>
-
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: Screenshot of the Watermark Image interface showing opacity, text
-          size, and positioning controls]
-        </span>
-      </div>
 
       <h3>Step 3: Position the Stamp</h3>
       <p>Placement is a strategic decision.</p>

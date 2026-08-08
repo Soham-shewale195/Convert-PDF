@@ -192,10 +192,6 @@ function MergePdfGuide() {
         single PDF. Once complete, click <strong>"Download"</strong> to save the merged file to your
         device.
       </p>
-      <p className="mt-3">
-        Files under 10 MB total download immediately. Larger merged files (10–25 MB) require
-        watching a short ad to keep the service free.
-      </p>
 
       <h2 className="text-2xl sm:text-3xl font-bold text-white mt-10 mb-4">
         Common Use Cases for Merging PDFs

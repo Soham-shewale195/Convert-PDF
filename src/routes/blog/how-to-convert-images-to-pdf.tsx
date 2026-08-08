@@ -118,13 +118,6 @@ function HowToConvertImagesToPdf() {
         <code>IMG_4092.jpg</code>, <code>IMG_4093.jpg</code>...
       </p>
 
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: A chaotic email inbox showing a single email burdened with 15 separate
-          JPG attachments]
-        </span>
-      </div>
-
       <p>
         This is a terrible experience for the recipient. First, they are likely to hit corporate
         email attachment size limits, causing your email to bounce entirely. If the email does go
@@ -172,13 +165,6 @@ function HowToConvertImagesToPdf() {
         the narrative of your document. Click and drag the thumbnails to rearrange them into the
         exact order you want them to appear in the final PDF.
       </p>
-
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: Screenshot of the JPG to PDF tool showing a grid of image thumbnails
-          being dragged and re-ordered]
-        </span>
-      </div>
 
       <h3>Step 3: Choose Your Page Layout</h3>
       <p>

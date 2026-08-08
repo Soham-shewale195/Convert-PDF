@@ -118,13 +118,6 @@ function BatchImageProcessingGuide() {
         square.
       </p>
 
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: A split screen showing a frustrated user editing one photo manually vs
-          a progress bar rapidly processing 150 photos automatically]
-        </span>
-      </div>
-
       <p>
         If you open Adobe Photoshop and process these files manually, the workflow looks like this:
         Open file, select crop tool, set to 1:1, hit enter, open resize menu, type in 1080 pixels,
@@ -195,13 +188,6 @@ function BatchImageProcessingGuide() {
         photo, and aggressively cut off the outer edges until every image is forced into a uniform,
         perfect square.
       </p>
-
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: A grid of inconsistently shaped photos being forced through a digital
-          filter and emerging as perfect, uniform squares]
-        </span>
-      </div>
 
       <h3>3. Batch Compression (The Bandwidth Saver)</h3>
       <p>

@@ -121,12 +121,6 @@ function WebpVsJpgVsPngGuide() {
         inherent in the older formats.
       </p>
 
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: Visual comparison of the three file extensions with a focus on WebP]
-        </span>
-      </div>
-
       <p>
         Today, understanding when to use WebP, JPG, and PNG is a critical skill for web developers,
         digital marketers, photographers, and general internet users. Using the wrong format can
@@ -243,13 +237,6 @@ function WebpVsJpgVsPngGuide() {
         images will load significantly faster, use less mobile data, and rank higher in Google's
         page speed algorithms.
       </p>
-
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: Side-by-side file size comparison of identical images in WebP, JPG,
-          and PNG]
-        </span>
-      </div>
 
       <h3>When to Use WebP</h3>
       <ul>

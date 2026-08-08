@@ -118,13 +118,6 @@ function DigitalDocumentWorkflowStudents() {
         containing programming code, and academic journals downloaded from the library database.
       </p>
 
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: Illustration of a stressed student surrounded by a messy desktop
-          filled with dozens of mismatched file types]
-        </span>
-      </div>
-
       <p>
         By midterms, your desktop is a chaotic graveyard of files named{" "}
         <code>final_draft_v3.docx</code> and <code>lecture_notes(1).pdf</code>. When it is time to
@@ -184,13 +177,6 @@ function DigitalDocumentWorkflowStudents() {
         your layout will shatter. Citations will jump to the next page, and you will lose points for
         improper formatting.
       </p>
-
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: A split screen showing a perfectly formatted PDF submission vs a
-          broken, misaligned Word document submission]
-        </span>
-      </div>
 
       <h3>Step 1: Lock the Formatting</h3>
       <p>

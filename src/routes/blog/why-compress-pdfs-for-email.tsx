@@ -112,13 +112,6 @@ function WhyCompressPdfsForEmail() {
       </p>
       <p>You close your laptop and go to lunch, assuming the client is reviewing your hard work.</p>
 
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: A screenshot of an automated "Non-Delivery Report" email stating the
-          message was rejected due to size limits]
-        </span>
-      </div>
-
       <p>
         An hour later, you check your inbox and your heart sinks. There is an automated reply from a
         mail daemon: <em>"Message Rejected. Attachment exceeds maximum size limits."</em> The client
@@ -220,13 +213,6 @@ function WhyCompressPdfsForEmail() {
         If you are emailing a highly sensitive document (like a signed contract or a financial
         report), you cannot upload it to a random cloud converter. You must use a client-side tool.
       </p>
-
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: Screenshot comparing a massive 45MB file size before compression, and
-          a sleek 4MB file size after client-side compression]
-        </span>
-      </div>
 
       <ol>
         <li>

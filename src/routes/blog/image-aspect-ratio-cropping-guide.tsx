@@ -123,13 +123,6 @@ function ImageAspectRatioCroppingGuide() {
         ratios.
       </p>
 
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: Illustration showing a wide 16:9 landscape photo awkwardly forced into
-          a vertical 9:16 smartphone screen]
-        </span>
-      </div>
-
       <p>
         Understanding how aspect ratios work—and knowing how to aggressively, creatively crop your
         images to fit them—is the difference between a sloppy, amateur presentation and a pristine,
@@ -247,13 +240,6 @@ function ImageAspectRatioCroppingGuide() {
         Drag and drop your high-resolution photo into the interface. The tool will instantly
         generate a visual preview with a draggable crop box superimposed over it.
       </p>
-
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: Screenshot of the visual cropping interface showing aspect ratio lock
-          buttons and drag handles]
-        </span>
-      </div>
 
       <h3>Step 3: Lock the Aspect Ratio</h3>
       <p>

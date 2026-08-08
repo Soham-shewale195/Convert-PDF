@@ -228,8 +228,6 @@ function CompressPdfGuide() {
       </h3>
       <p>
         Once processing completes, click <strong>Download</strong> to save your compressed PDF.
-        Files under 10 MB download immediately. Larger originals may require a short ad to unlock
-        the download.
       </p>
 
       <h2 className="text-2xl sm:text-3xl font-bold text-white mt-10 mb-4">

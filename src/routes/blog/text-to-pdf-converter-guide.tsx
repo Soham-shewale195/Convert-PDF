@@ -118,13 +118,6 @@ function TextToPdfConverterGuide() {
         because it is universally compatible and loads in a fraction of a millisecond.
       </p>
 
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: A split screen showing raw, unformatted text code on the left, and a
-          beautifully paginated PDF document on the right]
-        </span>
-      </div>
-
       <p>
         However, the greatest strength of a text file is also its greatest weakness. Because it
         contains zero formatting data, it has no concept of a "page." There are no margins, no
@@ -192,13 +185,6 @@ function TextToPdfConverterGuide() {
           directly into the tool's input field.
         </li>
       </ul>
-
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: Screenshot of the ConvertPDF Text to PDF interface, showing the clean
-          text input area and layout settings]
-        </span>
-      </div>
 
       <h3>Step 3: Configure the Typography</h3>
       <p>

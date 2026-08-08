@@ -126,12 +126,6 @@ function HowToSplitPdfPages() {
         splitting comes in.
       </p>
 
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: Illustration showing a large PDF being divided into smaller chunks]
-        </span>
-      </div>
-
       <p>
         Historically, modifying the structural integrity of a PDF required expensive desktop
         software like Adobe Acrobat. Today, thanks to advances in browser technology, you can
@@ -183,12 +177,6 @@ function HowToSplitPdfPages() {
         proprietary business plans, this is a massive security risk.
       </p>
 
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: Flow diagram comparing Server-side vs Client-side processing]
-        </span>
-      </div>
-
       <p>
         Furthermore, uploading a 500MB PDF over a slow Wi-Fi connection can take several minutes,
         followed by the time it takes the server to process the file, followed by the time it takes
@@ -225,12 +213,6 @@ function HowToSplitPdfPages() {
         window. The tool will immediately parse the file locally. Since there is no upload process,
         even massive files will appear on your screen in milliseconds.
       </p>
-
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: Screenshot of the visual page selection interface]
-        </span>
-      </div>
 
       <h3>Step 3: Choose Your Extraction Mode</h3>
       <p>

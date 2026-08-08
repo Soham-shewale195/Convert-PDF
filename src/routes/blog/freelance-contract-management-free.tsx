@@ -122,13 +122,6 @@ function FreelanceContractManagementFree() {
       </p>
       <p>Before you have even billed your first client, you are burning $75 a month in overhead.</p>
 
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: Illustration of a stressed freelancer surrounded by multiple software
-          subscription bills piling up]
-        </span>
-      </div>
-
       <p>
         The truth is, while enterprise corporations might need complex document management systems,
         freelancers do not. You need a system that is fast, legally secure, completely private, and
@@ -209,13 +202,6 @@ function FreelanceContractManagementFree() {
         Unfortunately, some clients will take that pristine first draft and disappear without
         paying. To prevent this, you must protect your work before it leaves your outbox.
       </p>
-
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: A visual example showing a freelancer's design proof secured with a
-          diagonal 'DRAFT - DO NOT USE' watermark]
-        </span>
-      </div>
 
       <h3>How to secure your proofs:</h3>
       <p>

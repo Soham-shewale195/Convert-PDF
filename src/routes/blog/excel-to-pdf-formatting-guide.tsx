@@ -119,13 +119,6 @@ function ExcelToPdfGuide() {
         gridlines have mysteriously vanished, leaving numbers floating in a sea of white space.
       </p>
 
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: A split-screen showing a pristine Excel sheet vs a horribly formatted,
-          cutoff PDF export]
-        </span>
-      </div>
-
       <p>
         Converting Excel (.xlsx) files to Portable Document Format (PDF) is inherently difficult
         because the two formats were designed with completely opposite philosophies. Excel is an
@@ -202,13 +195,6 @@ function ExcelToPdfGuide() {
         automatically shrink the font and cell sizes to ensure horizontal boundaries fit perfectly
         onto an A4 or Letter page.
       </p>
-
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: Screenshot highlighting the 'Fit All Columns on One Page' setting in
-          Excel]
-        </span>
-      </div>
 
       <h3>3. Add Physical Borders</h3>
       <p>

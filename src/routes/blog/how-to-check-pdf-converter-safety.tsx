@@ -118,13 +118,6 @@ function HowToCheckPdfConverterSafety() {
         phrase is a massive red flag.
       </p>
 
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: A magnifying glass inspecting a fake '100% Secure' badge on a website,
-          revealing a cloud server hidden underneath]
-        </span>
-      </div>
-
       <p>
         As we covered in our article on the{" "}
         <Link to="/blog/risks-of-online-file-converters">Risks of Online Converters</Link>, the
@@ -190,13 +183,6 @@ function HowToCheckPdfConverterSafety() {
         diagnostic tools that web developers use. Every modern browser has a built-in "Network
         Inspector" that tracks every single piece of data leaving or entering your computer.
       </p>
-
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: Screenshot of Google Chrome DevTools Network Tab showing a massive
-          'POST' request during a file upload]
-        </span>
-      </div>
 
       <h3>How to Perform the Test:</h3>
       <ol>

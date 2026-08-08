@@ -56,7 +56,7 @@ const faqs = [
   {
     question: "Can I convert a PDF to Word for free?",
     answer:
-      "Yes, absolutely. ConvertPDF's browser-based tool converts PDF to Word (.docx) completely free of charge. No account needed, no watermarks, and your file never leaves your device. Files up to 10 MB convert instantly.",
+      "Yes, absolutely. ConvertPDF's browser-based tool converts PDF to Word (.docx) completely free of charge. No account needed, no watermarks, and your file never leaves your device. Files up to 25 MB convert instantly.",
   },
   {
     question: "Will the formatting be preserved when I convert PDF to Word?",
@@ -76,7 +76,7 @@ const faqs = [
   {
     question: "What is the maximum PDF file size I can convert?",
     answer:
-      "ConvertPDF supports files up to 25 MB. Files under 10 MB convert and download instantly for free. Files between 10–25 MB require watching a brief ad to unlock the download, helping keep the service free for everyone.",
+      "ConvertPDF supports files up to 25 MB. Files within that limit convert and download instantly for free.",
   },
   {
     question: "Can I convert a multi-page PDF to Word?",
@@ -177,10 +177,6 @@ function HowToConvertPdfToWord() {
         Click the <strong>"Convert to Word"</strong> button. The conversion happens in seconds using
         WebAssembly-powered processing in your browser. Once complete, click{" "}
         <strong>"Download .docx"</strong> to save the file to your computer.
-      </p>
-      <p className="mt-3">
-        Files under 10 MB download instantly. Files between 10–25 MB require watching a short ad to
-        support the free service.
       </p>
 
       <h2 className="text-2xl sm:text-3xl font-bold text-white mt-10 mb-4">

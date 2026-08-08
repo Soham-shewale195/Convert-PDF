@@ -124,13 +124,6 @@ function RisksOfOnlineFileConverters() {
         third-party server located in an unknown jurisdiction.
       </p>
 
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: Illustration showing a document flying from a user's laptop into a
-          dark, anonymous cloud server]
-        </span>
-      </div>
-
       <p>
         While many of these websites are legitimate businesses, the underlying architecture they
         use—server-side processing—is inherently dangerous for sensitive documents. In this deep
@@ -220,13 +213,6 @@ function RisksOfOnlineFileConverters() {
         called <strong>WebAssembly (Wasm)</strong>, developers can compile complex C++ or Rust
         software and run it directly inside the Google Chrome, Firefox, or Safari browser.
       </p>
-
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: Technical diagram contrasting a file traveling to a server vs a file
-          being processed locally inside a browser sandbox]
-        </span>
-      </div>
 
       <p>
         This is the exact technology that powers ConvertPDF. We flipped the architecture upside

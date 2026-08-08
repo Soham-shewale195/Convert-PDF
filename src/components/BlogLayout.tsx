@@ -385,7 +385,6 @@ function useTableOfContents() {
 }
 
 export default function BlogLayout({
-  slug,
   title,
   description,
   canonicalPath,
@@ -441,12 +440,6 @@ export default function BlogLayout({
       "@id": canonicalUrl,
     },
     articleSection: category,
-    image: {
-      "@type": "ImageObject",
-      url: `https://converttpdf.com/blog-images/${slug}.webp`,
-      width: 1200,
-      height: 630,
-    },
   };
 
   const faqSchema = {
@@ -523,17 +516,7 @@ export default function BlogLayout({
             className="relative rounded-2xl sm:rounded-3xl overflow-hidden group"
             style={{ minHeight: "280px" }}
           >
-            <img
-              src={`/blog-images/${slug}.webp`}
-              alt={title}
-              className="absolute inset-0 w-full h-full object-cover z-0 opacity-40 group-hover:opacity-50 transition-opacity"
-              onError={(e) => {
-                (e.target as HTMLImageElement).style.display = "none";
-              }}
-            />
-            <div
-              className={`absolute inset-0 bg-gradient-to-br ${featuredImageGradient} opacity-90 mix-blend-multiply`}
-            />
+            <div className={`absolute inset-0 bg-gradient-to-br ${featuredImageGradient}`} />
             <div
               className="absolute inset-0 opacity-10"
               style={{
@@ -743,14 +726,6 @@ export default function BlogLayout({
                       <div
                         className={`h-36 bg-gradient-to-br ${post.featuredImageGradient} flex items-center justify-center text-4xl relative overflow-hidden shrink-0`}
                       >
-                        <img
-                          src={`/blog-images/${post.slug}.webp`}
-                          alt=""
-                          className="absolute inset-0 w-full h-full object-cover z-0 opacity-30 group-hover:opacity-40 transition-opacity"
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).style.display = "none";
-                          }}
-                        />
                         <div
                           className="absolute inset-0 opacity-10"
                           style={{

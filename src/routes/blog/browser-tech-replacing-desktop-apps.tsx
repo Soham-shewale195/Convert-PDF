@@ -121,13 +121,6 @@ function BrowserTechReplacingDesktopApps() {
         and then pay a $150 licensing fee.
       </p>
 
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: A graveyard tombstone with the words 'Setup.exe - Rest in Peace'
-          surrounded by modern web browser logos]
-        </span>
-      </div>
-
       <p>
         Today, you just type a URL into Google Chrome, hit enter, and you are instantly doing the
         exact same work. No downloads. No installation wizards. No administrator privileges
@@ -183,13 +176,6 @@ function BrowserTechReplacingDesktopApps() {
         like Adobe Photoshop. Browsers simply did not have the capability to manipulate individual
         pixels.
       </p>
-
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-6 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: Technical diagram showing how the Canvas API reads image pixel data
-          directly into the browser's memory without a server]
-        </span>
-      </div>
 
       <p>
         The Canvas API changed everything. It provides developers with a blank, invisible digital

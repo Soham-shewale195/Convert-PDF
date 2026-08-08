@@ -53,7 +53,7 @@ const faqs = [
   {
     question: "What is the best free PDF to Word converter?",
     answer:
-      "ConvertPDF offers one of the best free PDF to Word converters because it works entirely in your browser — no upload, no account, no watermarks. The conversion preserves text formatting well and downloads instantly for files under 10 MB.",
+      "ConvertPDF offers one of the best free PDF to Word converters because it works entirely in your browser — no upload, no account, no watermarks. The conversion preserves text formatting well and downloads instantly for files up to 25 MB.",
   },
   {
     question: "Can I edit a PDF for free online?",
@@ -173,12 +173,6 @@ function BestFreePdfTools() {
         This guide covers the <strong>10 best free PDF tools</strong> available in 2025, with a
         focus on tools that are fast, private, and genuinely useful for everyday workflows.
       </p>
-
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-8 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: ConvertPDF Tool Suite Interface]
-        </span>
-      </div>
 
       <h2 className="text-2xl sm:text-3xl font-bold text-white mt-10 mb-6">
         The 10 Best Free PDF Tools in 2025
@@ -328,12 +322,6 @@ function BestFreePdfTools() {
         How to Choose the Right PDF Tool for Your Task
       </h2>
       <p>With so many tools available, here's a quick decision framework:</p>
-
-      <div className="aspect-video bg-white/5 rounded-xl flex items-center justify-center text-white/40 mb-8 mt-8 border border-white/10 border-dashed">
-        <span className="text-sm font-medium">
-          [Image Placeholder: Comparison of Desktop vs Browser Tools]
-        </span>
-      </div>
 
       <div
         className="overflow-x-auto mt-6 mb-6 rounded-xl"
