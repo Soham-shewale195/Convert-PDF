@@ -1,17 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import {
-  FileImage,
-  ShieldCheck,
-  Zap,
-  Smartphone,
-  Cloud,
-  Image as ImageIcon,
-  BookOpen,
-  Minimize2,
-} from "lucide-react";
+import { FileImage, Image as ImageIcon, Minimize2, Maximize2 } from "lucide-react";
 import ToolPageLayout from "@/components/ToolPageLayout";
 import JpgToPdfPanel from "@/components/tools/JpgToPdfPanel";
-import ToolContentSections, { type ToolContentData } from "@/components/ToolContentSections";
+import ToolContentSections, { type ToolSection } from "@/components/ToolContentSections";
 import { ToolFAQSchema, HowToSchema } from "@/components/schema/Schema";
 
 export const Route = createFileRoute("/jpg-to-pdf")({
@@ -35,187 +26,245 @@ export const Route = createFileRoute("/jpg-to-pdf")({
   component: JpgToPdfPage,
 });
 
-const contentData: ToolContentData = {
-  whatIs: {
+const buildSteps = [
+  {
+    title: "Select your images together",
+    description:
+      "Upload one or more JPG, JPEG, or PNG files. Select everything in a single go — choosing files again replaces the list rather than adding to it.",
+  },
+  {
+    title: "Check the order in the list",
+    description:
+      "Your files appear as a numbered list with each name and size, and pages are written in exactly that order. You can remove anything you did not mean to include; to change the order, reselect the files in the sequence you want.",
+  },
+  {
+    title: "Generate the document",
+    description:
+      'Click "Create PDF". Each image is embedded onto its own new page sized to that image, and the finished document downloads as images.pdf.',
+  },
+];
+
+const sections: ToolSection[] = [
+  {
+    kind: "prose",
     heading: "What Is JPG to PDF Conversion?",
     paragraphs: [
-      "JPG to PDF conversion is the process of taking one or more standalone image files (like JPG, JPEG, or PNG) and embedding them into a standardized PDF document. While images are great for viewing photos, a PDF is the universally accepted format for sharing documents, applications, and professional portfolios.",
-      "Our converter builds a new PDF from scratch with pdf-lib, and it makes one deliberate choice most converters don't: each page is created at the exact pixel dimensions of the image it holds. Nothing is scaled down to A4, nothing is letterboxed with white margins, and no pixels are resampled — the page simply is the photo, at full size.",
+      "JPG to PDF conversion takes one or more standalone image files and wraps them into a single PDF document. Images are fine for viewing photos, but PDF is what application portals, HR departments, and print shops actually ask for — one file, in a fixed order, that opens the same way everywhere.",
+      "This converter builds a new PDF from scratch with pdf-lib and makes one deliberate choice most converters do not: each page is created at the exact pixel dimensions of the image it holds, and the image is drawn to fill it corner to corner. Nothing is scaled to A4, nothing is letterboxed with white margins, and no pixel is resampled. The page simply is the photo.",
+      "The trade-off is worth understanding before you convert. Because a PDF measures its pages in points at 72 to the inch, an image pixel becomes a point — so a 4000 × 3000 photo produces a page around 55 by 42 inches, with an effective resolution of 72 DPI. That is ideal for on-screen viewing and for portals that only care about content, and awkward if you need something that drops neatly onto A4 in a print queue.",
     ],
   },
-  howTo: {
-    heading: "How to Convert Images to PDF in 3 Steps",
-    steps: [
+  {
+    kind: "steps",
+    heading: "Building Your Document",
+    variant: "timeline",
+    steps: buildSteps,
+  },
+  {
+    kind: "comparison",
+    heading: "How This Differs From a Typical Converter",
+    intro:
+      "Most online image-to-PDF tools re-encode and re-lay-out your photos onto standard paper sizes. This one does not touch the pixels at all. Neither approach is universally better — they suit different jobs:",
+    columns: ["This converter", "A typical A4-fitting converter"],
+    rows: [
       {
-        title: "Select your images",
-        description:
-          "Upload one or more JPG, JPEG, or PNG files from your device. You can drag and drop multiple photos at once.",
+        aspect: "Page size",
+        a: "Exactly the image's pixel dimensions, so every page can differ.",
+        b: "A fixed paper size such as A4 or Letter, identical on every page.",
       },
       {
-        title: "Check the list",
-        description:
-          "Your files appear as a numbered list showing each name and size, and pages are written in that order. You can remove any file you didn't mean to include; to change the order, reselect the files in the order you want.",
+        aspect: "Image data",
+        a: "Embedded byte-for-byte, with no decoding or re-encoding step.",
+        b: "Usually decoded and re-encoded, which can soften detail slightly.",
       },
       {
-        title: "Generate the document",
-        description:
-          "Click to convert. The tool instantly embeds each image onto a new PDF page and prepares the final document for download.",
+        aspect: "Margins",
+        a: "None. The image fills the page edge to edge.",
+        b: "White margins added around the image to fit the paper.",
+      },
+      {
+        aspect: "Print readiness",
+        a: "Not pre-formatted for paper; your printer will scale it to fit.",
+        b: "Ready to print at the intended size without adjustment.",
+      },
+      {
+        aspect: "Best suited to",
+        a: "Portal uploads, portfolios, and archiving where fidelity matters most.",
+        b: "Documents genuinely destined for a physical printer.",
       },
     ],
   },
-  benefits: {
-    heading: "Why Use Our Image to PDF Converter",
+  {
+    kind: "definitions",
+    heading: "What the Converter Does With Each File",
+    intro:
+      "Format handling is decided by the filename extension rather than by inspecting the file contents, which is worth knowing if your files have unusual names:",
+    terms: [
+      {
+        term: "Files ending in .png",
+        definition:
+          "Embedded as PNG, with the alpha channel preserved. Transparent regions stay transparent in the PDF rather than being flattened onto white.",
+      },
+      {
+        term: "Every other file",
+        definition:
+          "Attempted as JPEG. That covers .jpg and .jpeg correctly, and it means a PNG that has been renamed to .jpg will fail rather than convert.",
+      },
+      {
+        term: "WebP, HEIC, GIF, BMP, and AVIF",
+        definition:
+          "Not supported. The file picker accepts any image type your device offers, but only JPEG and PNG can actually be embedded, so these report a generic error. Convert them to JPG or PNG first.",
+      },
+      {
+        term: "One page per image, in list order",
+        definition:
+          "Each file becomes exactly one page, written in the order shown in the numbered list. There is no way to place two images on a single page.",
+      },
+      {
+        term: "The finished file",
+        definition:
+          "Always downloads as images.pdf, regardless of what your source files were called. Rename it after saving if the name matters.",
+      },
+    ],
+  },
+  {
+    kind: "checklist",
+    heading: "When Wrapping Images in a PDF Helps",
+    intro:
+      "Bundling images into one document solves a specific set of sharing and submission problems:",
     items: [
       {
-        icon: ShieldCheck,
-        title: "Passport scans stay local",
+        label: "Submitting scanned documents to a portal",
         description:
-          "pdf-lib is bundled into this page, so photographing an ID or a medical form and wrapping it in a PDF involves no upload and no runtime request anywhere.",
+          "Government services, universities, and HR systems routinely accept PDF only. Photographing an ID, a certificate, or a signed form and wrapping it in a PDF meets the requirement without a scanner.",
       },
       {
-        icon: BookOpen,
-        title: "One page per image, in order",
+        label: "Sending a batch of receipts as one file",
         description:
-          "Files are written as pages in the order they appear in the list, so a batch of receipts arrives as one document rather than twenty attachments.",
+          "Rather than attaching twenty loose photos to an expense claim, combine them into a single ordered document that a finance team can page through.",
       },
       {
-        icon: ImageIcon,
-        title: "JPEG and PNG, chosen by extension",
+        label: "Assembling a portfolio",
         description:
-          "Files ending in .png are embedded as PNG and everything else as JPEG. Other formats such as WebP or HEIC are not supported and will report an error.",
+          "Design mockups, photographs, or sketches become one professional document that opens in order, with each image at full resolution.",
       },
       {
-        icon: Zap,
-        title: "No recompression",
+        label: "Archiving a set of related photos",
         description:
-          "Image bytes are embedded as-is rather than decoded and re-encoded, so the photo inside the PDF is the same data as the file you selected.",
+          "A single PDF is easier to store, name, and open years later than a folder of loose image files, and it keeps the intended order attached to the content.",
       },
       {
-        icon: Cloud,
-        title: "Alpha channels survive",
+        label: "When to reach for something else",
         description:
-          "PNG transparency is carried into the PDF intact instead of being flattened onto a white background.",
-      },
-      {
-        icon: Smartphone,
-        title: "Straight from the camera roll",
-        description:
-          "Phone cameras already produce JPEG, so photos can go from camera roll to submission-ready PDF on the same device.",
+          "If the document must print at a specific paper size, this is not the right tool — pages come out at the images' pixel dimensions, not A4. And if the photos are very large, consider resizing or compressing them before converting, since nothing is downscaled on the way in.",
       },
     ],
   },
-  useCases: {
-    heading: "When to Convert JPGs to PDF",
-    intro: "Bundling images into a PDF solves many common file sharing and organization problems:",
-    items: [
-      {
-        label: "Submitting scanned documents",
-        description:
-          "Many government and institutional portals require PDF uploads. Convert photos of your ID or forms to meet requirements.",
-      },
-      {
-        label: "Creating portfolios",
-        description:
-          "Combine multiple design mockups, photographs, or sketches into a single professional PDF portfolio.",
-      },
-      {
-        label: "Sharing receipt batches",
-        description:
-          "Instead of emailing an HR department twenty loose photos of receipts, combine them into one clean expense report.",
-      },
-      {
-        label: "Archiving photo albums",
-        description:
-          "Bundle a collection of related photos into a single file for easier long-term storage and cross-platform viewing.",
-      },
-      {
-        label: "Preparing for print",
-        description:
-          "Printers often prefer a single PDF document over multiple image files to ensure pages are printed in the correct order.",
-      },
-    ],
-  },
-  privacy: {
+  {
+    kind: "callout",
     heading: "Private Photo Processing",
+    tone: "privacy",
+    policyLink: true,
     paragraphs: [
-      "Privacy is crucial when dealing with photos of personal documents like passports, medical records, or receipts. Our JPG to PDF converter is designed with a strict zero-upload architecture. It uses the modern File API to read your images directly into your browser's memory.",
-      "Once loaded, the pdf-lib library constructs a new PDF file and embeds the image data locally. Because the entire pipeline runs in client-side JavaScript, your sensitive photos are never transmitted over the internet or stored on a remote server.",
+      "Privacy matters most for exactly the files people convert here: passports, medical records, bank statements, signed contracts. The converter uses the File API to read your images straight into browser memory, and pdf-lib assembles the document in local JavaScript. Your photos are never uploaded, and no image data is transmitted anywhere.",
+      "Because image bytes are embedded rather than re-encoded, the picture inside the PDF is the same data that was on your device — nothing passes through a rendering service or a remote optimiser. When you close the tab, both the source images and the generated document are released from memory.",
     ],
   },
-  faqs: [
-    {
-      question: "Can I convert multiple images into a single PDF?",
-      answer:
-        "Yes, you can upload multiple JPG or PNG files at the same time. The tool will place each image onto its own sequential page in the final PDF document.",
-    },
-    {
-      question: "Will the images lose quality?",
-      answer:
-        "No. The images are embedded into the PDF at their original resolution. The tool scales the display size to fit the page dimensions, but the underlying pixel data remains untouched and high quality.",
-    },
-    {
-      question: "Does it support PNG files with transparent backgrounds?",
-      answer:
-        "Yes, the tool fully supports PNG images, including those with transparent backgrounds. The transparency will be preserved in the resulting PDF.",
-    },
-    {
-      question: "What page size is the final PDF?",
-      answer:
-        "There is no fixed page size. Each page is created at exactly the pixel dimensions of the image placed on it, so a 4000x3000 photo produces a 4000x3000 page. This means no cropping, no white margins, and no distortion — but it also means pages in a mixed batch will differ in size, and the document is not pre-formatted for A4 or Letter printing.",
-    },
-    {
-      question: "Why did my WebP or HEIC image fail?",
-      answer:
-        "Only JPEG and PNG can be embedded. The file picker is permissive and will let you select other image types, but the tool decides how to embed a file from its extension — .png is treated as PNG, anything else is attempted as JPEG — so a WebP, HEIC, or GIF will fail with a generic error. Convert those to JPG or PNG first.",
-    },
-    {
-      question: "Is there a limit on the number of images I can upload?",
-      answer:
-        "No limit is built into the tool. Because pages are created at each image's full pixel dimensions and nothing is downscaled, the output grows quickly with high-resolution photos — a large batch straight from a modern camera can produce a very large PDF and put real pressure on browser memory. Converting in smaller batches is more reliable on phones and older machines.",
-    },
-    {
-      question: "Are my photos uploaded to a cloud server?",
-      answer:
-        "Absolutely not. The entire conversion process happens locally on your computer or smartphone. We do not have access to your files.",
-    },
-    {
-      question: "How can I reduce the file size of the resulting PDF?",
-      answer:
-        "If you combine many large photos, the resulting PDF can be quite large. After converting, you can run the document through our Compress PDF tool to reduce the file size for easier emailing.",
-    },
-  ],
-  relatedTools: [
-    {
-      name: "PDF to JPG",
-      href: "/pdf-to-jpg",
-      description: "Convert PDF pages to images",
-      icon: ImageIcon,
-      accent: "from-violet-500 to-purple-500",
-    },
-    {
-      name: "Compress PDF",
-      href: "/compress-pdf",
-      description: "Reduce PDF file size",
-      icon: Minimize2,
-      accent: "from-emerald-500 to-teal-500",
-    },
-  ],
-  relatedArticleSlugs: ["how-to-convert-images-to-pdf", "browser-pdf-converter-privacy"],
-};
+  {
+    kind: "faq",
+    heading: "JPG to PDF: Questions and Answers",
+    faqs: [
+      {
+        question: "Can I combine several images into one PDF?",
+        answer:
+          "Yes. Select multiple JPG or PNG files at once and each becomes its own page, in the order shown in the file list. Select them all in a single go, because a second selection replaces the list rather than adding to it.",
+      },
+      {
+        question: "Will my images lose any quality?",
+        answer:
+          "No. The image bytes are embedded into the PDF exactly as they exist on your device, with no decoding, resampling, or re-encoding step. The photo inside the document is bit-for-bit the file you selected, and it is drawn at full size on a page created to match its pixel dimensions.",
+      },
+      {
+        question: "What page size does the finished PDF use?",
+        answer:
+          "There is no fixed page size. Each page is created at exactly the pixel dimensions of its image, so a 4000 × 3000 photo produces a 4000 × 3000 page. Since a PDF point is 1/72 inch, that works out to roughly 55 by 42 inches at 72 DPI. There is no cropping, no white margin, and no distortion — but pages in a mixed batch will differ in size, and nothing is pre-formatted for A4 or Letter.",
+      },
+      {
+        question: "Does it support PNG transparency?",
+        answer:
+          "Yes. Files ending in .png are embedded as PNG with their alpha channel intact, so transparent areas stay transparent in the PDF instead of being flattened onto a white background.",
+      },
+      {
+        question: "Why did my WebP or HEIC image fail?",
+        answer:
+          "Only JPEG and PNG can be embedded. The file picker is permissive and lets you select any image type, but the tool decides how to handle a file from its extension — .png is treated as PNG and anything else is attempted as JPEG — so WebP, HEIC, GIF, and BMP fail with a generic error. Convert them to JPG or PNG first.",
+      },
+      {
+        question: "Can I reorder the pages?",
+        answer:
+          "Not within the tool. The file list shows each file's position with a button to remove it, but it has no drag-to-reorder control. Pages follow the list order, so to change the sequence remove the files and reselect them in the order you want — naming them 01-, 02-, 03- first makes this predictable.",
+      },
+      {
+        question: "Is there a limit on how many images I can add?",
+        answer:
+          "No limit is built in. Because pages are created at each image's full pixel dimensions and nothing is downscaled, the output grows quickly with high-resolution photos — a large batch straight from a modern camera can produce a very large PDF and put real pressure on browser memory. Smaller batches are more reliable on phones and older machines.",
+      },
+      {
+        question: "How do I make the resulting PDF smaller?",
+        answer:
+          "Either shrink the images before converting with the Compress Image or Resize Image tools, or run the finished document through Compress PDF afterwards. Reducing the images first generally gives the better result, since it lowers the page dimensions too.",
+      },
+    ],
+  },
+  {
+    kind: "toolLinks",
+    heading: "Useful Alongside This Tool",
+    tools: [
+      {
+        name: "Compress Image",
+        href: "/compress-image",
+        description: "Shrink photos before converting so the finished PDF stays manageable.",
+        icon: Minimize2,
+        accent: "from-emerald-500 to-teal-500",
+      },
+      {
+        name: "Resize Image",
+        href: "/resize-image",
+        description:
+          "Set consistent pixel dimensions first, so every page in the PDF comes out the same size.",
+        icon: Maximize2,
+        accent: "from-rose-500 to-pink-500",
+      },
+      {
+        name: "PDF to JPG",
+        href: "/pdf-to-jpg",
+        description: "The reverse trip — render a PDF back out as an image.",
+        icon: ImageIcon,
+        accent: "from-violet-500 to-purple-500",
+      },
+    ],
+  },
+  {
+    kind: "articleLinks",
+    heading: "Related Guides",
+    slugs: ["how-to-convert-images-to-pdf", "batch-image-processing-guide"],
+  },
+];
 
-const howToSteps = contentData.howTo.steps.map((s) => ({ name: s.title, text: s.description }));
+const howToSteps = buildSteps.map((s) => ({ name: s.title, text: s.description }));
+const faqSection = sections.find((s) => s.kind === "faq");
 
 function JpgToPdfPage() {
   return (
     <>
-      <ToolFAQSchema faqs={contentData.faqs} />
+      {faqSection?.kind === "faq" && <ToolFAQSchema faqs={faqSection.faqs} />}
       <HowToSchema name="How to Convert JPG to PDF Online" steps={howToSteps} />
       <ToolPageLayout
         title="JPG/PNG to PDF"
-        description="Bundle images into a single PDF document."
+        description="Bundle images into a single PDF — one page per image, at full resolution."
         icon={FileImage}
         accent="from-amber-500 to-orange-500"
-        contentSections={<ToolContentSections data={contentData} />}
+        contentSections={<ToolContentSections sections={sections} />}
       >
         <JpgToPdfPanel />
       </ToolPageLayout>
