@@ -31,8 +31,9 @@ const contentData: ToolContentData = {
   whatIs: {
     heading: "What Is PDF Splitting?",
     paragraphs: [
-      "PDF splitting breaks a multi-page PDF document into separate, individual files — one PDF per page. This is different from extracting a custom page range into a single output: this tool always produces exactly as many output files as there are pages in the source document, one file for each page. The result is a complete set of isolated page files, giving you maximum flexibility to use, share, or reassemble only what you need.",
-      "**How the split works technically:** The tool loads your PDF using pdf-lib, reads the total page count, and then loops from page 0 through to the last page. For each page index, it creates a brand-new empty PDFDocument, copies that single page from the source using copyPages(src, [i]), adds it to the new document, and serialises it. Each resulting file is named page-1.pdf, page-2.pdf, and so on (1-indexed). All individual page files are then packed into a single ZIP archive by JSZip, and the ZIP is named after your original file (e.g. contract-pages.zip). This means the entire split happens before any download begins — you receive one ZIP containing all pages at once.",
+      "PDF splitting breaks a multi-page PDF document into separate files. This tool offers two modes. **Every page** produces exactly as many output files as there are pages in the source document, one file for each page — a complete set of isolated pages. **Custom pages** lets you type the pages you actually want, such as 1-3, 5, 8-10, and extracts only those. Either way you get a single ZIP containing the results.",
+      "**How custom selection groups pages:** In Custom pages mode, each comma-separated group becomes one output PDF, so a range stays a single document. Entering 1-3, 5, 8-10 produces three files — pages-1-3.pdf with three pages, page-5.pdf with one, and pages-8-10.pdf with three. If you would rather have each page separately, list them individually: 1,2,3 produces three one-page files. Ranges are inclusive and 1-indexed.",
+      "**How the split works technically:** The tool loads your PDF using pdf-lib and reads the total page count. In Every page mode it loops from page 0 through to the last page, creating a brand-new empty PDFDocument for each index, copying that single page from the source using copyPages(src, [i]), and serialising it — producing page-1.pdf, page-2.pdf, and so on. Custom pages mode uses the same copyPages call but passes the whole run of indices at once, so a group arrives as one multi-page document. All resulting files are then packed into a single ZIP archive by JSZip, named after your original file (e.g. contract-pages.zip). The entire split happens before any download begins — you receive one ZIP containing everything at once.",
     ],
   },
   howTo: {
@@ -44,14 +45,14 @@ const contentData: ToolContentData = {
           "Drag and drop your multi-page PDF onto the upload area, or click to browse. The file is loaded directly into your browser — it never leaves your device.",
       },
       {
-        title: "Split into pages",
+        title: "Choose a split mode",
         description:
-          'Click "Split into pages" to begin. The tool creates a separate PDF for every page in your document, preserving the original formatting, dimensions, and orientation of each one.',
+          'Leave it on "Every page" to get one PDF per page, or switch to "Custom pages" and type the pages you want — for example 1-3, 5, 8-10. Then click to run. Either way, the original formatting, dimensions, and orientation of every page are preserved.',
       },
       {
         title: "Download the ZIP",
         description:
-          "All individual page files are packaged into a single ZIP archive named after your original file. Download it, extract the pages you need, and share or archive them individually.",
+          "Every file the split produced is packaged into a single ZIP archive named after your original document. Download it, unzip it, and share or archive the files individually.",
       },
     ],
   },
@@ -108,7 +109,7 @@ const contentData: ToolContentData = {
       {
         label: "When NOT to use this tool",
         description:
-          "Do not use this tool if you need a specific consecutive range of pages as a single output file (for example, pages 5–12 combined into one PDF). This tool always produces one file per page — it does not support range extraction into a consolidated output. To get pages 5–12 as one PDF, split the document, then use the Merge PDF tool to combine only page-5.pdf through page-12.pdf into a single file. Also avoid splitting documents intended to be read as a whole (reports, essays, books) when the goal is just to reduce file size — use the Compress PDF tool instead.",
+          "Splitting is the wrong operation when the document should stay whole. If the goal is simply a smaller file, use the Compress PDF tool instead — breaking a report or an essay into pieces does not make it easier to read or to send. Splitting also cannot reorder pages on its own: to change their sequence, extract what you need here and then reassemble it with the Merge PDF tool. And if you want pages from several different documents combined, that is a merge, not a split.",
       },
       {
         label: "Separating invoices from a batch statement",
@@ -138,7 +139,7 @@ const contentData: ToolContentData = {
     {
       question: "Does the tool split every page, or can I choose a range?",
       answer:
-        "The tool always splits every page in the document — it creates one output PDF for each page, from page 1 through to the last. It does not support selective range extraction in a single output file. To get a specific range as one PDF, split the entire document first, then use the Merge PDF tool to combine the specific page files you need.",
+        "Either. Every page mode creates one output PDF for each page, from page 1 through to the last. Custom pages mode lets you type exactly what you want — 1-3, 5, 8-10 — and each comma-separated group becomes one PDF, so pages 1-3 arrive as a single three-page document rather than three separate files. To get them separately instead, list the pages individually as 1,2,3.",
     },
     {
       question: "Does splitting a PDF degrade the quality of individual pages?",
@@ -209,7 +210,7 @@ function SplitPdfPage() {
       <HowToSchema name="How to Split a PDF Online" steps={howToSteps} />
       <ToolPageLayout
         title="Split PDF"
-        description="Extract every page into its own PDF file, packaged in a single ZIP download."
+        description="Extract every page, or just the pages you choose, packaged in a single ZIP download."
         icon={Scissors}
         accent="from-pink-500 to-rose-500"
         contentSections={<ToolContentSections data={contentData} />}
