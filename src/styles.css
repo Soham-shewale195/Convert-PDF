@@ -142,7 +142,9 @@
     position: absolute;
     border-radius: 9999px;
     filter: blur(80px);
-    opacity: 0.5;
+    /* Kept low so the ambient wash sits behind the glass cards rather than
+       bleeding through them and washing out card content. */
+    opacity: 0.18;
     pointer-events: none;
   }
   @keyframes float-slow {
