@@ -25,6 +25,12 @@ export default function CompressPdfPanel() {
     setIsSafari(isSafariBrowser());
   }, []);
 
+  // Picking a new file after a finished run returns the panel to idle, so the
+  // tool can be used again without reloading. Matches the image tool panels.
+  useEffect(() => {
+    if (files.length) setState("idle");
+  }, [files]);
+
   const run = async () => {
     if (!files[0]) return;
     setState("processing");
@@ -75,8 +81,8 @@ export default function CompressPdfPanel() {
 
   return (
     <>
-      {state === "idle" && Dropzone}
-      {state === "idle" && <FileList files={files} setFiles={setFiles} />}
+      {state !== "processing" && Dropzone}
+      {state !== "processing" && <FileList files={files} setFiles={setFiles} />}
 
       {state === "idle" && files.length > 0 && (
         <div className="mt-5 space-y-3">

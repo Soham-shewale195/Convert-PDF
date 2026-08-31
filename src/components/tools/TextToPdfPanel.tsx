@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useRewardedDownload } from "@/hooks/monetization/useRewardedDownload";
 import { ActionButton, LoadingState } from "@/components/PdfToolsUI";
@@ -7,6 +7,13 @@ export default function TextToPdfPanel() {
   const [text, setText] = useState("");
   const [state, setState] = useState<"idle" | "processing" | "success">("idle");
   const { prepareDownload, renderStatusCard, renderModal } = useRewardedDownload();
+
+  // Editing the text after a finished run returns the panel to idle, so the
+  // tool can be used again without reloading. Matches the image tool panels.
+  useEffect(() => {
+    if (text.trim()) setState("idle");
+  }, [text]);
+
   const run = async () => {
     if (!text.trim()) return toast.error("Enter some text");
     setState("processing");
@@ -41,7 +48,7 @@ export default function TextToPdfPanel() {
   };
   return (
     <>
-      {state === "idle" && (
+      {state !== "processing" && (
         <textarea
           value={text}
           onChange={(e) => setText(e.target.value)}

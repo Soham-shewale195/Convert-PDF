@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useRewardedDownload } from "@/hooks/monetization/useRewardedDownload";
 import { useDropFiles, FileList, ActionButton, LoadingState } from "@/components/PdfToolsUI";
@@ -9,6 +9,13 @@ export default function RotatePdfPanel() {
   const [angle, setAngle] = useState<90 | 180 | 270>(90);
   const [state, setState] = useState<"idle" | "processing" | "success">("idle");
   const { prepareDownload, renderStatusCard, renderModal } = useRewardedDownload();
+
+  // Picking a new file after a finished run returns the panel to idle, so the
+  // tool can be used again without reloading. Matches the image tool panels.
+  useEffect(() => {
+    if (files.length) setState("idle");
+  }, [files]);
+
   const run = async () => {
     if (!files[0]) return;
     setState("processing");
@@ -32,8 +39,8 @@ export default function RotatePdfPanel() {
   };
   return (
     <>
-      {state === "idle" && Dropzone}
-      {state === "idle" && <FileList files={files} setFiles={setFiles} />}
+      {state !== "processing" && Dropzone}
+      {state !== "processing" && <FileList files={files} setFiles={setFiles} />}
       {state === "idle" && (
         <div className="flex gap-2 mt-4">
           {[90, 180, 270].map((a) => (
