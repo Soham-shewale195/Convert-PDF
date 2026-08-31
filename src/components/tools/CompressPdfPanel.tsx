@@ -9,6 +9,7 @@ import {
   CompressionResult,
   isSafariBrowser,
 } from "@/lib/pdf-compress-utils";
+import { pdfErrorMessage } from "@/lib/pdf-load";
 
 export default function CompressPdfPanel() {
   const { files, setFiles, Dropzone } = useDropFiles(false, ".pdf");
@@ -30,7 +31,7 @@ export default function CompressPdfPanel() {
     setProgressMsg("Reading document...");
     try {
       const buffer = await files[0].arrayBuffer();
-      const result = await compressPdf(buffer, preset, (msg) => setProgressMsg(msg));
+      const result = await compressPdf(buffer, preset, (msg) => setProgressMsg(msg), files[0].name);
 
       const blob = new Blob([result.bytes as BlobPart], { type: "application/pdf" });
       await prepareDownload(blob, files[0].name.replace(/\.pdf$/i, "") + "-compressed.pdf");
@@ -42,7 +43,7 @@ export default function CompressPdfPanel() {
       console.error("Compression error:", e);
       setState("idle");
       setProgressMsg("");
-      toast.error("Compression failed. Please try another PDF.");
+      toast.error(pdfErrorMessage(e, "Compression failed. Please try another PDF."));
     }
   };
 

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useRewardedDownload } from "@/hooks/monetization/useRewardedDownload";
 import { useDropFiles, FileList, ActionButton, LoadingState } from "@/components/PdfToolsUI";
+import { loadPdf, pdfErrorMessage } from "@/lib/pdf-load";
 
 export default function WatermarkPdfPanel() {
   const { files, setFiles, Dropzone } = useDropFiles(false, ".pdf");
@@ -12,8 +13,8 @@ export default function WatermarkPdfPanel() {
     if (!files[0]) return;
     setState("processing");
     try {
-      const { PDFDocument, StandardFonts, degrees, rgb } = await import("pdf-lib");
-      const src = await PDFDocument.load(await files[0].arrayBuffer());
+      const { StandardFonts, degrees, rgb } = await import("pdf-lib");
+      const src = await loadPdf(await files[0].arrayBuffer(), files[0].name);
       const font = await src.embedFont(StandardFonts.HelveticaBold);
       for (const page of src.getPages()) {
         const { width, height } = page.getSize();
@@ -36,7 +37,7 @@ export default function WatermarkPdfPanel() {
     } catch (e) {
       console.error(e);
       setState("idle");
-      toast.error("Failed");
+      toast.error(pdfErrorMessage(e, "Watermarking failed"));
     }
   };
   return (

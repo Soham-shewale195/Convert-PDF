@@ -1,5 +1,6 @@
-import { PDFDocument, PDFRawStream, PDFName, PDFNumber } from "pdf-lib";
+import { PDFRawStream, PDFName, PDFNumber } from "pdf-lib";
 import { loadPdfJs } from "@/components/PdfToolsUI";
+import { loadPdf } from "@/lib/pdf-load";
 
 export type CompressionPreset = "low" | "medium" | "high";
 
@@ -95,11 +96,12 @@ export async function compressPdf(
   arrayBuffer: ArrayBuffer,
   preset: CompressionPreset = "medium",
   onProgress?: (msg: string) => void,
+  fileName?: string,
 ): Promise<CompressionResult> {
   const originalSize = arrayBuffer.byteLength;
 
-  // 1. Load the PDF document in pdf-lib
-  const pdfDoc = await PDFDocument.load(arrayBuffer);
+  // 1. Load the PDF document in pdf-lib (rejects password-protected files)
+  const pdfDoc = await loadPdf(arrayBuffer, fileName);
 
   // Low preset: Lossless structural re-save only (identical baseline behavior)
   if (preset === "low") {

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useRewardedDownload } from "@/hooks/monetization/useRewardedDownload";
 import { useDropFiles, FileList, ActionButton, LoadingState } from "@/components/PdfToolsUI";
+import { loadPdf, pdfErrorMessage } from "@/lib/pdf-load";
 
 export default function RotatePdfPanel() {
   const { files, setFiles, Dropzone } = useDropFiles(false, ".pdf");
@@ -12,8 +13,8 @@ export default function RotatePdfPanel() {
     if (!files[0]) return;
     setState("processing");
     try {
-      const { PDFDocument, degrees } = await import("pdf-lib");
-      const src = await PDFDocument.load(await files[0].arrayBuffer());
+      const { degrees } = await import("pdf-lib");
+      const src = await loadPdf(await files[0].arrayBuffer(), files[0].name);
       for (const p of src.getPages()) {
         const cur = p.getRotation().angle;
         p.setRotation(degrees((cur + angle) % 360));
@@ -26,7 +27,7 @@ export default function RotatePdfPanel() {
     } catch (e) {
       console.error(e);
       setState("idle");
-      toast.error("Failed");
+      toast.error(pdfErrorMessage(e, "Rotation failed"));
     }
   };
   return (

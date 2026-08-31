@@ -2,6 +2,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useRewardedDownload } from "@/hooks/monetization/useRewardedDownload";
 import { useDropFiles, FileList, ActionButton, LoadingState } from "@/components/PdfToolsUI";
+import { loadPdf, pdfErrorMessage } from "@/lib/pdf-load";
 
 export default function SplitPdfPanel() {
   const { files, setFiles, Dropzone } = useDropFiles(false, ".pdf");
@@ -13,7 +14,7 @@ export default function SplitPdfPanel() {
     try {
       const { PDFDocument } = await import("pdf-lib");
       const JSZip = (await import("jszip")).default;
-      const src = await PDFDocument.load(await files[0].arrayBuffer());
+      const src = await loadPdf(await files[0].arrayBuffer(), files[0].name);
       const zip = new JSZip();
       for (let i = 0; i < src.getPageCount(); i++) {
         const doc = await PDFDocument.create();
@@ -28,7 +29,7 @@ export default function SplitPdfPanel() {
     } catch (e) {
       console.error(e);
       setState("idle");
-      toast.error("Split failed");
+      toast.error(pdfErrorMessage(e, "Split failed"));
     }
   };
   return (

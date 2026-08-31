@@ -2,6 +2,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { useRewardedDownload } from "@/hooks/monetization/useRewardedDownload";
 import { useDropFiles, FileList, ActionButton, LoadingState } from "@/components/PdfToolsUI";
+import { loadPdf, pdfErrorMessage } from "@/lib/pdf-load";
 
 export default function MergePdfPanel() {
   const { files, setFiles, Dropzone } = useDropFiles(true, ".pdf");
@@ -14,7 +15,7 @@ export default function MergePdfPanel() {
       const { PDFDocument } = await import("pdf-lib");
       const out = await PDFDocument.create();
       for (const f of files) {
-        const src = await PDFDocument.load(await f.arrayBuffer());
+        const src = await loadPdf(await f.arrayBuffer(), f.name);
         const pages = await out.copyPages(src, src.getPageIndices());
         pages.forEach((p) => out.addPage(p));
       }
@@ -26,7 +27,7 @@ export default function MergePdfPanel() {
     } catch (e) {
       console.error(e);
       setState("idle");
-      toast.error("Merge failed");
+      toast.error(pdfErrorMessage(e, "Merge failed"));
     }
   };
   return (
