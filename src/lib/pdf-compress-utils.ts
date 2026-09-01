@@ -1,4 +1,4 @@
-import { PDFRawStream, PDFName, PDFNumber, PDFRef, PDFDict, PDFContext } from "pdf-lib";
+import { PDFRawStream, PDFName, PDFNumber, PDFRef, PDFDict, PDFArray, PDFContext } from "pdf-lib";
 import { loadPdf } from "@/lib/pdf-load";
 
 export type CompressionPreset = "low" | "medium" | "high";
@@ -108,6 +108,179 @@ const numberOf = (dict: PDFDict, key: string): number =>
   Number(dict.get(PDFName.of(key))?.toString() ?? NaN);
 
 /**
+ * Resolves a /ColorSpace entry to the number of colour components per sample,
+ * or 0 when the layout cannot be established with confidence.
+ *
+ * The entry is inspected structurally rather than by substring, which matters
+ * in both directions. Real producers commonly write it as the array
+ * [/ICCBased 307 0 R], whose profile stream carries /N — reading that is what
+ * lets those images be recompressed at all. Equally, an array such as
+ * [/Indexed /DeviceRGB 255 <...>] contains the text "DeviceRGB" while its
+ * samples are palette indices, not colour; treating those as pixels would
+ * corrupt the image, so anything not positively identified returns 0 and the
+ * caller skips it.
+ */
+function colorComponents(context: PDFContext, rawColorSpace: unknown): number {
+  const cs = context.lookup(rawColorSpace as Parameters<PDFContext["lookup"]>[0]);
+  if (!cs) return 0;
+
+  if (cs instanceof PDFName) {
+    const name = cs.toString();
+    if (name === "/DeviceRGB") return 3;
+    if (name === "/DeviceGray") return 1;
+    return 0;
+  }
+
+  if (cs instanceof PDFArray && cs.size() >= 1) {
+    const family = context.lookup(cs.get(0))?.toString();
+
+    if (family === "/ICCBased" && cs.size() >= 2) {
+      const profile = context.lookup(cs.get(1)) as { dict?: PDFDict } | undefined;
+      const n = Number(profile?.dict?.get(PDFName.of("N"))?.toString() ?? NaN);
+      if (n === 1) return 1;
+      if (n === 3) return 3;
+      // N === 4 is CMYK, and anything else is unknown. Neither can be mapped to
+      // canvas pixels without a colour transform, so leave the image alone.
+      return 0;
+    }
+
+    // Calibrated spaces still store plain component samples.
+    if (family === "/CalRGB") return 3;
+    if (family === "/CalGray") return 1;
+
+    // Indexed, Separation, DeviceN, Lab and Pattern do not store direct colour.
+    return 0;
+  }
+
+  return 0;
+}
+
+/* ------------------------------------------------------------------ */
+/*  JPEG 2000 (/JPXDecode) support                                     */
+/* ------------------------------------------------------------------ */
+
+interface JpxModule {
+  _malloc(size: number): number;
+  _free(ptr: number): void;
+  writeArrayToMemory(data: Uint8Array, ptr: number): void;
+  _jp2_decode(
+    ptr: number,
+    size: number,
+    numComponents: number,
+    isIndexedColormap: boolean,
+    smaskInData: boolean,
+    reducePower: number,
+  ): number;
+  imageData: Uint8ClampedArray | null;
+  errorMessages?: string;
+}
+
+let jpxModulePromise: Promise<JpxModule | null> | null = null;
+
+/**
+ * Loads OpenJPEG lazily, and only when a JPEG 2000 image is actually met.
+ *
+ * This is deliberately the `_nowasm_fallback` build: OpenJPEG compiled to plain
+ * JavaScript. The `WebAssembly.*` identifiers inside that file resolve to a
+ * module-local shim object (it sets `isWasm2js: true` and aliases
+ * `RuntimeError` to `Error`), so nothing is compiled or instantiated as
+ * WebAssembly and no .wasm asset is fetched. The module ships with the
+ * pdfjs-dist dependency already used by the PDF-to-JPG tool, so this adds no
+ * package and makes no network request.
+ */
+async function loadJpxDecoder(): Promise<JpxModule | null> {
+  if (!jpxModulePromise) {
+    jpxModulePromise = (async () => {
+      // Static specifier so the bundler emits this as its own lazy chunk.
+      // @ts-expect-error - generated Emscripten output, shipped without types
+      const mod = await import("pdfjs-dist/wasm/openjpeg_nowasm_fallback.js");
+      const factory = (mod as unknown as { default: () => Promise<JpxModule> }).default;
+      return await factory();
+    })().catch((err) => {
+      console.warn("JPEG 2000 decoder unavailable; those images will be left as-is:", err);
+      return null;
+    });
+  }
+  return jpxModulePromise;
+}
+
+/**
+ * Decodes a JPEG 2000 image stream into paintable pixels. Chromium cannot
+ * decode JP2 through createImageBitmap under any MIME type, so this is the only
+ * route to recompressing them.
+ *
+ * Returns null on any doubt — decoder unavailable, decode failure, or output
+ * whose length does not reconcile with the dictionary's /Width and /Height —
+ * so the image is skipped rather than written back garbled.
+ */
+async function decodeJpxImage(
+  bytes: Uint8Array,
+  width: number,
+  height: number,
+): Promise<DecodedImage | null> {
+  const mod = await loadJpxDecoder();
+  if (!mod) return null;
+
+  let ptr = 0;
+  try {
+    ptr = mod._malloc(bytes.length);
+    if (!ptr) return null;
+    mod.writeArrayToMemory(bytes, ptr);
+
+    // Asking for 4 components routes the result through OpenJPEG's
+    // gray_to_rgba / rgb_to_rgba converters, giving canvas-ready samples.
+    const failed = mod._jp2_decode(ptr, bytes.length, 4, false, false, 0);
+    if (failed) {
+      mod.errorMessages = undefined;
+      return null;
+    }
+
+    const data = mod.imageData;
+    mod.imageData = null;
+    if (!data) return null;
+
+    const pixels = width * height;
+    // Always copied into a freshly allocated buffer: it keeps the samples clear
+    // of the decoder's heap and gives ImageData the plain ArrayBuffer it wants.
+    const rgba = new Uint8ClampedArray(pixels * 4);
+    if (data.length === pixels * 4) {
+      rgba.set(data);
+    } else if (data.length === pixels * 3) {
+      for (let p = 0, s = 0, d = 0; p < pixels; p++, s += 3, d += 4) {
+        rgba[d] = data[s];
+        rgba[d + 1] = data[s + 1];
+        rgba[d + 2] = data[s + 2];
+        rgba[d + 3] = 255;
+      }
+    } else if (data.length === pixels) {
+      for (let p = 0, d = 0; p < pixels; p++, d += 4) {
+        const v = data[p];
+        rgba[d] = v;
+        rgba[d + 1] = v;
+        rgba[d + 2] = v;
+        rgba[d + 3] = 255;
+      }
+    } else {
+      // Decoded sample count disagrees with the declared dimensions.
+      return null;
+    }
+
+    const imageData = new ImageData(rgba, width, height);
+    return { width, height, draw: (ctx) => ctx.putImageData(imageData, 0, 0) };
+  } catch {
+    return null;
+  } finally {
+    if (ptr) {
+      try {
+        mod._free(ptr);
+      } catch {
+        /* freeing a failed allocation must not abort the batch */
+      }
+    }
+  }
+}
+
+/**
  * Decodes a FlateDecode image stream into paintable pixels.
  *
  * PDF stores these as raw samples compressed with zlib, not as a PNG file, so
@@ -145,12 +318,7 @@ async function decodeFlateImage(
   const height = numberOf(dict, "Height");
   if (!Number.isFinite(width) || !Number.isFinite(height) || width < 1 || height < 1) return null;
 
-  const colorSpace = context.lookup(dict.get(PDFName.of("ColorSpace")))?.toString() ?? "";
-  const components = colorSpace.includes("DeviceRGB")
-    ? 3
-    : colorSpace.includes("DeviceGray")
-      ? 1
-      : 0;
+  const components = colorComponents(context, dict.get(PDFName.of("ColorSpace")));
   if (!components) return null;
 
   const raw = await inflateStream(bytes);
@@ -281,13 +449,9 @@ export async function compressPdf(
       continue;
     }
 
-    // EXCLUSION 3: Encodings we cannot hand to a canvas.
+    // EXCLUSION 3: Encodings we have no decoder for.
     const filter = dict.get(PDFName.of("Filter"))?.toString() || "";
-    if (
-      filter.includes("CCITTFaxDecode") ||
-      filter.includes("JBIG2Decode") ||
-      filter.includes("JPXDecode")
-    ) {
+    if (filter.includes("CCITTFaxDecode") || filter.includes("JBIG2Decode")) {
       skippedImageCount++;
       continue;
     }
@@ -314,6 +478,25 @@ export async function compressPdf(
         decoded = await decodeImageBlob(new Blob([origBytes as BlobPart], { type: "image/jpeg" }));
       } else if (filter.includes("FlateDecode")) {
         decoded = await decodeFlateImage(pdfDoc.context, dict, origBytes);
+      } else if (filter.includes("JPXDecode")) {
+        /*
+         * JPEG 2000. Chromium cannot decode this through createImageBitmap under
+         * any MIME type, so it goes through OpenJPEG instead. An Indexed JP2
+         * stores palette indices rather than colour and needs a colormap pass we
+         * do not implement, so those are left alone.
+         */
+        const colorSpace = pdfDoc.context.lookup(dict.get(PDFName.of("ColorSpace")));
+        const isIndexed =
+          colorSpace instanceof PDFArray &&
+          colorSpace.size() >= 1 &&
+          pdfDoc.context.lookup(colorSpace.get(0))?.toString() === "/Indexed";
+
+        const width = numberOf(dict, "Width");
+        const height = numberOf(dict, "Height");
+        if (!isIndexed && width >= 1 && height >= 1) {
+          onProgress?.(`Decoding JPEG 2000 image (${width}x${height})...`);
+          decoded = await decodeJpxImage(origBytes, width, height);
+        }
       }
 
       if (!decoded || decoded.width === 0 || decoded.height === 0) {
