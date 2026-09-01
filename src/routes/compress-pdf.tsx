@@ -13,13 +13,13 @@ export const Route = createFileRoute("/compress-pdf")({
       {
         name: "description",
         content:
-          "Reduce PDF file size online for free. Choose lossless structural optimisation or image recompression. No uploads, no signup — your PDF stays on your device.",
+          "Reduce PDF file size online for free with three quality levels. No uploads, no signup — your PDF stays on your device.",
       },
       { property: "og:title", content: "Compress PDF Online Free | ConvertPDF" },
       {
         property: "og:description",
         content:
-          "Reduce PDF file size online for free. Choose lossless structural optimisation or image recompression. No uploads, no signup — your PDF stays on your device.",
+          "Reduce PDF file size online for free with three quality levels. No uploads, no signup — your PDF stays on your device.",
       },
     ],
     links: [{ rel: "canonical", href: "https://converttpdf.com/compress-pdf" }],
@@ -33,7 +33,8 @@ const contentData: ToolContentData = {
     paragraphs: [
       "PDF compression reduces the file size of a PDF document so it transfers faster, fits within email attachment limits, and occupies less storage. The key detail is that not all PDFs are bloated for the same reason: some are large because they contain high-resolution images; others are large because of unoptimised internal structure, redundant object dictionaries, and legacy cross-reference tables that accumulate during document generation.",
       "**How this tool works technically:** Every preset calls pdf-lib's save method with the useObjectStreams flag set to true. That instruction tells pdf-lib to re-serialise your PDF using cross-reference streams and object streams — a structural optimisation introduced in PDF 1.5 and defined in the ISO 32000 specification. The tool parses every internal object in the document, repacks multiple objects together into compressed streams, and replaces uncompressed flat xref tables with a compressed cross-reference stream. This structural step is lossless: no text is reworded, no font is modified.",
-      "**Three presets, and what each one really does:** The **Low** preset performs the structural re-save described above and nothing else — it is fully lossless, and your images come through untouched. **Medium**, which is the preset selected by default, additionally re-encodes embedded raster images as JPEG at 75% quality. **High** does the same at 50% quality. Medium and High are therefore lossy operations on images: they discard image data permanently in exchange for a substantially smaller file. Text, fonts and vector content are never altered by any preset. If you need a byte-faithful result, choose Low before compressing.",
+      "**Three presets, and what each one really does:** All three run the same pipeline and differ only in how hard they push image quality. **Low** re-encodes embedded images as JPEG at 82% quality, **Medium** — the default — at 75%, and **High** at 50%. Every preset is therefore a lossy operation on images: each discards some image data permanently in exchange for a smaller file, with Low discarding the least. Text, fonts and vector content are never altered by any preset, so the document stays searchable and selectable whichever level you choose. No preset preserves images byte-for-byte, so keep your original if you need one.",
+      "**Which images actually get recompressed:** JPEG, PNG-style Flate-compressed images, and JPEG 2000 are all decoded and re-encoded, including those whose colour space is written as an ICCBased profile — the usual output of Word, InDesign and scanner software. JPEG 2000 matters more than it sounds: it is common in exported lecture notes and slide decks, where it can account for the overwhelming majority of the file. A few kinds are deliberately left alone: CCITT and JBIG2 fax-style scans, transparency masks, and CMYK or indexed-palette images, none of which can be re-encoded without risking a corrupted or colour-shifted result. Every recompressed image is only substituted when the new version is genuinely smaller, so no image is ever made bigger.",
     ],
   },
   howTo: {
@@ -47,7 +48,7 @@ const contentData: ToolContentData = {
       {
         title: "Pick a preset and compress",
         description:
-          'Choose Low for a fully lossless re-save, or Medium (the default) or High to also recompress embedded images. Click "Compress PDF" and the work happens entirely within your browser.',
+          'Choose Low for the gentlest recompression, Medium (the default) for a balance of size and quality, or High for the smallest file. Click "Compress PDF" and the work happens entirely within your browser.',
       },
       {
         title: "Download the result",
@@ -63,18 +64,19 @@ const contentData: ToolContentData = {
         icon: ShieldCheck,
         title: "No file uploads",
         description:
-          "Your PDF is processed entirely in your browser. Nothing is transmitted over the network.",
+          "Your PDF is processed entirely in your browser and is never uploaded. No third-party service is contacted at any point.",
       },
       {
         icon: Zap,
-        title: "Instant compression",
-        description: "Object-stream re-encoding is fast — most files finish in under two seconds.",
+        title: "Runs on your device",
+        description:
+          "Small documents finish in moments. Image-heavy ones take longer, because every image is decoded and recompressed individually rather than handed to a server.",
       },
       {
         icon: FileText,
         title: "You choose the trade-off",
         description:
-          "Text and fonts are never altered. Pick Low for a fully lossless re-save, or Medium (the default) and High to recompress embedded images for a smaller file.",
+          "Text and fonts are never altered by any preset. Low re-encodes images at 82% quality, Medium at 75%, and High at 50% — you decide how much detail to trade for size.",
       },
       {
         icon: Cloud,
@@ -90,16 +92,16 @@ const contentData: ToolContentData = {
       },
       {
         icon: Layers,
-        title: "Best for text-heavy PDFs",
+        title: "Biggest gains on image-heavy files",
         description:
-          "Object-stream compression produces the largest size reductions on text-rich documents where the internal encoding has not been previously optimised — typical of exports from Word, Excel, or reporting systems.",
+          "The largest reductions come from documents full of photographs, diagrams or scanned pages, where recompressing the images dominates. Text-rich exports from Word or reporting systems still benefit from the structural pass, but the saving is smaller.",
       },
     ],
   },
   useCases: {
     heading: "When to Compress a PDF",
     intro:
-      "Structural PDF compression is the right choice when you need a smaller file without sacrificing any visible content. Here are the scenarios where it makes the most difference — and one where it will not:",
+      "Compression is the right choice when a file needs to be smaller and a small, controlled loss of image detail is acceptable. Here are the scenarios where it makes the most difference — and one where it will not:",
     items: [
       {
         label: "Reducing a contract exported from Word (Workflow Example)",
@@ -109,29 +111,29 @@ const contentData: ToolContentData = {
       {
         label: "When NOT to use this tool",
         description:
-          "The Low preset alone will do little for a scanned PDF or a heavily image-laden document: those files store their content as embedded JPEG or FLATE-compressed images, and structural re-encoding cannot shrink image data. Medium and High will reduce such files by re-encoding those images as JPEG at 75% or 50% quality — but they reduce encoding quality rather than pixel dimensions, so a very high-resolution scan may still remain large. If you need true downsampling to a lower resolution, this compressor does not do that.",
+          "Every preset reduces encoding quality rather than pixel dimensions, so a very high-resolution scan can still come out large — a 6000-pixel-wide page stays 6000 pixels wide. If you need true downsampling to a lower resolution, this compressor does not do that. Some image types are also left untouched by design: CCITT and JBIG2 fax-style scans, transparency masks, and CMYK or indexed-palette images, none of which can be re-encoded safely without risking a corrupted or colour-shifted result. If a document is built entirely from those, expect little movement at any preset.",
       },
       {
         label: "Meeting email attachment limits",
         description:
-          "Many email providers cap attachments at 10–25 MB. A bloated report or proposal generated by office software often exceeds those limits not because of large images, but because of unoptimised internal encoding. Structural compression can bring those files within acceptable range without altering a character of content.",
+          "Many email providers cap attachments at 10–25 MB. Reports and proposals full of screenshots or scanned pages routinely overshoot that. Compressing brings them back within range, and Low is usually enough when the images need to stay close to the original.",
       },
       {
         label: "Preparing PDFs for portal uploads",
         description:
-          "Government forms, university submission portals, and corporate LMS platforms frequently enforce strict file size caps. Compressing a text-heavy PDF before upload avoids rejection without requiring you to reduce content or visual quality.",
+          "Government forms, university submission portals, and corporate LMS platforms frequently enforce strict file size caps. Compressing before upload avoids rejection without removing pages or retyping anything.",
       },
       {
         label: "Archiving generated reports",
         description:
-          "Programmatically generated PDFs — from billing systems, CRMs, or reporting tools — often carry significant structural overhead. Compressing archived copies before long-term storage reduces cumulative storage costs without affecting document fidelity.",
+          "Programmatically generated PDFs — from billing systems, CRMs, or reporting tools — often carry significant structural overhead. Compressing archived copies before long-term storage reduces cumulative storage costs; choose Low to keep any embedded images close to the original.",
       },
     ],
   },
   privacy: {
     heading: "Your Privacy Is Protected",
     paragraphs: [
-      "When you compress a PDF here, the entire process runs inside your web browser. Your file is read into local memory using the browser's File API, then passed to pdf-lib — a JavaScript library that parses the full PDF object graph and re-serialises it with object streams enabled. Every step — parsing, rewriting internal structures, and exporting — happens within the browser's sandboxed JavaScript environment. No data crosses the network at any point.",
+      "When you compress a PDF here, the entire process runs inside your web browser. Your file is read into local memory using the browser's File API, then passed to pdf-lib — a JavaScript library that parses the full PDF object graph and re-serialises it with object streams enabled. Every step — parsing, decoding each image, re-encoding it, and exporting the result — happens within the browser's sandboxed JavaScript environment. Your document is never uploaded, and no third-party service is contacted at any point. On files containing JPEG 2000 images, the decoder for that format is loaded from this site the first time it is needed, in the same way the rest of the page loads; it carries no part of your document.",
       "There are no server-side queues, no temporary cloud storage, and no logging of your document contents. This matters particularly for sensitive materials: a contract with personal details, a financial statement, or a confidential internal report is processed and discarded entirely within your own device. Close the browser tab and everything held in memory is released immediately.",
     ],
   },
@@ -144,12 +146,12 @@ const contentData: ToolContentData = {
     {
       question: "Does compressing a PDF reduce the quality of images or text?",
       answer:
-        "Text, fonts, and vector graphics are never altered by any preset — those are only ever restructured, not re-rendered. Images depend on the preset you choose. Low passes embedded images through unchanged and is fully lossless. Medium, which is selected by default, re-encodes embedded raster images as JPEG at 75% quality, and High does so at 50% quality; both discard some image data permanently. Choose Low if you need the images preserved exactly.",
+        "Text, fonts, and vector graphics are never altered by any preset — those are only ever restructured, not re-rendered. Images are re-encoded by all three: Low at 82% quality, Medium (the default) at 75%, and High at 50%. Each discards some image data permanently, Low the least. No preset preserves images exactly, so if you need a byte-faithful copy, keep your original file alongside the compressed one.",
     },
     {
       question: "What kind of size reduction can I expect?",
       answer:
-        "Results vary depending on how the source PDF was created. Text-heavy PDFs generated by office software often have substantial unoptimised internal encoding and can see the largest reductions. PDFs already exported from PDF-native tools with optimisation turned on, or documents consisting primarily of compressed images, may see little or no change.",
+        "It depends entirely on what is making the file large. Documents full of photographs, diagrams or scanned pages see the biggest reductions, because recompressing images is where most of the saving comes from. Text-only documents change far less, since only the internal structure can be tightened. The panel reports your actual before and after sizes once it finishes, so you can judge the real result rather than rely on an estimate.",
     },
     {
       question: "Is there a file size limit for compression?",
@@ -164,7 +166,7 @@ const contentData: ToolContentData = {
     {
       question: "Does compression work on scanned PDFs?",
       answer:
-        "Yes. With the Low preset the reduction will typically be very small, because scanned PDFs consist primarily of embedded images and structural optimisation only benefits the non-image data. Medium and High re-encode those embedded images as JPEG, so they can reduce a scanned file meaningfully — at the cost of some image quality.",
+        "Yes, and scans are where the tool does its best work, since the images dominate the file. All three presets re-encode them: Low keeps the most detail, High produces the smallest file. The exception is fax-style bitonal scans stored as CCITT or JBIG2, which are left untouched because re-encoding them as JPEG would look worse and often produce a larger file.",
     },
     {
       question: "Can I compress multiple PDFs at once?",
@@ -210,7 +212,7 @@ function CompressPdfPage() {
       <HowToSchema name="How to Compress a PDF Online" steps={howToSteps} />
       <ToolPageLayout
         title="Compress PDF"
-        description="Reduce PDF file size with your choice of lossless or lossy compression — entirely in your browser."
+        description="Reduce PDF file size with three quality levels — entirely in your browser."
         icon={Minimize2}
         accent="from-emerald-500 to-teal-500"
         contentSections={<ToolContentSections data={contentData} />}

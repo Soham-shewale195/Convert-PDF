@@ -116,7 +116,7 @@ export default function CompressPdfPanel() {
             })}
           </div>
 
-          {isSafari && preset !== "low" && (
+          {isSafari && (
             <p className="text-[11px] text-muted-foreground italic mt-1">
               Note: On Safari, canvas image re-encoding parameters may operate according to system
               graphics defaults.

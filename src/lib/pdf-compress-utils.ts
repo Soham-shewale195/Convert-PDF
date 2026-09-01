@@ -362,7 +362,7 @@ const PRESET_QUALITY: Record<CompressionPreset, number> = {
 
 /**
  * Compress PDF with selectable quality preset:
- * - "low": 90% JPEG recompression for embedded raster images + structural optimization
+ * - "low": 82% JPEG recompression for embedded raster images + structural optimization
  * - "medium": 75% JPEG recompression for embedded raster images + structural optimization
  * - "high": 50% JPEG recompression for embedded raster images + structural optimization
  */
