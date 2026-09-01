@@ -347,8 +347,22 @@ async function decodeFlateImage(
 }
 
 /**
+ * JPEG quality used when re-encoding an image, per preset.
+ *
+ * Every preset runs the same pipeline and the same gating; only this number
+ * differs. Low is deliberately gentle: it still re-encodes, so it produces a
+ * real reduction rather than the near-zero structural-only saving it used to,
+ * but it stays visibly less aggressive than Medium.
+ */
+const PRESET_QUALITY: Record<CompressionPreset, number> = {
+  low: 0.82,
+  medium: 0.75,
+  high: 0.5,
+};
+
+/**
  * Compress PDF with selectable quality preset:
- * - "low": Structural lossless optimization (pdf-lib default save with object streams)
+ * - "low": 90% JPEG recompression for embedded raster images + structural optimization
  * - "medium": 75% JPEG recompression for embedded raster images + structural optimization
  * - "high": 50% JPEG recompression for embedded raster images + structural optimization
  */
@@ -363,20 +377,7 @@ export async function compressPdf(
   // 1. Load the PDF document in pdf-lib (rejects password-protected files)
   const pdfDoc = await loadPdf(arrayBuffer, fileName);
 
-  // Low preset: Lossless structural re-save only (identical baseline behavior)
-  if (preset === "low") {
-    onProgress?.("Applying structural optimization...");
-    const bytes = await pdfDoc.save({ useObjectStreams: true });
-    return {
-      bytes,
-      originalSize,
-      compressedSize: bytes.byteLength,
-      recompressedImageCount: 0,
-      skippedImageCount: 0,
-    };
-  }
-
-  const quality = preset === "high" ? 0.5 : 0.75;
+  const quality = PRESET_QUALITY[preset];
   let recompressedImageCount = 0;
   let skippedImageCount = 0;
 

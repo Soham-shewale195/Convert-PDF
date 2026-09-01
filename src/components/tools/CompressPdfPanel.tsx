@@ -62,7 +62,7 @@ export default function CompressPdfPanel() {
     {
       id: "low",
       name: "Low",
-      desc: "Lossless structural optimization only (best for text-heavy PDFs)",
+      desc: "Gentle 82% image quality (keeps images closest to the original)",
       icon: ShieldCheck,
     },
     {
@@ -143,6 +143,10 @@ export default function CompressPdfPanel() {
           <h3 className="text-xl font-bold mb-2 tracking-tight">Compressing PDF</h3>
           <p className="text-sm text-muted-foreground max-w-sm mx-auto">
             {progressMsg || "Please wait while we process your document..."}
+          </p>
+          <p className="text-xs text-muted-foreground/70 max-w-md mx-auto mt-4 leading-relaxed">
+            Large or image-heavy files can take a few minutes — every image is decoded and
+            recompressed individually, right here on your device.
           </p>
         </div>
       )}
