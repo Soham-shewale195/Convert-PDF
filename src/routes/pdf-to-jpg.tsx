@@ -65,7 +65,7 @@ const sections: ToolSection[] = [
   },
   {
     kind: "specTable",
-    heading: "Output Specification",
+    heading: "Exactly What You Get Back",
     intro:
       "Every setting below is fixed — there are no options to adjust. This is exactly what you get:",
     columns: ["Property", "Value"],
@@ -79,7 +79,7 @@ const sections: ToolSection[] = [
         value: "2× the document's nominal size, roughly 144 pixels per inch for a standard page.",
         note: "Not adjustable, and not related to any DPI setting stored in the PDF.",
       },
-      { label: "Encoding quality", value: "JPEG at 90% quality." },
+      { label: "JPEG quality setting", value: "Encoded at 90%." },
       {
         label: "Image width",
         value: "Matches the widest page in the document, at 2× scale.",
@@ -98,7 +98,7 @@ const sections: ToolSection[] = [
         value: "Centred horizontally within the full image width.",
       },
       {
-        label: "Output filename",
+        label: "What the file is called",
         value:
           "Your original filename with the extension changed — invoice.pdf becomes invoice.jpg.",
       },
@@ -195,6 +195,35 @@ const sections: ToolSection[] = [
     ],
   },
   {
+    kind: "toolLinks",
+    heading: "Before and After Converting",
+    tools: [
+      {
+        name: "Split PDF",
+        href: "/split-pdf",
+        description:
+          "Run this first when you want a single page, or to break a long document into chunks the canvas can handle.",
+        icon: Scissors,
+        accent: "from-pink-500 to-rose-500",
+      },
+      {
+        name: "Compress Image",
+        href: "/compress-image",
+        description:
+          "Shrink the resulting JPG if the stacked image comes out larger than you need.",
+        icon: Minimize2,
+        accent: "from-emerald-500 to-teal-500",
+      },
+      {
+        name: "JPG to PDF",
+        href: "/jpg-to-pdf",
+        description: "The reverse trip — bundle images back into a PDF document.",
+        icon: FileImage,
+        accent: "from-amber-500 to-orange-500",
+      },
+    ],
+  },
+  {
     kind: "faq",
     heading: "PDF to JPG: Questions and Answers",
     faqs: [
@@ -241,38 +270,9 @@ const sections: ToolSection[] = [
     ],
   },
   {
-    kind: "toolLinks",
-    heading: "Before and After Converting",
-    tools: [
-      {
-        name: "Split PDF",
-        href: "/split-pdf",
-        description:
-          "Run this first when you want a single page, or to break a long document into chunks the canvas can handle.",
-        icon: Scissors,
-        accent: "from-pink-500 to-rose-500",
-      },
-      {
-        name: "Compress Image",
-        href: "/compress-image",
-        description:
-          "Shrink the resulting JPG if the stacked image comes out larger than you need.",
-        icon: Minimize2,
-        accent: "from-emerald-500 to-teal-500",
-      },
-      {
-        name: "JPG to PDF",
-        href: "/jpg-to-pdf",
-        description: "The reverse trip — bundle images back into a PDF document.",
-        icon: FileImage,
-        accent: "from-amber-500 to-orange-500",
-      },
-    ],
-  },
-  {
     kind: "articleLinks",
-    heading: "Background Reading",
-    slugs: ["jpg-vs-png-guide", "browser-pdf-converter-privacy"],
+    heading: "More on Rendering PDFs",
+    slugs: ["how-to-convert-pdf-to-word", "browser-pdf-converter-privacy"],
   },
 ];
 

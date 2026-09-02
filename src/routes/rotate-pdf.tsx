@@ -1,16 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import {
-  RotateCw,
-  Eye,
-  SlidersHorizontal,
-  Zap,
-  FileCheck,
-  Layers,
-  Smartphone,
-  Scissors,
-  FileStack,
-  Droplets,
-} from "lucide-react";
+import { RotateCw, Scissors, FileStack, Droplets } from "lucide-react";
 import ToolPageLayout from "@/components/ToolPageLayout";
 import RotatePdfPanel from "@/components/tools/RotatePdfPanel";
 import ToolContentSections, { type ToolSection } from "@/components/ToolContentSections";
@@ -41,7 +30,7 @@ const rotateSteps = [
   {
     title: "Upload your PDF",
     description:
-      "Drop a PDF onto the upload area or click to browse. One document at a time, loaded straight into your browser's memory.",
+      "Select a single PDF, by dropping it in or browsing for it. The rotator takes one document per run and reads it straight into memory.",
   },
   {
     title: "Pick 90°, 180°, or 270°",
@@ -113,49 +102,6 @@ const sections: ToolSection[] = [
           "Fix orientation before you combine, so the finished document reads consistently from the first page.",
         href: "/merge-pdf",
         linkLabel: "Merge PDF",
-      },
-    ],
-  },
-  {
-    kind: "cards",
-    heading: "How the Rotation Is Applied",
-    columns: 3,
-    items: [
-      {
-        icon: Eye,
-        title: "Content stream untouched",
-        description:
-          "Only the page's rotation attribute is rewritten. Text, fonts, vectors, and embedded images pass through without re-encoding.",
-      },
-      {
-        icon: SlidersHorizontal,
-        title: "Rotation stacks, not resets",
-        description:
-          "Your angle is added to whatever the page already had, so a page saved at 90° and rotated 270° lands correctly at 0°.",
-      },
-      {
-        icon: Layers,
-        title: "Applied to every page",
-        description:
-          "There is no per-page selection. One angle is written across the whole document in a single pass.",
-      },
-      {
-        icon: Zap,
-        title: "No re-rendering step",
-        description:
-          "Nothing is rasterised or recompressed, so the work scales with document structure rather than page complexity or image count.",
-      },
-      {
-        icon: FileCheck,
-        title: "Nothing added to the file",
-        description:
-          "No account, no email, and no badge or watermark stamped onto your pages — the output carries only your original content.",
-      },
-      {
-        icon: Smartphone,
-        title: "Built for scanner apps",
-        description:
-          "Phone scanning apps frequently save pages sideways. Fix them on the same device that produced them, with no desktop round trip.",
       },
     ],
   },
@@ -249,7 +195,7 @@ const sections: ToolSection[] = [
       {
         question: "Can I rotate a password-protected PDF?",
         answer:
-          "No. If the PDF requires a password to open, the tool cannot read its contents and rotation will not run. Remove the password in your PDF software first.",
+          "No. If the PDF requires a password to open, the tool cannot read its contents and rotation will not run. Unlock it in your usual PDF application, save an unprotected copy, and rotate that.",
       },
     ],
   },
@@ -284,7 +230,7 @@ const sections: ToolSection[] = [
   {
     kind: "articleLinks",
     heading: "More on Page Orientation",
-    slugs: ["how-to-rotate-pdf-pages", "what-is-client-side-processing"],
+    slugs: ["how-to-rotate-pdf-pages", "how-to-check-pdf-converter-safety"],
   },
 ];
 

@@ -270,6 +270,33 @@ const sections: ToolSection[] = [
     ],
   },
   {
+    kind: "toolLinks",
+    heading: "Related Document Tools",
+    tools: [
+      {
+        name: "Text to PDF",
+        href: "/text-to-pdf",
+        description: "For prose rather than tabular data — paste and generate.",
+        icon: FileText,
+        accent: "from-blue-500 to-indigo-500",
+      },
+      {
+        name: "Merge PDF",
+        href: "/merge-pdf",
+        description: "Combine several converted workbooks into a single report.",
+        icon: FileStack,
+        accent: "from-blue-500 to-cyan-500",
+      },
+      {
+        name: "Watermark PDF",
+        href: "/watermark-pdf",
+        description: "Mark converted figures as DRAFT before circulating them.",
+        icon: Droplets,
+        accent: "from-cyan-500 to-blue-500",
+      },
+    ],
+  },
+  {
     kind: "faq",
     heading: "Excel to PDF: Questions and Answers",
     faqs: [
@@ -321,36 +348,9 @@ const sections: ToolSection[] = [
     ],
   },
   {
-    kind: "toolLinks",
-    heading: "Related Document Tools",
-    tools: [
-      {
-        name: "Text to PDF",
-        href: "/text-to-pdf",
-        description: "For prose rather than tabular data — paste and generate.",
-        icon: FileText,
-        accent: "from-blue-500 to-indigo-500",
-      },
-      {
-        name: "Merge PDF",
-        href: "/merge-pdf",
-        description: "Combine several converted workbooks into a single report.",
-        icon: FileStack,
-        accent: "from-blue-500 to-cyan-500",
-      },
-      {
-        name: "Watermark PDF",
-        href: "/watermark-pdf",
-        description: "Mark converted figures as DRAFT before circulating them.",
-        icon: Droplets,
-        accent: "from-cyan-500 to-blue-500",
-      },
-    ],
-  },
-  {
     kind: "articleLinks",
     heading: "Spreadsheet Conversion Reading",
-    slugs: ["excel-to-pdf-formatting-guide", "freelance-contract-management-free"],
+    slugs: ["excel-to-pdf-formatting-guide"],
   },
 ];
 

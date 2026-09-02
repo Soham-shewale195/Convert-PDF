@@ -101,6 +101,16 @@ const sections: ToolSection[] = [
     steps: watermarkSteps,
   },
   {
+    kind: "callout",
+    heading: "Secure Browser-Based Watermarking",
+    tone: "privacy",
+    policyLink: true,
+    paragraphs: [
+      "The documents people watermark are exactly the ones they would least want to upload — NDAs, offer letters, unreleased financials, legal drafts. Nothing is uploaded here. The browser's File API reads your document into memory, pdf-lib parses its structure, and the drawText method writes your wording into each page's content stream, all locally.",
+      "No third-party service is involved at any point. The pdf-lib library loads as a script file from this site the first time you use the tool, in the same way the rest of the page loads; the watermarking itself generates no network activity and your document is never transmitted. Closing the tab discards both the original and the stamped copy from memory.",
+    ],
+  },
+  {
     kind: "troubleshooting",
     heading: "When the Stamp Comes Out Wrong",
     intro:
@@ -173,16 +183,6 @@ const sections: ToolSection[] = [
         description:
           "A watermark is not a security control. It does not encrypt the file, prevent copying, or stop printing, and because the text sits in the page content stream, someone with a full PDF editor can select and delete it. Treat it as a label, not a lock.",
       },
-    ],
-  },
-  {
-    kind: "callout",
-    heading: "Secure Browser-Based Watermarking",
-    tone: "privacy",
-    policyLink: true,
-    paragraphs: [
-      "The documents people watermark are exactly the ones they would least want to upload — NDAs, offer letters, unreleased financials, legal drafts. Nothing is uploaded here. The browser's File API reads your document into memory, pdf-lib parses its structure, and the drawText method writes your wording into each page's content stream, all locally.",
-      "No third-party service is involved at any point. The pdf-lib library loads as a script file from this site the first time you use the tool, in the same way the rest of the page loads; the watermarking itself generates no network activity and your document is never transmitted. Closing the tab discards both the original and the stamped copy from memory.",
     ],
   },
   {
@@ -266,7 +266,7 @@ const sections: ToolSection[] = [
   {
     kind: "articleLinks",
     heading: "More on Document Marking",
-    slugs: ["how-to-watermark-pdf-documents", "best-free-pdf-tools"],
+    slugs: ["how-to-watermark-pdf-documents", "risks-of-online-file-converters"],
   },
 ];
 

@@ -132,39 +132,6 @@ const sections: ToolSection[] = [
     ],
   },
   {
-    kind: "checklist",
-    heading: "When Splitting Earns Its Keep",
-    intro:
-      "Splitting is the right operation whenever a document's pages need to become individually usable units:",
-    items: [
-      {
-        label: "Extracting one page from a legal filing",
-        description:
-          "A legal assistant receives a 35-page court filing with one pleading per page. Splitting produces page-1.pdf through page-35.pdf; they forward only page-3.pdf to counsel rather than circulating the full dossier. The original stays untouched on their device.",
-      },
-      {
-        label: "Separating invoices from a batch statement",
-        description:
-          "Accounting systems often export monthly billing as one PDF with a single invoice per page. Splitting yields individual invoice files ready for separate filing, forwarding between departments, or matching against purchase orders.",
-      },
-      {
-        label: "Distributing form pages to different recipients",
-        description:
-          "An application packet may have page 1 for the applicant, page 2 for a supervisor, and page 3 for HR. Split once, then send each person only their page instead of the whole packet.",
-      },
-      {
-        label: "Rebuilding a document without certain pages",
-        description:
-          "Split to get every page as a file, drop the ones you no longer need, and merge the rest back into a cleaner document — the standard route for removing or reordering pages.",
-      },
-      {
-        label: "Turning a scanned stack into individual records",
-        description:
-          "A batch scan of unrelated documents arrives as one long PDF. Splitting converts it into per-page files that can be renamed and filed individually.",
-      },
-    ],
-  },
-  {
     kind: "callout",
     heading: "Secure Page Extraction",
     tone: "privacy",
@@ -196,7 +163,7 @@ const sections: ToolSection[] = [
       {
         question: "Is there a limit on the number of pages I can split?",
         answer:
-          "There is no page limit built into the tool. The practical ceiling is your device's available memory, because the entire source document is loaded into RAM before splitting starts and every generated page is held in memory until the ZIP is assembled. Very large documents on low-memory devices are where you would notice this.",
+          "There is no page limit built into the tool. Memory sets the real boundary: the source document is read into RAM before splitting starts, and each page produced stays there until the ZIP is assembled. Very large documents on low-memory devices are where you would notice this.",
       },
       {
         question: "Will the split pages keep their original size and orientation?",
@@ -253,7 +220,7 @@ const sections: ToolSection[] = [
   {
     kind: "articleLinks",
     heading: "Guides on Working With Pages",
-    slugs: ["how-to-split-pdf-pages", "how-to-merge-pdf-files-online"],
+    slugs: ["how-to-split-pdf-pages", "digital-document-workflow-students"],
   },
 ];
 

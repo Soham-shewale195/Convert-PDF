@@ -55,12 +55,6 @@ const sections: ToolSection[] = [
     ],
   },
   {
-    kind: "steps",
-    heading: "Building Your Document",
-    variant: "timeline",
-    steps: buildSteps,
-  },
-  {
     kind: "comparison",
     heading: "How This Differs From a Typical Converter",
     intro:
@@ -93,6 +87,12 @@ const sections: ToolSection[] = [
         b: "Documents genuinely destined for a physical printer.",
       },
     ],
+  },
+  {
+    kind: "steps",
+    heading: "Building Your Document",
+    variant: "timeline",
+    steps: buildSteps,
   },
   {
     kind: "definitions",
@@ -247,7 +247,7 @@ const sections: ToolSection[] = [
   {
     kind: "articleLinks",
     heading: "Related Guides",
-    slugs: ["how-to-convert-images-to-pdf", "batch-image-processing-guide"],
+    slugs: ["how-to-convert-images-to-pdf", "freelance-contract-management-free"],
   },
 ];
 

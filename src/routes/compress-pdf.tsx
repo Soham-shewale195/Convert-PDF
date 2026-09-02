@@ -23,13 +23,13 @@ export const Route = createFileRoute("/compress-pdf")({
       {
         name: "description",
         content:
-          "Reduce PDF file size online for free. Choose lossless structural optimisation or image recompression. No uploads, no signup — your PDF stays on your device.",
+          "Shrink a PDF for free. Pick lossless structural cleanup or image recompression. No uploads, no signup — your document stays on your device.",
       },
       { property: "og:title", content: "Compress PDF Online Free | ConvertPDF" },
       {
         property: "og:description",
         content:
-          "Reduce PDF file size online for free. Choose lossless structural optimisation or image recompression. No uploads, no signup — your PDF stays on your device.",
+          "Shrink a PDF for free. Pick lossless structural cleanup or image recompression. No uploads, no signup — your document stays on your device.",
       },
     ],
     links: [{ rel: "canonical", href: "https://converttpdf.com/compress-pdf" }],
@@ -109,7 +109,7 @@ const sections: ToolSection[] = [
   },
   {
     kind: "cards",
-    heading: "How the Compressor Behaves",
+    heading: "What Each Preset Does to Your File",
     columns: 3,
     items: [
       {
@@ -151,6 +151,16 @@ const sections: ToolSection[] = [
     ],
   },
   {
+    kind: "callout",
+    heading: "Your Document Stays on Your Device",
+    tone: "privacy",
+    policyLink: true,
+    paragraphs: [
+      "Compression runs inside your web browser. Your file is read into local memory through the File API and handed to pdf-lib, a JavaScript library that parses the full PDF object graph, walks its indirect objects, and re-serialises the document with object streams enabled. When you choose Medium or High, image re-encoding is performed by drawing each eligible image onto an in-page canvas and exporting it again — also entirely local. Your document is never uploaded to any server.",
+      "There are no server-side queues, no temporary cloud storage, and no logging of your document's contents. That matters for sensitive material: a contract with personal details, a financial statement, or a confidential internal report is processed and discarded within your own device. Close the tab and everything held in memory is released.",
+    ],
+  },
+  {
     kind: "checklist",
     heading: "Choosing a Preset in Practice",
     intro:
@@ -181,16 +191,6 @@ const sections: ToolSection[] = [
         description:
           "The compressor re-encodes images at lower quality but never reduces their pixel dimensions. A 6000-pixel-wide scan stays 6000 pixels wide, so a very high-resolution document can remain large even on High. If you need genuine downsampling to smaller dimensions, this tool does not do that.",
       },
-    ],
-  },
-  {
-    kind: "callout",
-    heading: "Your Document Stays on Your Device",
-    tone: "privacy",
-    policyLink: true,
-    paragraphs: [
-      "Compression runs inside your web browser. Your file is read into local memory through the File API and handed to pdf-lib, a JavaScript library that parses the full PDF object graph, walks its indirect objects, and re-serialises the document with object streams enabled. When you choose Medium or High, image re-encoding is performed by drawing each eligible image onto an in-page canvas and exporting it again — also entirely local. Your document is never uploaded to any server.",
-      "There are no server-side queues, no temporary cloud storage, and no logging of your document's contents. That matters for sensitive material: a contract with personal details, a financial statement, or a confidential internal report is processed and discarded within your own device. Close the tab and everything held in memory is released.",
     ],
   },
   {
@@ -225,7 +225,7 @@ const sections: ToolSection[] = [
       {
         question: "Is there a file size limit?",
         answer:
-          "The tool imposes none. The practical ceiling is your device's available memory, since the entire file is loaded into RAM for parsing and every re-encoded image is held in memory during processing. Large image-heavy documents on low-memory devices are where you would run into trouble.",
+          "The tool imposes none. What actually limits you is RAM: the whole document is parsed in memory, and each image being re-encoded occupies more of it on top. Large image-heavy documents on low-memory devices are where you would run into trouble.",
       },
       {
         question: "Why does the result look different in Safari?",

@@ -40,7 +40,7 @@ const writeSteps = [
   {
     title: "Download text.pdf",
     description:
-      "The finished document downloads immediately. It is always named text.pdf, since there was no source filename to inherit — rename it after saving if that matters.",
+      "The finished document downloads immediately. It is always named text.pdf, since there was no source filename to inherit.",
   },
 ];
 
@@ -138,6 +138,16 @@ const sections: ToolSection[] = [
     ],
   },
   {
+    kind: "callout",
+    heading: "Private Text Processing",
+    tone: "privacy",
+    policyLink: true,
+    paragraphs: [
+      "Text you would paste into a converter is often exactly the text you would least like to send somewhere — credentials, private notes, internal code, a draft you have not shared yet. This tool removes the question entirely, because there is no transmission step to trust: your text never leaves the text box on this page.",
+      "The jsPDF library paginates the text and assembles the document in your browser's memory. No third-party service is involved, and because there is no file picker, nothing is ever read from or written to your disk either. The library itself loads as a script file from this site in the same way the rest of the page loads; generating a document after that produces no network activity. Closing the tab discards the text and the generated PDF together.",
+    ],
+  },
+  {
     kind: "checklist",
     heading: "When Pasting Beats Uploading",
     intro:
@@ -173,16 +183,6 @@ const sections: ToolSection[] = [
         description:
           "If you need headings, bold, tables, or images, this is the wrong tool — everything comes out as uniform 11-point Helvetica. And if your text uses a non-Latin script, see the FAQ below before converting.",
       },
-    ],
-  },
-  {
-    kind: "callout",
-    heading: "Private Text Processing",
-    tone: "privacy",
-    policyLink: true,
-    paragraphs: [
-      "Text you would paste into a converter is often exactly the text you would least like to send somewhere — credentials, private notes, internal code, a draft you have not shared yet. This tool removes the question entirely, because there is no transmission step to trust: your text never leaves the text box on this page.",
-      "The jsPDF library paginates the text and assembles the document in your browser's memory. No third-party service is involved, and because there is no file picker, nothing is ever read from or written to your disk either. The library itself loads as a script file from this site in the same way the rest of the page loads; generating a document after that produces no network activity. Closing the tab discards the text and the generated PDF together.",
     ],
   },
   {
@@ -222,7 +222,7 @@ const sections: ToolSection[] = [
       {
         question: "What is the file called?",
         answer:
-          "Always text.pdf. Because you pasted the content rather than selecting a file, there is no original filename to derive one from. Rename it after saving if the name matters.",
+          "Always text.pdf. Because you pasted the content rather than selecting a file, there is no original filename to derive one from — give it a proper name once it lands in your downloads folder.",
       },
       {
         question: "Is there a length limit?",
@@ -261,7 +261,7 @@ const sections: ToolSection[] = [
   {
     kind: "articleLinks",
     heading: "Further Reading",
-    slugs: ["text-to-pdf-converter-guide", "digital-document-workflow-students"],
+    slugs: ["text-to-pdf-converter-guide", "pdf-vs-word-differences"],
   },
 ];
 

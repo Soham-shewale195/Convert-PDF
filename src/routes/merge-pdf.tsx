@@ -55,6 +55,16 @@ const sections: ToolSection[] = [
     ],
   },
   {
+    kind: "callout",
+    heading: "Private Document Assembly",
+    tone: "privacy",
+    policyLink: true,
+    paragraphs: [
+      "Merging PDFs here is entirely local to your device. Your browser reads each file into memory using the File API, and pdf-lib — a JavaScript library running inside the page — creates the new document and copies the pages across. All of it happens inside the browser's sandboxed environment. Your documents are never uploaded, and no page content is transmitted anywhere.",
+      "This matters when the documents being combined are sensitive: a merge of a signed contract, a financial exhibit, and a confidential appendix never leaves your machine. Once you close the browser tab, the in-memory document data is discarded. There is no cloud queue, no temporary storage, and no record of which files you combined.",
+    ],
+  },
+  {
     kind: "steps",
     heading: "Combining Files, Step by Step",
     variant: "timeline",
@@ -173,16 +183,6 @@ const sections: ToolSection[] = [
         description:
           "Receipts, statements, and remittance advices that arrive as separate PDFs through the month merge into one file per period, which is far easier to store and search later than a folder of loose documents.",
       },
-    ],
-  },
-  {
-    kind: "callout",
-    heading: "Private Document Assembly",
-    tone: "privacy",
-    policyLink: true,
-    paragraphs: [
-      "Merging PDFs here is entirely local to your device. Your browser reads each file into memory using the File API, and pdf-lib — a JavaScript library running inside the page — creates the new document and copies the pages across. All of it happens inside the browser's sandboxed environment. Your documents are never uploaded, and no page content is transmitted anywhere.",
-      "This matters when the documents being combined are sensitive: a merge of a signed contract, a financial exhibit, and a confidential appendix never leaves your machine. Once you close the browser tab, the in-memory document data is discarded. There is no cloud queue, no temporary storage, and no record of which files you combined.",
     ],
   },
   {
