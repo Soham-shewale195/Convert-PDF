@@ -9,9 +9,17 @@ export const Route = createFileRoute("/watermark-image")({
   head: () => ({
     meta: [
       { title: "Watermark Image Online Free | ConvertPDF" },
-      { name: "description", content: "Overlay custom text on any image online for free." },
+      {
+        name: "description",
+        content:
+          "Bake text into an image: your wording, colour, size, opacity and one of nine positions. Applied in your browser and saved as a lossless PNG.",
+      },
       { property: "og:title", content: "Watermark Image Online Free | ConvertPDF" },
-      { property: "og:description", content: "Overlay custom text on any image online for free." },
+      {
+        property: "og:description",
+        content:
+          "Bake text into an image: your wording, colour, size, opacity and one of nine positions. Applied in your browser and saved as a lossless PNG.",
+      },
     ],
     links: [{ rel: "canonical", href: "https://converttpdf.com/watermark-image" }],
   }),
@@ -22,7 +30,7 @@ const watermarkSteps = [
   {
     title: "Load an image",
     description:
-      "Drop a JPEG, PNG or WebP onto the upload area. The preview appears with the default watermark already applied — white CONFIDENTIAL, centred, at half opacity.",
+      "Load a JPEG, PNG or WebP into the panel. The preview appears with the default watermark already applied — white CONFIDENTIAL, centred, at half opacity.",
   },
   {
     title: "Set the text and its appearance",
@@ -53,43 +61,6 @@ const sections: ToolSection[] = [
       "The image is drawn onto an off-screen canvas at its original dimensions, and your text is painted on top of it in a single pass. Because it becomes part of the pixel data at that moment, there is no separate layer, no metadata tag and nothing that a viewer could choose not to display. Whatever the image is opened in, the text is simply part of the picture.",
       "Size is calculated as a percentage of the image's width rather than in fixed points, which is what makes one setting work across wildly different images. Fifteen percent produces text roughly a seventh of the frame's width whether the photo is 600 or 6000 pixels across, so you are not re-tuning the slider for every file.",
       "The output is a PNG at the original dimensions. Nothing is resized, nothing is re-compressed beyond the lossless PNG encode, and any transparency in the source is preserved — which means a watermark can be applied to a logo or cut-out without the background turning white.",
-    ],
-  },
-  {
-    kind: "specTable",
-    heading: "The Five Controls",
-    intro: "Everything the tool exposes, and the two things worth knowing about how they behave:",
-    columns: ["Control", "What it does"],
-    rows: [
-      { label: "Text", value: "Any wording you type. Defaults to CONFIDENTIAL." },
-      {
-        label: "Colour",
-        value: "Free choice through the native colour picker. Defaults to white.",
-        note: "White works on dark images; switch to a dark colour over light backgrounds.",
-      },
-      {
-        label: "Size",
-        value: "A percentage of the image's width, from small to large. Defaults to 15%.",
-        note: "Proportional by design, so one setting suits images of very different resolutions.",
-      },
-      {
-        label: "Opacity",
-        value: "1 to 100. Defaults to 50, which reads clearly without hiding the image.",
-      },
-      {
-        label: "Position",
-        value: "A three-by-three grid — corners, edge centres, or the middle. Defaults to centre.",
-        note: "Padding from the edge scales with the text size, so corner placements stay clear of the border.",
-      },
-      {
-        label: "Repetition",
-        value: "None. The text is drawn once, not tiled across the image.",
-      },
-      { label: "Rotation", value: "None. The text is always drawn horizontally." },
-      {
-        label: "Output",
-        value: "PNG at the original dimensions, named with -watermarked appended.",
-      },
     ],
   },
   {
@@ -133,6 +104,43 @@ const sections: ToolSection[] = [
         label: "When this is not enough",
         description:
           "For genuinely valuable commercial licensing, a visible watermark is a deterrent rather than protection. Combine it with lower-resolution previews, or use a service built for rights management.",
+      },
+    ],
+  },
+  {
+    kind: "specTable",
+    heading: "The Five Controls",
+    intro: "Everything the tool exposes, and the two things worth knowing about how they behave:",
+    columns: ["Control", "What it does"],
+    rows: [
+      { label: "Text", value: "Any wording you type. Defaults to CONFIDENTIAL." },
+      {
+        label: "Colour",
+        value: "Free choice through the native colour picker. Defaults to white.",
+        note: "White works on dark images; switch to a dark colour over light backgrounds.",
+      },
+      {
+        label: "Size",
+        value: "A percentage of the image's width, from small to large. Defaults to 15%.",
+        note: "Proportional by design, so one setting suits images of very different resolutions.",
+      },
+      {
+        label: "Opacity",
+        value: "1 to 100. Defaults to 50, which reads clearly without hiding the image.",
+      },
+      {
+        label: "Position",
+        value: "A three-by-three grid — corners, edge centres, or the middle. Defaults to centre.",
+        note: "Padding from the edge scales with the text size, so corner placements stay clear of the border.",
+      },
+      {
+        label: "Repetition",
+        value: "None. The text is drawn once, not tiled across the image.",
+      },
+      { label: "Rotation", value: "None. The text is always drawn horizontally." },
+      {
+        label: "Output",
+        value: "PNG at the original dimensions, named with -watermarked appended.",
       },
     ],
   },
@@ -181,9 +189,9 @@ const sections: ToolSection[] = [
           "No. The image is drawn at its original dimensions and exported as a lossless PNG, so the only pixels that change are the ones under the text. A JPEG source will produce a larger PNG file, which the Compress Image tool can bring back down.",
       },
       {
-        question: "Which formats can I upload?",
+        question: "What can I put a watermark on?",
         answer:
-          "JPEG, PNG and WebP. The file's leading bytes are checked rather than its extension, so GIF and BMP files are rejected with a message rather than failing partway through. Transparency in a PNG or WebP source is preserved in the output.",
+          "JPEG, PNG and WebP. Files are identified by their opening bytes rather than their extension, so GIF and BMP are declined with a message up front. Transparency in a PNG or WebP source is preserved in the output.",
       },
     ],
   },
@@ -218,7 +226,7 @@ const sections: ToolSection[] = [
   {
     kind: "articleLinks",
     heading: "More on Watermarking",
-    slugs: ["how-to-watermark-photos-online", "browser-tech-replacing-desktop-apps"],
+    slugs: ["how-to-watermark-photos-online"],
   },
 ];
 

@@ -11,12 +11,14 @@ export const Route = createFileRoute("/rotate-image")({
       { title: "Rotate or Flip Image Online Free | ConvertPDF" },
       {
         name: "description",
-        content: "Rotate images in 90° steps or mirror them online for free.",
+        content:
+          "Rotate in 90° steps or mirror an image, baked into the pixels instead of an EXIF tag, so it looks right in every viewer. Lossless PNG output.",
       },
       { property: "og:title", content: "Rotate or Flip Image Online Free | ConvertPDF" },
       {
         property: "og:description",
-        content: "Rotate images in 90° steps or mirror them online for free.",
+        content:
+          "Rotate in 90° steps or mirror an image, baked into the pixels instead of an EXIF tag, so it looks right in every viewer. Lossless PNG output.",
       },
     ],
     links: [{ rel: "canonical", href: "https://converttpdf.com/rotate-image" }],
@@ -28,7 +30,7 @@ const rotateSteps = [
   {
     title: "Load an image",
     description:
-      "Drop a JPEG, PNG or WebP onto the upload area. The preview shows its current orientation, and the controls reset to zero rotation with both mirrors off.",
+      "Pick a JPEG, PNG or WebP from your device. The preview shows its current orientation, and the controls reset to zero rotation with both mirrors off.",
   },
   {
     title: "Turn and mirror it",
@@ -141,6 +143,33 @@ const sections: ToolSection[] = [
     ],
   },
   {
+    kind: "toolLinks",
+    heading: "Often Used Alongside",
+    tools: [
+      {
+        name: "Crop Image",
+        href: "/crop-image",
+        description: "Frame the shot once it is the right way up.",
+        icon: Crop,
+        accent: "from-sky-500 to-blue-500",
+      },
+      {
+        name: "Resize Image",
+        href: "/resize-image",
+        description: "Set the dimensions after a quarter turn has swapped width and height.",
+        icon: Maximize2,
+        accent: "from-rose-500 to-pink-500",
+      },
+      {
+        name: "Watermark Image",
+        href: "/watermark-image",
+        description: "Add a caption or credit once the orientation is settled.",
+        icon: Droplets,
+        accent: "from-amber-500 to-yellow-500",
+      },
+    ],
+  },
+  {
     kind: "callout",
     heading: "Private Image Transformation",
     tone: "privacy",
@@ -175,48 +204,21 @@ const sections: ToolSection[] = [
           "For a quarter turn they swap: a 1920 × 1080 landscape image becomes 1080 × 1920. The canvas is rebuilt to fit the rotated image before drawing, so nothing is cropped off. A 180° turn or a mirror leaves the dimensions unchanged.",
       },
       {
-        question: "Why is the output always a PNG?",
+        question: "Why does a JPEG come back as a PNG?",
         answer:
           "So the transformation costs nothing in quality. Re-encoding a JPEG would introduce a fresh round of compression on top of an operation that is otherwise lossless. The trade is a larger file, which the Compress Image tool can bring back down if you need it to.",
       },
       {
-        question: "Which formats can I upload?",
+        question: "Which image types are accepted?",
         answer:
-          "JPEG, PNG and WebP. The file's leading bytes are checked rather than its extension, so GIF and BMP files are rejected with a message rather than failing midway. Convert those to a supported format first.",
-      },
-    ],
-  },
-  {
-    kind: "toolLinks",
-    heading: "Often Used Alongside",
-    tools: [
-      {
-        name: "Crop Image",
-        href: "/crop-image",
-        description: "Frame the shot once it is the right way up.",
-        icon: Crop,
-        accent: "from-sky-500 to-blue-500",
-      },
-      {
-        name: "Resize Image",
-        href: "/resize-image",
-        description: "Set the dimensions after a quarter turn has swapped width and height.",
-        icon: Maximize2,
-        accent: "from-rose-500 to-pink-500",
-      },
-      {
-        name: "Watermark Image",
-        href: "/watermark-image",
-        description: "Add a caption or credit once the orientation is settled.",
-        icon: Droplets,
-        accent: "from-amber-500 to-yellow-500",
+          "JPEG, PNG and WebP only. Because the tool inspects the file's opening bytes rather than its extension, renaming a GIF or BMP will not sneak it through — it is rejected with a message. You will need to change the format properly before rotating.",
       },
     ],
   },
   {
     kind: "articleLinks",
     heading: "Background Reading",
-    slugs: ["what-is-client-side-processing", "batch-image-processing-guide"],
+    slugs: ["what-is-client-side-processing"],
   },
 ];
 

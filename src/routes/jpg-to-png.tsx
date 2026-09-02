@@ -11,12 +11,14 @@ export const Route = createFileRoute("/jpg-to-png")({
       { title: "JPG to PNG Converter Online Free | ConvertPDF" },
       {
         name: "description",
-        content: "Convert JPG images to lossless PNG format online for free.",
+        content:
+          "Convert a JPEG into a lossless PNG in your browser. It cannot recover detail the JPEG already discarded, but it gives you a stable base for editing.",
       },
       { property: "og:title", content: "JPG to PNG Converter Online Free | ConvertPDF" },
       {
         property: "og:description",
-        content: "Convert JPG images to lossless PNG format online for free.",
+        content:
+          "Convert a JPEG into a lossless PNG in your browser. It cannot recover detail the JPEG already discarded, but it gives you a stable base for editing.",
       },
     ],
     links: [{ rel: "canonical", href: "https://converttpdf.com/jpg-to-png" }],
@@ -102,8 +104,18 @@ const sections: ToolSection[] = [
   },
   {
     kind: "steps",
-    heading: "Converting an Image",
+    heading: "Making the PNG",
     steps: convertSteps,
+  },
+  {
+    kind: "callout",
+    heading: "Client-Side Format Shifting",
+    tone: "privacy",
+    policyLink: true,
+    paragraphs: [
+      "The conversion happens on your device. Your browser reads the file into memory, decodes it, paints it onto a canvas, and exports a PNG — all in local JavaScript on the page's main thread. Your image is never uploaded, and no third-party service ever receives it.",
+      "One useful side effect: because only pixels survive the canvas round-trip, EXIF metadata is left behind. Camera model, timestamps and any embedded GPS coordinates do not make it into the PNG, which is worth knowing if you are about to share a photo publicly.",
+    ],
   },
   {
     kind: "checklist",
@@ -136,16 +148,6 @@ const sections: ToolSection[] = [
         description:
           "For an ordinary photograph you intend to email, upload or publish, converting to PNG is the wrong move. You will multiply the file size and gain nothing visible, because the detail JPEG removed is already gone.",
       },
-    ],
-  },
-  {
-    kind: "callout",
-    heading: "Client-Side Format Shifting",
-    tone: "privacy",
-    policyLink: true,
-    paragraphs: [
-      "The conversion happens on your device. Your browser reads the file into memory, decodes it, paints it onto a canvas, and exports a PNG — all in local JavaScript on the page's main thread. Your image is never uploaded, and no third-party service ever receives it.",
-      "One useful side effect: because only pixels survive the canvas round-trip, EXIF metadata is left behind. Camera model, timestamps and any embedded GPS coordinates do not make it into the PNG, which is worth knowing if you are about to share a photo publicly.",
     ],
   },
   {
@@ -214,7 +216,7 @@ const sections: ToolSection[] = [
   {
     kind: "articleLinks",
     heading: "Further Reading on Formats",
-    slugs: ["jpg-vs-png-guide", "what-is-client-side-processing"],
+    slugs: ["jpg-vs-png-guide"],
   },
 ];
 

@@ -11,12 +11,14 @@ export const Route = createFileRoute("/resize-image")({
       { title: "Resize Image Online Free | ConvertPDF" },
       {
         name: "description",
-        content: "Scale and resize images to custom dimensions online for free.",
+        content:
+          "Set exact pixel dimensions or scale from 10% to 200%, with an aspect-ratio lock. Saved as a lossless PNG, with no cap on the output size.",
       },
       { property: "og:title", content: "Resize Image Online Free | ConvertPDF" },
       {
         property: "og:description",
-        content: "Scale and resize images to custom dimensions online for free.",
+        content:
+          "Set exact pixel dimensions or scale from 10% to 200%, with an aspect-ratio lock. Saved as a lossless PNG, with no cap on the output size.",
       },
     ],
     links: [{ rel: "canonical", href: "https://converttpdf.com/resize-image" }],
@@ -54,33 +56,33 @@ const sections: ToolSection[] = [
   },
   {
     kind: "specTable",
-    heading: "Output Specification",
+    heading: "Output, Limits and Defaults",
     intro:
       "What you get back, and the one place this tool deliberately differs from the other image tools here:",
     columns: ["Property", "Value"],
     rows: [
       {
-        label: "Output format",
+        label: "Format written out",
         value: "PNG, always — whatever you put in.",
         note: "Lossless, so the resize is not compounded by fresh compression artefacts.",
       },
       {
-        label: "Maximum dimensions",
+        label: "Upper size limit",
         value: "None. Whatever you type into the boxes is what you get.",
         note: "Compress Image caps at 4096 pixels; this tool does not, so it is the right choice for large output.",
       },
-      { label: "Minimum dimensions", value: "1 pixel on each side." },
+      { label: "Smallest allowed", value: "1 pixel on each side." },
       { label: "Percentage range", value: "10% to 200% of the original, via the slider." },
       {
         label: "Aspect ratio",
         value: "Locked by default. Unlock it to set width and height independently.",
         note: "With the lock off, the image will stretch — that is the point of the option.",
       },
-      { label: "Transparency", value: "Preserved. PNG output carries the alpha channel through." },
-      { label: "Metadata", value: "Dropped. Only pixels survive the canvas step." },
-      { label: "Files per run", value: "One. Selecting another image replaces the current one." },
+      { label: "Alpha channel", value: "Preserved. PNG output carries the alpha channel through." },
+      { label: "EXIF data", value: "Dropped. Only pixels survive the canvas step." },
+      { label: "Images per run", value: "One. Selecting another image replaces the current one." },
       {
-        label: "Output filename",
+        label: "Name of the download",
         value: "Original name with the new dimensions appended — photo-1280x720.png.",
       },
     ],
@@ -90,6 +92,39 @@ const sections: ToolSection[] = [
     heading: "Resizing an Image",
     variant: "timeline",
     steps: resizeSteps,
+  },
+  {
+    kind: "checklist",
+    heading: "Where Exact Dimensions Matter",
+    intro:
+      "Most resizing is driven by something downstream demanding a specific size rather than by taste:",
+    items: [
+      {
+        label: "Meeting a platform's stated dimensions",
+        description:
+          "Profile photos, banners, thumbnails and ad slots usually publish exact pixel requirements. Hitting them yourself avoids whatever automatic cropping the platform would otherwise apply for you.",
+      },
+      {
+        label: "Getting under an upload limit",
+        description:
+          "When a form rejects a file for size, reducing the dimensions is far more effective than re-encoding. Halving width and height removes three quarters of the pixels before compression is even considered.",
+      },
+      {
+        label: "Making pages load faster",
+        description:
+          "Serving a 4000px image into a 800px slot wastes most of the bytes the visitor downloads. Resizing to roughly the display size is one of the largest wins available on image-heavy pages.",
+      },
+      {
+        label: "Standardising a set of images",
+        description:
+          "Product grids and galleries look wrong when the images differ in size. Running each through at the same target dimensions gives a consistent set — the aspect lock keeps each one undistorted.",
+      },
+      {
+        label: "When resizing is the wrong tool",
+        description:
+          "If the image already fits its purpose and the file is simply heavy, resizing throws away detail you did not need to lose. Compress instead. And if the framing is the problem, crop — stretching to a new ratio will distort faces and text.",
+      },
+    ],
   },
   {
     kind: "decision",
@@ -126,39 +161,6 @@ const sections: ToolSection[] = [
         condition: "The image is small and you want it bigger.",
         recommendation:
           "You can, up to 200%, but manage expectations — enlarging invents pixels and the result is always softer than a genuinely larger original.",
-      },
-    ],
-  },
-  {
-    kind: "checklist",
-    heading: "Where Exact Dimensions Matter",
-    intro:
-      "Most resizing is driven by something downstream demanding a specific size rather than by taste:",
-    items: [
-      {
-        label: "Meeting a platform's stated dimensions",
-        description:
-          "Profile photos, banners, thumbnails and ad slots usually publish exact pixel requirements. Hitting them yourself avoids whatever automatic cropping the platform would otherwise apply for you.",
-      },
-      {
-        label: "Getting under an upload limit",
-        description:
-          "When a form rejects a file for size, reducing the dimensions is far more effective than re-encoding. Halving width and height removes three quarters of the pixels before compression is even considered.",
-      },
-      {
-        label: "Making pages load faster",
-        description:
-          "Serving a 4000px image into a 800px slot wastes most of the bytes the visitor downloads. Resizing to roughly the display size is one of the largest wins available on image-heavy pages.",
-      },
-      {
-        label: "Standardising a set of images",
-        description:
-          "Product grids and galleries look wrong when the images differ in size. Running each through at the same target dimensions gives a consistent set — the aspect lock keeps each one undistorted.",
-      },
-      {
-        label: "When resizing is the wrong tool",
-        description:
-          "If the image already fits its purpose and the file is simply heavy, resizing throws away detail you did not need to lose. Compress instead. And if the framing is the problem, crop — stretching to a new ratio will distort faces and text.",
       },
     ],
   },
@@ -238,7 +240,7 @@ const sections: ToolSection[] = [
   {
     kind: "articleLinks",
     heading: "Sizing Guides",
-    slugs: ["how-to-resize-images-social-media", "image-aspect-ratio-cropping-guide"],
+    slugs: ["how-to-resize-images-social-media"],
   },
 ];
 

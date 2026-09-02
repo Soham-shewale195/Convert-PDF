@@ -9,9 +9,17 @@ export const Route = createFileRoute("/crop-image")({
   head: () => ({
     meta: [
       { title: "Crop Image Online Free | ConvertPDF" },
-      { name: "description", content: "Trim images to any area you need online for free." },
+      {
+        name: "description",
+        content:
+          "Drag a box or pick 1:1, 16:9 or 4:3. The region is taken from the full-resolution original rather than the preview, and saved as a PNG.",
+      },
       { property: "og:title", content: "Crop Image Online Free | ConvertPDF" },
-      { property: "og:description", content: "Trim images to any area you need online for free." },
+      {
+        property: "og:description",
+        content:
+          "Drag a box or pick 1:1, 16:9 or 4:3. The region is taken from the full-resolution original rather than the preview, and saved as a PNG.",
+      },
     ],
     links: [{ rel: "canonical", href: "https://converttpdf.com/crop-image" }],
   }),
@@ -22,7 +30,7 @@ const cropSteps = [
   {
     title: "Load an image",
     description:
-      "Drop a JPEG, PNG or WebP onto the upload area. It appears at whatever size fits the panel, with no selection made yet — the Crop button stays greyed out until there is one.",
+      "Add a JPEG, PNG or WebP by dropping it in or browsing for it. It appears at whatever size fits the panel, with no selection made yet — the Crop button stays greyed out until there is one.",
   },
   {
     title: "Make a selection",
@@ -47,42 +55,42 @@ const sections: ToolSection[] = [
     ],
   },
   {
-    kind: "definitions",
-    heading: "The Controls, Defined",
-    intro:
-      "There are only two things to set, but the aspect modes behave differently from each other:",
-    terms: [
-      {
-        term: "Free mode",
-        definition:
-          "The default, and it starts with nothing selected — drag across the image to draw your own rectangle, with no constraint on proportions. Best when you are framing by eye rather than to a specification.",
-      },
-      {
-        term: "1:1, 16:9 and 4:3 presets",
-        definition:
-          "Lock the box to that ratio. Choosing one re-centres a fresh selection at roughly 90% of the image, which you can then drag and resize — it stays at the chosen proportions however you move it.",
-      },
-      {
-        term: "The crop box",
-        definition:
-          "Drawn in the preview's coordinate space, which is whatever size the image is being displayed at. It is converted to real pixel coordinates only when you apply, so preview size never affects the output.",
-      },
-      {
-        term: "Full-resolution extraction",
-        definition:
-          "The region is copied straight out of the decoded source at its native resolution. Nothing is scaled up, scaled down or resampled, so cropped pixels are identical to the originals.",
-      },
-      {
-        term: "The output",
-        definition:
-          "A PNG, named after your original with -cropped appended. PNG is lossless, so the extracted region is not degraded by a fresh round of compression on the way out.",
-      },
-    ],
-  },
-  {
     kind: "steps",
     heading: "Cropping an Image",
     steps: cropSteps,
+  },
+  {
+    kind: "checklist",
+    heading: "When Cropping Is the Right Move",
+    intro:
+      "Cropping changes what the image is about. Reach for it whenever the problem is the framing rather than the file:",
+    items: [
+      {
+        label: "Fitting a required aspect ratio",
+        description:
+          "Profile pictures want square, video thumbnails want 16:9. Cropping to the ratio keeps everything undistorted, where resizing to those proportions would stretch faces and text out of shape.",
+      },
+      {
+        label: "Tightening a loose composition",
+        description:
+          "Removing empty sky, a cluttered edge or an unwanted passer-by draws attention to the subject and, as a side effect, cuts the file size along with the discarded pixels.",
+      },
+      {
+        label: "Pulling a headshot from a group photo",
+        description:
+          "Free mode is ideal here. Because extraction happens at full resolution, a tight crop from a high-megapixel photo is still perfectly usable on its own.",
+      },
+      {
+        label: "Removing something before sharing",
+        description:
+          "A document edge, a screen reflection, a name badge. Cropping deletes those pixels from the file rather than covering them, so they cannot be recovered from the result.",
+      },
+      {
+        label: "When to reach for a different tool",
+        description:
+          "If the framing is fine and the file is merely too large, cropping is the wrong lever — resize or compress instead. And if the image is sideways, rotate it first, since the crop box works against the image as it currently sits.",
+      },
+    ],
   },
   {
     kind: "comparison",
@@ -115,39 +123,6 @@ const sections: ToolSection[] = [
         aspect: "Format",
         a: "Whatever you uploaded.",
         b: "Always PNG, so nothing is lost in the export.",
-      },
-    ],
-  },
-  {
-    kind: "checklist",
-    heading: "When Cropping Is the Right Move",
-    intro:
-      "Cropping changes what the image is about. Reach for it whenever the problem is the framing rather than the file:",
-    items: [
-      {
-        label: "Fitting a required aspect ratio",
-        description:
-          "Profile pictures want square, video thumbnails want 16:9. Cropping to the ratio keeps everything undistorted, where resizing to those proportions would stretch faces and text out of shape.",
-      },
-      {
-        label: "Tightening a loose composition",
-        description:
-          "Removing empty sky, a cluttered edge or an unwanted passer-by draws attention to the subject and, as a side effect, cuts the file size along with the discarded pixels.",
-      },
-      {
-        label: "Pulling a headshot from a group photo",
-        description:
-          "Free mode is ideal here. Because extraction happens at full resolution, a tight crop from a high-megapixel photo is still perfectly usable on its own.",
-      },
-      {
-        label: "Removing something before sharing",
-        description:
-          "A document edge, a screen reflection, a name badge. Cropping deletes those pixels from the file rather than covering them, so they cannot be recovered from the result.",
-      },
-      {
-        label: "When to reach for a different tool",
-        description:
-          "If the framing is fine and the file is merely too large, cropping is the wrong lever — resize or compress instead. And if the image is sideways, rotate it first, since the crop box works against the image as it currently sits.",
       },
     ],
   },
@@ -196,9 +171,9 @@ const sections: ToolSection[] = [
           "So the crop is not compounded by a second round of lossy compression. Re-encoding a JPEG always costs a little quality; exporting as PNG keeps the extracted region exactly as it was. If you need a smaller JPEG afterwards, run the result through Compress Image.",
       },
       {
-        question: "Which formats can I upload?",
+        question: "What can I load into the cropper?",
         answer:
-          "JPEG, PNG and WebP. The file's leading bytes are checked rather than its extension, so GIF and BMP files are rejected with a message rather than failing partway through. Convert those to a supported format first.",
+          "JPEG, PNG and WebP. The check looks at the opening bytes of the file, not the name on it, which is why a GIF or BMP is refused up front instead of breaking partway through. Re-save those in one of the three supported formats first.",
       },
     ],
   },
@@ -232,7 +207,7 @@ const sections: ToolSection[] = [
   {
     kind: "articleLinks",
     heading: "Framing and Ratios",
-    slugs: ["image-aspect-ratio-cropping-guide", "browser-tech-replacing-desktop-apps"],
+    slugs: ["image-aspect-ratio-cropping-guide"],
   },
 ];
 

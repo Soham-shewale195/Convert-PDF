@@ -9,11 +9,16 @@ export const Route = createFileRoute("/webp-to-jpg")({
   head: () => ({
     meta: [
       { title: "WEBP to JPG Converter Online Free | ConvertPDF" },
-      { name: "description", content: "Convert modern WEBP images to JPG format online for free." },
+      {
+        name: "description",
+        content:
+          "Turn a WebP into a JPEG that older software will actually open. Your browser decodes and re-encodes it at 92% quality — nothing is uploaded.",
+      },
       { property: "og:title", content: "WEBP to JPG Converter Online Free | ConvertPDF" },
       {
         property: "og:description",
-        content: "Convert modern WEBP images to JPG format online for free.",
+        content:
+          "Turn a WebP into a JPEG that older software will actually open. Your browser decodes and re-encodes it at 92% quality — nothing is uploaded.",
       },
     ],
     links: [{ rel: "canonical", href: "https://converttpdf.com/webp-to-jpg" }],
@@ -192,9 +197,9 @@ const sections: ToolSection[] = [
           "JPEG cannot store animation, so only the first frame is decoded and saved. The result is a still image. If you need to keep the animation, JPEG is not a format that can hold it in any form.",
       },
       {
-        question: "Why did my transparent background turn white?",
+        question: "My WebP had a transparent background — where did it go?",
         answer:
-          "WebP supports transparency and JPEG does not. The converter fills the canvas with white before drawing, because leaving it unfilled would render those regions black. If the transparency matters, convert to PNG rather than JPEG.",
+          "It was filled with white. WebP carries an alpha channel and JPEG has none, so the canvas is painted white before the image is drawn; leaving it unpainted would render those regions black instead. If the transparency matters, convert to PNG rather than JPEG.",
       },
       {
         question: "Is there a size limit?",
@@ -238,7 +243,7 @@ const sections: ToolSection[] = [
   {
     kind: "articleLinks",
     heading: "More on WebP",
-    slugs: ["how-to-convert-webp-to-jpg", "webp-vs-jpg-vs-png"],
+    slugs: ["how-to-convert-webp-to-jpg", "browser-tech-replacing-desktop-apps"],
   },
 ];
 

@@ -11,12 +11,14 @@ export const Route = createFileRoute("/png-to-jpg")({
       { title: "PNG to JPG Converter Online Free | ConvertPDF" },
       {
         name: "description",
-        content: "Convert PNG images to compressed JPG format online for free.",
+        content:
+          "Re-encode a PNG as a JPEG at 92% quality without uploading it anywhere. Transparent areas are flattened onto white before encoding.",
       },
       { property: "og:title", content: "PNG to JPG Converter Online Free | ConvertPDF" },
       {
         property: "og:description",
-        content: "Convert PNG images to compressed JPG format online for free.",
+        content:
+          "Re-encode a PNG as a JPEG at 92% quality without uploading it anywhere. Transparent areas are flattened onto white before encoding.",
       },
     ],
     links: [{ rel: "canonical", href: "https://converttpdf.com/png-to-jpg" }],
@@ -54,7 +56,7 @@ const sections: ToolSection[] = [
   },
   {
     kind: "specTable",
-    heading: "Output Specification",
+    heading: "The Fixed Settings",
     intro:
       "Every value below is fixed in the tool. Knowing them up front saves guessing at why a result looks the way it does:",
     columns: ["Property", "Value"],
@@ -93,7 +95,7 @@ const sections: ToolSection[] = [
   },
   {
     kind: "steps",
-    heading: "Converting an Image",
+    heading: "Making the JPEG",
     variant: "timeline",
     steps: convertSteps,
   },
@@ -179,42 +181,6 @@ const sections: ToolSection[] = [
     ],
   },
   {
-    kind: "faq",
-    heading: "PNG to JPG: Questions and Answers",
-    faqs: [
-      {
-        question: "Will the JPG look noticeably worse than my PNG?",
-        answer:
-          "On a photograph, almost certainly not — the output is encoded at 92% quality, which is high enough that differences are very hard to spot at normal viewing size. On screenshots, diagrams, logos or anything with sharp text, the difference is much easier to see, and PNG is the better choice for those.",
-      },
-      {
-        question: "Why did my transparent background turn white?",
-        answer:
-          "JPEG has no alpha channel, so transparency cannot be represented at all. The converter fills the canvas with white before drawing the image; without that step those areas would come out black, which looks far worse.",
-      },
-      {
-        question: "Can I choose the quality or target a specific file size?",
-        answer:
-          "Not on this page — the quality is fixed at 92%. If you need to hit a particular size, convert here first and then run the result through the Compress Image tool, which gives you a quality control.",
-      },
-      {
-        question: "Is there a maximum image size?",
-        answer:
-          "Images larger than 4096 pixels on their longest side are scaled down proportionally before encoding, so a 6000 × 4000 photograph comes out at 4096 × 2731. Smaller images are never resized. Beyond that the limit is your device's memory, since the image is decoded in full.",
-      },
-      {
-        question: "Does converting strip my metadata?",
-        answer:
-          "Yes. The image is redrawn onto a canvas and only pixel data survives, so EXIF fields, capture timestamps and GPS coordinates are all left behind. The output is a clean, anonymous file.",
-      },
-      {
-        question: "Can I convert a folder of PNGs at once?",
-        answer:
-          "No, the tool takes one file per conversion. You can run them back to back without reloading — selecting a new file simply replaces the previous one.",
-      },
-    ],
-  },
-  {
     kind: "toolLinks",
     heading: "Related Image Tools",
     tools: [
@@ -242,9 +208,40 @@ const sections: ToolSection[] = [
     ],
   },
   {
+    kind: "faq",
+    heading: "PNG to JPG: Questions and Answers",
+    faqs: [
+      {
+        question: "Will the JPG look noticeably worse than my PNG?",
+        answer:
+          "On a photograph, almost certainly not — the output is encoded at 92% quality, which is high enough that differences are very hard to spot at normal viewing size. On screenshots, diagrams, logos or anything with sharp text, the difference is much easier to see, and PNG is the better choice for those.",
+      },
+      {
+        question: "Can I choose the quality or target a specific file size?",
+        answer:
+          "Not on this page — the quality is fixed at 92%. If you need to hit a particular size, convert here first and then run the result through the Compress Image tool, which gives you a quality control.",
+      },
+      {
+        question: "Is there a maximum image size?",
+        answer:
+          "Images larger than 4096 pixels on their longest side are scaled down proportionally before encoding, so a 6000 × 4000 photograph comes out at 4096 × 2731. Smaller images are never resized. Beyond that the limit is your device's memory, since the image is decoded in full.",
+      },
+      {
+        question: "Does converting strip my metadata?",
+        answer:
+          "Yes. The image is redrawn onto a canvas and only pixel data survives, so EXIF fields, capture timestamps and GPS coordinates are all left behind. The output is a clean, anonymous file.",
+      },
+      {
+        question: "Can I convert a folder of PNGs at once?",
+        answer:
+          "No, the tool takes one file per conversion. You can run them back to back without reloading — selecting a new file simply replaces the previous one.",
+      },
+    ],
+  },
+  {
     kind: "articleLinks",
     heading: "Guides on Image Formats",
-    slugs: ["batch-image-processing-guide", "how-to-resize-images-social-media"],
+    slugs: ["webp-vs-jpg-vs-png"],
   },
 ];
 

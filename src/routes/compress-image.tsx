@@ -1,15 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import {
-  Minimize2,
-  ShieldCheck,
-  SlidersHorizontal,
-  ImageOff,
-  BarChart3,
-  Maximize2,
-  Smartphone,
-  Crop,
-  FileImage,
-} from "lucide-react";
+import { Minimize2, Maximize2, Crop, FileImage } from "lucide-react";
 import ToolPageLayout from "@/components/ToolPageLayout";
 import CompressImagePanel from "@/components/tools/CompressImagePanel";
 import ToolContentSections, { type ToolSection } from "@/components/ToolContentSections";
@@ -21,12 +11,14 @@ export const Route = createFileRoute("/compress-image")({
       { title: "Compress Image Online Free | ConvertPDF" },
       {
         name: "description",
-        content: "Reduce image file size with quality control online for free.",
+        content:
+          "Shrink an image with a 1-100 quality slider that measures the real output size as you move it. Runs in your browser, so nothing is uploaded.",
       },
       { property: "og:title", content: "Compress Image Online Free | ConvertPDF" },
       {
         property: "og:description",
-        content: "Reduce image file size with quality control online for free.",
+        content:
+          "Shrink an image with a 1-100 quality slider that measures the real output size as you move it. Runs in your browser, so nothing is uploaded.",
       },
     ],
     links: [{ rel: "canonical", href: "https://converttpdf.com/compress-image" }],
@@ -38,7 +30,7 @@ const compressSteps = [
   {
     title: "Upload an image",
     description:
-      "Drop a JPEG, PNG or WebP onto the upload area. The file is read into your browser's memory and its leading bytes are checked to confirm it really is an image of a supported type.",
+      "Choose a JPEG, PNG or WebP — drag it in, or click to browse. The file is read into your browser's memory and its leading bytes are checked to confirm it really is an image of a supported type.",
   },
   {
     title: "Move the slider and watch the estimate",
@@ -113,49 +105,6 @@ const sections: ToolSection[] = [
     steps: compressSteps,
   },
   {
-    kind: "cards",
-    heading: "How the Compressor Behaves",
-    columns: 3,
-    items: [
-      {
-        icon: BarChart3,
-        title: "The estimate is measured, not guessed",
-        description:
-          "Each slider move runs a real compression of your image and reports the actual output size, so there is no surprise when you click.",
-      },
-      {
-        icon: SlidersHorizontal,
-        title: "You set the trade directly",
-        description:
-          "A single control from 1 to 100. No presets deciding on your behalf — you can see the cost of every step before committing.",
-      },
-      {
-        icon: ImageOff,
-        title: "Transparency is flattened to white",
-        description:
-          "JPEG has no alpha channel, so transparent areas are filled with white. Without that fill they would export as black instead.",
-      },
-      {
-        icon: Maximize2,
-        title: "Very large images are scaled down",
-        description:
-          "Anything over 4096 pixels on its longest side is reduced proportionally before encoding. Use Resize Image when you need to control that yourself.",
-      },
-      {
-        icon: ShieldCheck,
-        title: "Nothing is uploaded",
-        description:
-          "Decoding, re-encoding and export all happen on your device. No third-party service receives the image at any point.",
-      },
-      {
-        icon: Smartphone,
-        title: "Works on a phone",
-        description:
-          "Useful where it matters most — shrinking a camera-roll photo before sending it over mobile data, without installing anything.",
-      },
-    ],
-  },
-  {
     kind: "checklist",
     heading: "Choosing a Setting in Practice",
     intro:
@@ -189,16 +138,6 @@ const sections: ToolSection[] = [
     ],
   },
   {
-    kind: "callout",
-    heading: "Private, Browser-Only Compression",
-    tone: "privacy",
-    policyLink: true,
-    paragraphs: [
-      "Compression runs inside your browser. The image is decoded into memory, drawn onto an off-screen canvas, and re-encoded as a JPEG in local JavaScript. Your image is never uploaded and no third-party service is involved — including for the live estimate, which is simply another local compression run.",
-      "Because only pixels survive the canvas step, EXIF metadata is dropped: camera model, capture timestamp and any embedded GPS coordinates do not reach the compressed file. Worth knowing in both directions — helpful before publishing, inconvenient if you needed to keep it.",
-    ],
-  },
-  {
     kind: "faq",
     heading: "Compress Image: Questions and Answers",
     faqs: [
@@ -213,14 +152,14 @@ const sections: ToolSection[] = [
           "Always a JPEG, whatever you upload, named after the original with -compressed appended. That is what makes the quality slider meaningful — PNG has no equivalent quality dial, since it is lossless.",
       },
       {
-        question: "Why did my transparent background turn white?",
+        question: "What happens to a PNG with a transparent background?",
         answer:
-          "JPEG cannot store transparency. The canvas is filled with white before the image is drawn, because leaving it unfilled would export those areas as black. If transparency matters, this is the wrong tool — keep the PNG.",
+          "The transparent areas come out solid white. Since the output is a JPEG and JPEG cannot store an alpha channel, the canvas is filled with white first — without that, those areas would export as black. If transparency matters, this is the wrong tool; keep the PNG.",
       },
       {
         question: "Does compression change the image dimensions?",
         answer:
-          "Only in one case. Images larger than 4096 pixels on their longest side are scaled down proportionally before encoding, so a 6000 × 4000 photograph comes out at 4096 × 2731. Anything at or below that limit keeps its exact dimensions. If you want control over the output size, use the Resize Image tool instead.",
+          "Only in one case. Anything measuring more than 4096 pixels along its longest edge is reduced proportionally before the JPEG is written — a 6000 × 4000 photograph arrives as 4096 × 2731. At or below that limit the dimensions are left exactly as they were. If you want control over the output size, use the Resize Image tool instead.",
       },
       {
         question: "What quality setting should I use?",
@@ -228,10 +167,20 @@ const sections: ToolSection[] = [
           "For photographs, the default of 70 is a sensible starting point and is often visually indistinguishable from the original. Go higher for images that will be printed or viewed large, lower when you must hit a size limit. Rather than reasoning about it, move the slider and watch the estimate against your actual target.",
       },
       {
-        question: "Which formats can I upload?",
+        question: "Which file types does the slider work on?",
         answer:
-          "JPEG, PNG and WebP. The file's leading bytes are checked rather than its extension, so GIF and BMP files are rejected with a message instead of failing midway. Convert those to a supported format first.",
+          "JPEG, PNG and WebP. Validation reads the first few bytes of the file instead of trusting the extension, so a GIF or BMP is turned away with a message rather than failing midway. Save those as JPEG or PNG elsewhere before bringing them here.",
       },
+    ],
+  },
+  {
+    kind: "callout",
+    heading: "Private, Browser-Only Compression",
+    tone: "privacy",
+    policyLink: true,
+    paragraphs: [
+      "Compression runs inside your browser. The image is decoded into memory, drawn onto an off-screen canvas, and re-encoded as a JPEG in local JavaScript. Your image is never uploaded and no third-party service is involved — including for the live estimate, which is simply another local compression run.",
+      "Because only pixels survive the canvas step, EXIF metadata is dropped: camera model, capture timestamp and any embedded GPS coordinates do not reach the compressed file. Worth knowing in both directions — helpful before publishing, inconvenient if you needed to keep it.",
     ],
   },
   {
@@ -264,7 +213,7 @@ const sections: ToolSection[] = [
   {
     kind: "articleLinks",
     heading: "More on Image Size",
-    slugs: ["batch-image-processing-guide", "jpg-vs-png-guide"],
+    slugs: ["batch-image-processing-guide"],
   },
 ];
 
