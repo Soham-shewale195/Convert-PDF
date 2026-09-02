@@ -1,9 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Maximize2, ShieldCheck, Zap, Smartphone, Cloud, Lock, Ruler } from "lucide-react";
-import { Minimize2, Crop, RotateCw } from "lucide-react";
+import { Maximize2, Crop, Minimize2, RotateCw } from "lucide-react";
 import ToolPageLayout from "@/components/ToolPageLayout";
 import ResizeImagePanel from "@/components/tools/ResizeImagePanel";
-import ToolContentSections, { type ToolContentData } from "@/components/ToolContentSections";
+import ToolContentSections, { type ToolSection } from "@/components/ToolContentSections";
 import { ToolFAQSchema, HowToSchema } from "@/components/schema/Schema";
 
 export const Route = createFileRoute("/resize-image")({
@@ -25,192 +24,238 @@ export const Route = createFileRoute("/resize-image")({
   component: ResizeImagePage,
 });
 
-const contentData: ToolContentData = {
-  whatIs: {
-    heading: "What Is Image Resizing?",
-    paragraphs: [
-      "Image resizing changes the pixel dimensions of a photograph or graphic — making it wider, taller, smaller, or proportionally different in scale — while keeping the visual content itself intact. Resizing is fundamentally different from cropping: cropping removes part of the image, while resizing scales the entire image to new dimensions. A 4000×3000 camera photo, for example, can be scaled down to 1200×900 for a blog post header without cutting anything out.",
-      "**How it works technically:** This tool performs resizing using the browser's Canvas API. When you set new target dimensions, the browser creates a hidden canvas at exactly that size and draws the full original image onto it using the drawImage method. The browser applies its built-in interpolation algorithm to map the original pixels to the new pixel grid — averaging and blending values to produce a smooth result. The output is saved as a PNG, which avoids introducing any additional lossy compression on top of the resize operation itself.",
-    ],
+const resizeSteps = [
+  {
+    title: "Load an image",
+    description:
+      "Drop a JPEG, PNG or WebP onto the upload area. The width and height boxes fill in with the image's real pixel dimensions, so you always start from where the file actually is rather than a guess.",
   },
-  howTo: {
-    heading: "How to Resize an Image in 3 Steps",
-    steps: [
-      {
-        title: "Upload your image",
-        description:
-          "Drag and drop an image onto the upload area, or click to browse. The tool reads the file into browser memory and automatically detects the original width and height.",
-      },
-      {
-        title: "Set the new dimensions",
-        description:
-          "Enter a target width and height in pixels, or use the percentage slider to scale proportionally. Enable the aspect-ratio lock to ensure the image is not stretched or squashed when you change one dimension.",
-      },
-      {
-        title: "Resize and download",
-        description:
-          'Click "Resize Image" to generate the new file. The resized image is exported as a PNG and downloaded directly to your device — no server involved.',
-      },
-    ],
+  {
+    title: "Set the target size",
+    description:
+      "Type exact pixel values, or drag the percentage slider between 10% and 200% to scale relative to the original. With the aspect-ratio lock on — it is on by default — editing one dimension recalculates the other so the image cannot be stretched out of shape.",
   },
-  benefits: {
-    heading: "Why Use Our Image Resizer",
-    items: [
-      {
-        icon: ShieldCheck,
-        title: "Fully private",
-        description:
-          "All resizing runs inside your browser via the Canvas API. The original image never leaves your device — no upload occurs at any point.",
-      },
-      {
-        icon: Ruler,
-        title: "Exact pixel dimensions",
-        description:
-          "Enter a precise target width and height in pixels, or scale by percentage. Useful when a platform or submission form requires specific dimensions.",
-      },
-      {
-        icon: Lock,
-        title: "Aspect-ratio lock",
-        description:
-          "A single checkbox keeps the original width-to-height ratio intact. Change one dimension and the other recalculates automatically, preventing distortion.",
-      },
-      {
-        icon: Zap,
-        title: "Instant canvas rendering",
-        description:
-          "The browser's native drawImage function handles pixel resampling directly. Most resizes complete in well under a second, regardless of image complexity.",
-      },
-      {
-        icon: Cloud,
-        title: "No account required",
-        description: "Free, open, and unlimited. No signup, no email, no usage cap.",
-      },
-      {
-        icon: Smartphone,
-        title: "Works on any device",
-        description:
-          "Resize images from your phone, tablet, or desktop — the interface adapts to your screen size.",
-      },
-    ],
+  {
+    title: "Apply and download",
+    description:
+      'Click "Apply Resize". The image is redrawn onto a canvas at the target size and saved as a PNG, named after the original with the new dimensions appended — photo-1280x720.png.',
   },
-  useCases: {
-    heading: "When to Resize Images",
-    intro:
-      "Changing pixel dimensions is one of the most common image preparation tasks, with distinct needs depending on whether you are scaling down or scaling up:",
-    items: [
-      {
-        label: "Preparing a blog hero image (Workflow Example)",
-        description:
-          "A photographer exports a 4000×3000px portrait from their camera. Their blog template renders the hero image at 1200px wide. Resizing to 1200×900px reduces the file from a large raw export to a much more browser-friendly size, cutting page load time without any visible quality difference at that display size.",
-      },
-      {
-        label: "When NOT to use this tool",
-        description:
-          "Do not use this tool to enlarge a low-resolution image in the hope of improving its quality. Upscaling adds pixels that did not exist in the original — the browser interpolates estimated values — resulting in a softer, blurrier image. If you need a genuinely higher-resolution version, you need AI upscaling software, not a basic canvas resize.",
-      },
-      {
-        label: "Meeting exact dimension requirements",
-        description:
-          "Visa applications, university portals, and job boards commonly specify exact pixel dimensions for profile photos. Enter the required width and height directly and the tool produces a file that matches the specification.",
-      },
-      {
-        label: "Optimising images for web display",
-        description:
-          "Serving a 4000px-wide image in a layout that only renders it at 800px wastes bandwidth and slows page loads. Resize to the actual display size before uploading to your website or CMS.",
-      },
-      {
-        label: "Creating thumbnails from high-resolution originals",
-        description:
-          "Generate small preview versions of product photos, portfolio images, or video thumbnails. Downscaling from a full-resolution source produces a sharper, cleaner thumbnail than upscaling a small image.",
-      },
-    ],
-  },
-  privacy: {
-    heading: "Private Image Resizing",
-    paragraphs: [
-      "When you resize an image here, the file is loaded directly into your browser's memory using the File API. A hidden HTML canvas element is created at your target dimensions, and the original image is drawn onto it using the Canvas API's drawImage method — all within the browser's sandboxed JavaScript environment. The resized result is exported as a PNG blob and downloaded to your device without any network request.",
-      "Your image data does not leave your machine at any point. There are no server-side processing queues, no temporary cloud storage, and no analytics on your file content. Once the tab is closed, the browser's garbage collector releases all in-memory pixel data immediately.",
-    ],
-  },
-  faqs: [
-    {
-      question: "What is the difference between downscaling and upscaling?",
-      answer:
-        "Downscaling reduces the pixel count — the browser averages and blends nearby pixels to produce a smaller, typically clean result. Upscaling increases the pixel count — the browser must invent values for pixels that did not exist, estimating them from neighbouring pixels. The result is a larger file that looks softer or blurrier, not sharper, because no new real detail is added.",
-    },
-    {
-      question: "What image formats can I resize?",
-      answer:
-        "You can upload any format your browser supports, including JPEG, PNG, WebP, GIF, and BMP. The resized output is saved as a PNG file, which preserves quality without introducing additional lossy compression on top of the resize.",
-    },
-    {
-      question: "What does the aspect-ratio lock do?",
-      answer:
-        "When enabled, changing the width automatically recalculates the height to maintain the original proportions, and vice versa. For example, if you enter 1200 as the width for a 4000×3000 image, the height automatically updates to 900 (1200 × 3000 / 4000 = 900). This prevents the image from appearing stretched or squashed.",
-    },
-    {
-      question: "Why is the output a PNG instead of JPEG?",
-      answer:
-        "PNG is a lossless format, so saving as PNG avoids adding JPEG compression artefacts on top of the resize operation. If you need a smaller JPEG file after resizing, you can compress the resulting PNG using our Compress Image tool.",
-    },
-    {
-      question: "Does resizing affect image quality?",
-      answer:
-        "Downscaling generally preserves visual quality well — reducing pixel count averages out noise and detail. Upscaling introduces softness because the browser estimates new pixel values. The output is saved as a lossless PNG, so no quality is lost during the file export step itself.",
-    },
-    {
-      question: "Do my images get uploaded to a server?",
-      answer:
-        "No. All processing happens locally in your browser using the Canvas API. Your images are read from disk, drawn onto an off-screen canvas at the new dimensions, and exported as a file — entirely without network requests.",
-    },
-    {
-      question: "Can I resize multiple images at once?",
-      answer:
-        "The tool currently processes one image at a time. For multiple files, resize each one individually. This keeps the interface simple and allows you to verify each result before moving on.",
-    },
-  ],
-  relatedTools: [
-    {
-      name: "Compress Image",
-      href: "/compress-image",
-      description:
-        "After resizing, if the PNG is still larger than your upload limit allows, compress it to a smaller JPEG with a quality setting you control.",
-      icon: Minimize2,
-      accent: "from-lime-500 to-green-500",
-    },
-    {
-      name: "Crop Image",
-      href: "/crop-image",
-      description:
-        "If the composition of your image needs adjusting before you resize — removing unwanted edges or centering the subject — crop it first, then resize to your target dimensions.",
-      icon: Crop,
-      accent: "from-sky-500 to-blue-500",
-    },
-    {
-      name: "Rotate / Flip Image",
-      href: "/rotate-image",
-      description:
-        "If your image is in the wrong orientation — portrait when it should be landscape — correct the rotation before resizing so the dimensions apply to the right axis.",
-      icon: RotateCw,
-      accent: "from-purple-500 to-fuchsia-500",
-    },
-  ],
-  relatedArticleSlugs: ["jpg-vs-png-guide", "best-free-pdf-tools"],
-};
+];
 
-const howToSteps = contentData.howTo.steps.map((s) => ({ name: s.title, text: s.description }));
+const sections: ToolSection[] = [
+  {
+    kind: "prose",
+    heading: "What Resizing Actually Does",
+    paragraphs: [
+      "Resizing changes how many pixels an image is made of. That is a different operation from compression, which keeps the pixel count and encodes it more aggressively, and different again from cropping, which keeps the pixels but discards the ones outside a chosen rectangle.",
+      "The work happens on a canvas. The image is decoded, a canvas is created at exactly the width and height you asked for, and the image is drawn into it. Where the target is smaller than the source, the browser averages neighbouring pixels together and the result is usually excellent — detail and sensor noise average out cleanly. Where the target is larger, the browser has to invent pixel values it was never given, and the result is softer than the original no matter how it is done.",
+      "Because resizing is the only operation that changes pixel count, it is also the most effective way to make a file dramatically smaller. Halving both dimensions quarters the number of pixels, and no amount of re-encoding at the original size will match that. If a file is too large, resizing first and compressing second almost always beats compressing alone.",
+    ],
+  },
+  {
+    kind: "specTable",
+    heading: "Output Specification",
+    intro:
+      "What you get back, and the one place this tool deliberately differs from the other image tools here:",
+    columns: ["Property", "Value"],
+    rows: [
+      {
+        label: "Output format",
+        value: "PNG, always — whatever you put in.",
+        note: "Lossless, so the resize is not compounded by fresh compression artefacts.",
+      },
+      {
+        label: "Maximum dimensions",
+        value: "None. Whatever you type into the boxes is what you get.",
+        note: "Compress Image caps at 4096 pixels; this tool does not, so it is the right choice for large output.",
+      },
+      { label: "Minimum dimensions", value: "1 pixel on each side." },
+      { label: "Percentage range", value: "10% to 200% of the original, via the slider." },
+      {
+        label: "Aspect ratio",
+        value: "Locked by default. Unlock it to set width and height independently.",
+        note: "With the lock off, the image will stretch — that is the point of the option.",
+      },
+      { label: "Transparency", value: "Preserved. PNG output carries the alpha channel through." },
+      { label: "Metadata", value: "Dropped. Only pixels survive the canvas step." },
+      { label: "Files per run", value: "One. Selecting another image replaces the current one." },
+      {
+        label: "Output filename",
+        value: "Original name with the new dimensions appended — photo-1280x720.png.",
+      },
+    ],
+  },
+  {
+    kind: "steps",
+    heading: "Resizing an Image",
+    variant: "timeline",
+    steps: resizeSteps,
+  },
+  {
+    kind: "decision",
+    heading: "Resize, Compress, or Crop?",
+    intro:
+      "These three tools are easy to confuse because all of them make a file smaller. They do it in completely different ways, and picking the wrong one is the usual reason a result disappoints:",
+    branches: [
+      {
+        condition: "The image has more pixels than you need — a 6000px photo for a 1200px slot.",
+        recommendation:
+          "Resize. This is the case this tool exists for, and it gives the largest size reduction of the three.",
+      },
+      {
+        condition: "The dimensions are right but the file is still too heavy.",
+        recommendation: "Leave the pixels alone and re-encode more aggressively with",
+        href: "/compress-image",
+        linkLabel: "Compress Image",
+      },
+      {
+        condition: "You want to change what is in the frame, not how big it is.",
+        recommendation:
+          "That is a different operation entirely — remove the parts you do not want with",
+        href: "/crop-image",
+        linkLabel: "Crop Image",
+      },
+      {
+        condition: "You need a specific aspect ratio, like square for a profile photo.",
+        recommendation:
+          "Resizing to a different ratio stretches the image. Crop to the ratio first, then resize the result to the exact pixel size you need.",
+        href: "/crop-image",
+        linkLabel: "Crop Image",
+      },
+      {
+        condition: "The image is small and you want it bigger.",
+        recommendation:
+          "You can, up to 200%, but manage expectations — enlarging invents pixels and the result is always softer than a genuinely larger original.",
+      },
+    ],
+  },
+  {
+    kind: "checklist",
+    heading: "Where Exact Dimensions Matter",
+    intro:
+      "Most resizing is driven by something downstream demanding a specific size rather than by taste:",
+    items: [
+      {
+        label: "Meeting a platform's stated dimensions",
+        description:
+          "Profile photos, banners, thumbnails and ad slots usually publish exact pixel requirements. Hitting them yourself avoids whatever automatic cropping the platform would otherwise apply for you.",
+      },
+      {
+        label: "Getting under an upload limit",
+        description:
+          "When a form rejects a file for size, reducing the dimensions is far more effective than re-encoding. Halving width and height removes three quarters of the pixels before compression is even considered.",
+      },
+      {
+        label: "Making pages load faster",
+        description:
+          "Serving a 4000px image into a 800px slot wastes most of the bytes the visitor downloads. Resizing to roughly the display size is one of the largest wins available on image-heavy pages.",
+      },
+      {
+        label: "Standardising a set of images",
+        description:
+          "Product grids and galleries look wrong when the images differ in size. Running each through at the same target dimensions gives a consistent set — the aspect lock keeps each one undistorted.",
+      },
+      {
+        label: "When resizing is the wrong tool",
+        description:
+          "If the image already fits its purpose and the file is simply heavy, resizing throws away detail you did not need to lose. Compress instead. And if the framing is the problem, crop — stretching to a new ratio will distort faces and text.",
+      },
+    ],
+  },
+  {
+    kind: "callout",
+    heading: "Private Image Resizing",
+    tone: "privacy",
+    policyLink: true,
+    paragraphs: [
+      "Resizing happens on your device. The browser decodes the file into memory, draws it onto an off-screen canvas at the size you set, and exports a PNG — all in local JavaScript. The image is never uploaded, and no third-party service receives it.",
+      "One consequence worth knowing: because only pixels survive the canvas step, EXIF metadata does not come through. Camera model, capture time and any embedded GPS coordinates are dropped from the resized file, which is usually welcome before publishing a photo and inconvenient if you were relying on it.",
+    ],
+  },
+  {
+    kind: "faq",
+    heading: "Resize Image: Questions and Answers",
+    faqs: [
+      {
+        question: "Why is the output always a PNG?",
+        answer:
+          "Because PNG is lossless, so the resize is not compounded by a fresh round of compression artefacts. If you need a smaller JPEG afterwards, run the result through the Compress Image tool — resizing first and compressing second gives a better result than doing either alone.",
+      },
+      {
+        question: "Will enlarging an image improve its quality?",
+        answer:
+          "No. Enlarging asks the browser to invent pixel values between the ones you have. The image gets bigger in dimensions but softer in appearance, and no detail is added — the information simply is not in the file. Downscaling, by contrast, usually looks very good.",
+      },
+      {
+        question: "What does the aspect-ratio lock do?",
+        answer:
+          "With the lock on, which is the default, changing width recalculates height and vice versa, so proportions are preserved. Turn it off and you can set both independently — useful when you deliberately need a specific box, but it will stretch the image, which looks obviously wrong on faces and text.",
+      },
+      {
+        question: "Is there a maximum size I can resize to?",
+        answer:
+          "No cap is applied here — whatever dimensions you enter are what gets produced. That is deliberately different from the Compress Image tool, which limits output to 4096 pixels on the longest side. Very large targets are limited only by your device's memory.",
+      },
+      {
+        question: "Which image formats can I upload?",
+        answer:
+          "JPEG, PNG and WebP. The tool checks the file's leading bytes rather than trusting its extension, so a GIF or BMP is rejected with a message rather than failing partway through. Convert those to a supported format first.",
+      },
+      {
+        question: "Does resizing preserve transparency?",
+        answer:
+          "Yes. The output is a PNG, which carries an alpha channel, so a transparent background survives the resize intact. That is another reason the output format is fixed rather than matching the input.",
+      },
+    ],
+  },
+  {
+    kind: "toolLinks",
+    heading: "The Other Two Ways to Shrink a File",
+    tools: [
+      {
+        name: "Compress Image",
+        href: "/compress-image",
+        description: "Keep the pixels, encode them harder. The natural second step after resizing.",
+        icon: Minimize2,
+        accent: "from-lime-500 to-green-500",
+      },
+      {
+        name: "Crop Image",
+        href: "/crop-image",
+        description: "Change what is in the frame rather than how large it is.",
+        icon: Crop,
+        accent: "from-sky-500 to-blue-500",
+      },
+      {
+        name: "Rotate / Flip Image",
+        href: "/rotate-image",
+        description: "Fix orientation before resizing, so the aspect lock works on the right axis.",
+        icon: RotateCw,
+        accent: "from-purple-500 to-fuchsia-500",
+      },
+    ],
+  },
+  {
+    kind: "articleLinks",
+    heading: "Sizing Guides",
+    slugs: ["how-to-resize-images-social-media", "image-aspect-ratio-cropping-guide"],
+  },
+];
+
+const howToSteps = resizeSteps.map((s) => ({ name: s.title, text: s.description }));
+const faqSection = sections.find((s) => s.kind === "faq");
 
 function ResizeImagePage() {
   return (
     <>
-      <ToolFAQSchema faqs={contentData.faqs} />
+      {faqSection?.kind === "faq" && <ToolFAQSchema faqs={faqSection.faqs} />}
       <HowToSchema name="How to Resize an Image Online" steps={howToSteps} />
       <ToolPageLayout
         title="Resize Image"
-        description="Scale images to custom dimensions."
+        description="Set exact pixel dimensions, or scale by percentage — saved as a lossless PNG."
         icon={Maximize2}
         accent="from-rose-500 to-pink-500"
-        contentSections={<ToolContentSections data={contentData} />}
+        contentSections={<ToolContentSections sections={sections} />}
       >
         <ResizeImagePanel />
       </ToolPageLayout>

@@ -1,9 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { RotateCw, ShieldCheck, Zap, Smartphone, Cloud, FlipHorizontal, Undo2 } from "lucide-react";
-import { Maximize2, Crop, Minimize2 } from "lucide-react";
+import { RotateCw, Crop, Maximize2, Droplets } from "lucide-react";
 import ToolPageLayout from "@/components/ToolPageLayout";
 import RotateFlipImagePanel from "@/components/tools/RotateFlipImagePanel";
-import ToolContentSections, { type ToolContentData } from "@/components/ToolContentSections";
+import ToolContentSections, { type ToolSection } from "@/components/ToolContentSections";
 import { ToolFAQSchema, HowToSchema } from "@/components/schema/Schema";
 
 export const Route = createFileRoute("/rotate-image")({
@@ -12,12 +11,12 @@ export const Route = createFileRoute("/rotate-image")({
       { title: "Rotate or Flip Image Online Free | ConvertPDF" },
       {
         name: "description",
-        content: "Rotate images 90°-270° or mirror horizontally online for free.",
+        content: "Rotate images in 90° steps or mirror them online for free.",
       },
       { property: "og:title", content: "Rotate or Flip Image Online Free | ConvertPDF" },
       {
         property: "og:description",
-        content: "Rotate images 90°-270° or mirror horizontally online for free.",
+        content: "Rotate images in 90° steps or mirror them online for free.",
       },
     ],
     links: [{ rel: "canonical", href: "https://converttpdf.com/rotate-image" }],
@@ -25,188 +24,216 @@ export const Route = createFileRoute("/rotate-image")({
   component: RotateImagePage,
 });
 
-const contentData: ToolContentData = {
-  whatIs: {
-    heading: "What Is Image Rotation and Flipping?",
-    paragraphs: [
-      "Image rotation turns a photograph or graphic by a specified angle — typically 90°, 180°, or 270° — to correct orientation problems or achieve a creative composition. Flipping mirrors the image along a horizontal or vertical axis, producing a reflection effect. These are among the most fundamental image editing operations.",
-      "Our tool combines both capabilities in a single interface. Behind the scenes, the browser's Canvas API handles the transformation. When you apply a rotation, the canvas context's rotate method turns the coordinate system by the chosen angle in radians, then draws the image centred on the rotated canvas. For flips, the context's scale method is called with a negative value on the appropriate axis, reversing the pixel order. The result is exported as a PNG at the transformed dimensions.",
-    ],
+const rotateSteps = [
+  {
+    title: "Load an image",
+    description:
+      "Drop a JPEG, PNG or WebP onto the upload area. The preview shows its current orientation, and the controls reset to zero rotation with both mirrors off.",
   },
-  howTo: {
-    heading: "How to Rotate or Flip an Image in 3 Steps",
-    steps: [
-      {
-        title: "Upload your image",
-        description:
-          "Drag and drop an image onto the upload area, or click to browse. A preview appears showing the current orientation.",
-      },
-      {
-        title: "Choose your transformation",
-        description:
-          "Click the rotation buttons to turn the image left or right in 90° increments. Use the flip buttons to mirror the image horizontally or vertically. The preview updates in real time.",
-      },
-      {
-        title: "Apply and download",
-        description:
-          'Click "Apply Modifications" to render the final result. The transformed image is exported as a PNG and downloaded to your device.',
-      },
-    ],
+  {
+    title: "Turn and mirror it",
+    description:
+      "Each press of Left or Right turns the image another 90°, and the presses accumulate — three rights is the same as one left. Reset returns to the original orientation. The two mirror buttons flip horizontally or vertically and can be combined with any rotation. The preview updates as you go.",
   },
-  benefits: {
-    heading: "Why Use Our Rotate / Flip Tool",
-    items: [
-      {
-        icon: ShieldCheck,
-        title: "Completely private",
-        description:
-          "All transformations run inside your browser using the Canvas API. Your images never leave your device.",
-      },
-      {
-        icon: RotateCw,
-        title: "90° rotation steps",
-        description:
-          "Rotate left or right in precise 90° increments — the most common angles for correcting sideways or upside-down photos.",
-      },
-      {
-        icon: FlipHorizontal,
-        title: "Horizontal and vertical flip",
-        description:
-          "Mirror your image along either axis with a single click. Both flips can be combined with rotation.",
-      },
-      {
-        icon: Undo2,
-        title: "Live preview with reset",
-        description:
-          "See every rotation and flip applied to the preview instantly. A reset button returns the image to its original orientation.",
-      },
-      {
-        icon: Cloud,
-        title: "No signup needed",
-        description: "The tool is free and open. No account, no email, no hidden charges.",
-      },
-      {
-        icon: Smartphone,
-        title: "Works on any device",
-        description:
-          "Rotate and flip images from your phone, tablet, or desktop. The interface adapts to your screen.",
-      },
-    ],
+  {
+    title: "Apply and download",
+    description:
+      'Click "Apply Modifications". The image is redrawn onto a canvas sized to fit its new orientation and saved as a PNG with -modified appended to the original name.',
   },
-  useCases: {
-    heading: "When to Rotate or Flip Images",
-    intro: "Correcting orientation and mirroring images is useful across many workflows:",
-    items: [
-      {
-        label: "Fixing sideways photos",
-        description:
-          "Photos taken with a rotated phone sometimes ignore EXIF orientation data when viewed in certain apps. A 90° rotation corrects the display instantly.",
-      },
-      {
-        label: "Correcting scanned documents",
-        description:
-          "Scanned pages often come out upside-down or sideways depending on how the paper was placed. Rotate to the correct reading orientation before sharing.",
-      },
-      {
-        label: "Creating mirror-image designs",
-        description:
-          "Graphic designers use horizontal flips to create symmetrical layouts, mirrored patterns, or to reverse text-free images for compositional balance.",
-      },
-      {
-        label: "Preparing images for printing",
-        description:
-          "Some print workflows require images in a specific orientation. Rotate landscape photos to portrait (or vice versa) to match the print template.",
-      },
-      {
-        label: "Adjusting selfies",
-        description:
-          "Front-facing cameras often produce mirrored selfies. A horizontal flip corrects the reversal so text and logos in the background read correctly.",
-      },
-    ],
-  },
-  privacy: {
-    heading: "Private Image Transformation",
-    paragraphs: [
-      "When you rotate or flip an image on ConvertPDF, the file is loaded into your browser's memory using the File API. The Canvas API creates a new canvas sized for the rotated dimensions, applies the rotation via the context's rotate and scale methods, and draws the original image onto the transformed coordinate space. The result is exported as a PNG blob — all within the browser's sandboxed JavaScript environment.",
-      "No image data is transmitted over the internet. The preview is rendered using a standard HTML image element with CSS transforms, so even the live rotation effect is entirely local. When you close the tab, all in-memory data is discarded.",
-    ],
-  },
-  faqs: [
-    {
-      question: "What rotation angles are supported?",
-      answer:
-        "The tool rotates in 90° increments: 90° (quarter turn right), 180° (half turn), and 270° (quarter turn left). You can click the rotation buttons multiple times to reach any of these positions.",
-    },
-    {
-      question: "Can I rotate and flip at the same time?",
-      answer:
-        "Yes. Rotation and flipping are independent operations. You can apply a 90° rotation and a horizontal flip together — the preview updates to show the combined result before you export.",
-    },
-    {
-      question: "Does rotation affect image quality?",
-      answer:
-        "No. For 90° increments, the pixel grid aligns perfectly with the rotated canvas. No interpolation or resampling is needed, so the output is visually identical to the original at the rotated orientation. The file is saved as a lossless PNG.",
-    },
-    {
-      question: "What happens to the image dimensions when I rotate 90°?",
-      answer:
-        "The width and height swap. A 1920×1080 landscape image becomes 1080×1920 in portrait after a 90° rotation. The canvas is automatically resized to accommodate the new dimensions.",
-    },
-    {
-      question: "What image formats can I rotate?",
-      answer:
-        "You can upload any format your browser supports, including JPEG, PNG, WebP, GIF, and BMP. The output is saved as a PNG file to preserve quality.",
-    },
-    {
-      question: "How do I reset all changes?",
-      answer:
-        'Click the "Reset" button between the rotation controls to return the image to its original orientation. This clears any applied rotation angle. Flips can be toggled off individually by clicking the active flip button again.',
-    },
-    {
-      question: "Do my images get uploaded to a server?",
-      answer:
-        "No. All processing happens locally in your browser using the Canvas API. Your images are drawn onto an off-screen canvas with the rotation and flip applied, then exported as a file — without any network requests.",
-    },
-  ],
-  relatedTools: [
-    {
-      name: "Crop Image",
-      href: "/crop-image",
-      description: "Trim images to any area",
-      icon: Crop,
-      accent: "from-sky-500 to-blue-500",
-    },
-    {
-      name: "Resize Image",
-      href: "/resize-image",
-      description: "Scale images to custom dimensions",
-      icon: Maximize2,
-      accent: "from-rose-500 to-pink-500",
-    },
-    {
-      name: "Compress Image",
-      href: "/compress-image",
-      description: "Reduce image file size",
-      icon: Minimize2,
-      accent: "from-lime-500 to-green-500",
-    },
-  ],
-  relatedArticleSlugs: ["jpg-vs-png-guide", "browser-pdf-converter-privacy"],
-};
+];
 
-const howToSteps = contentData.howTo.steps.map((s) => ({ name: s.title, text: s.description }));
+const sections: ToolSection[] = [
+  {
+    kind: "callout",
+    heading: "This Fixes Sideways Photos Permanently",
+    tone: "info",
+    paragraphs: [
+      "A photo that appears upright on your phone but sideways elsewhere is usually not rotated at all. The pixels are on their side and an EXIF orientation tag tells viewers to turn them — a tag plenty of software quietly ignores, which is why the same file looks correct in one app and wrong in another.",
+      "This tool rotates the actual pixels and writes them out that way, with no orientation tag involved. The result looks the same everywhere, because there is nothing left for software to disagree about.",
+    ],
+  },
+  {
+    kind: "prose",
+    heading: "What Rotating and Flipping Do",
+    paragraphs: [
+      "Rotation turns the image around its centre; flipping mirrors it across an axis. Both are handled by transforming the canvas coordinate system before the image is drawn, so the pixels land in their new positions in a single operation rather than being shuffled about afterwards.",
+      "The canvas is sized to fit the result rather than the original. Turning a 4000 × 3000 photograph by 90° produces a 3000 × 4000 canvas, so nothing is cropped off at the corners — the frame is rebuilt to match the new orientation before anything is drawn into it.",
+      "At 90° steps this is a lossless rearrangement. The pixel grid lines up exactly with the rotated canvas, so every pixel maps onto exactly one destination pixel with nothing to average or interpolate. Combined with PNG output, the result is pixel-identical to the original, just oriented differently. Mirroring is lossless for the same reason: it reverses the order of pixels without changing their values.",
+    ],
+  },
+  {
+    kind: "steps",
+    heading: "Reorienting an Image",
+    steps: rotateSteps,
+  },
+  {
+    kind: "troubleshooting",
+    heading: "When the Result Looks Wrong",
+    intro:
+      "Most confusion here comes from the controls being cumulative, and from mirroring behaving differently to rotation even though they sit side by side:",
+    items: [
+      {
+        problem: "I clicked rotate too many times and lost track",
+        cause:
+          "The rotation buttons add to each other rather than jumping to fixed positions. Four presses in the same direction bring you back to where you started.",
+        fix: "Press Reset. It returns rotation to zero without clearing the file or the mirror toggles, so you can start the turn again from the original orientation.",
+      },
+      {
+        problem: "Flipping did not fix my mirrored selfie the way I expected",
+        cause:
+          "Rotation and mirroring are applied in sequence to the same canvas, so a horizontal flip after a 90° turn mirrors along what is now the vertical axis on screen.",
+        fix: "Set the rotation first and get that right, then apply the mirror. Judge the result from the live preview rather than reasoning about the order.",
+      },
+      {
+        problem: "The photo still appears sideways in one particular app",
+        cause:
+          "If it looked correct here before you rotated, the original was probably relying on an EXIF orientation tag that this app honours and others do not.",
+        fix: "Run it through this tool without changing anything, or with the rotation you actually want. The output carries no orientation tag, so every viewer treats it the same way.",
+      },
+      {
+        problem: "The output file is much larger than the image I uploaded",
+        cause:
+          "The result is always saved as PNG, which is lossless. A JPEG photograph re-saved as PNG grows considerably, even though the pixels are unchanged.",
+        fix: "That trade keeps the rotation from costing any quality. If you need a smaller file, run the result through Compress Image afterwards.",
+      },
+      {
+        problem: "My camera details are gone from the rotated file",
+        cause: "The image is redrawn onto a canvas and only pixel data survives that step.",
+        fix: "Expected, and part of why the orientation problem goes away — the EXIF block that carried the orientation tag is dropped along with the rest of the metadata.",
+      },
+    ],
+  },
+  {
+    kind: "checklist",
+    heading: "Where This Gets Used",
+    intro: "Orientation problems nearly always trace back to how the file was captured or scanned:",
+    items: [
+      {
+        label: "Photos that display sideways in some apps",
+        description:
+          "The classic EXIF orientation mismatch. Re-saving with the rotation baked into the pixels makes the file look the same in every viewer, uploader and email client.",
+      },
+      {
+        label: "Scans that came out upside down",
+        description:
+          "Flatbed scanners record whatever way the page was laid down. A 180° turn puts the page the right way up before you file or share it.",
+      },
+      {
+        label: "Correcting a mirrored selfie",
+        description:
+          "Front cameras often save a mirrored image, which is why text in the background reads backwards. A horizontal flip restores it.",
+      },
+      {
+        label: "Preparing images for a print template",
+        description:
+          "Print layouts frequently expect a particular orientation. Rotating to portrait or landscape beforehand avoids the printer making that decision for you.",
+      },
+      {
+        label: "Creating a mirrored version deliberately",
+        description:
+          "Designers use horizontal flips for symmetrical layouts or to make a subject face the other way across a spread. Avoid it on anything containing text, which will read backwards.",
+      },
+      {
+        label: "Straightening before cropping",
+        description:
+          "The crop box works on the image as it currently sits, so fixing orientation first makes framing far easier than trying to compensate for it.",
+      },
+    ],
+  },
+  {
+    kind: "callout",
+    heading: "Private Image Transformation",
+    tone: "privacy",
+    policyLink: true,
+    paragraphs: [
+      "Everything happens on your device. The file is read into memory, the canvas coordinate system is transformed, the image is drawn into it, and a PNG is exported — all in local JavaScript. The image is never uploaded, and no third-party service is involved.",
+      "The live preview is not a conversion either: it is the original image displayed with a CSS transform applied, so nothing is processed until you click Apply. Only pixels survive that final step, so EXIF metadata — including the orientation tag that caused the problem in the first place — is dropped from the output.",
+    ],
+  },
+  {
+    kind: "faq",
+    heading: "Rotate and Flip: Questions and Answers",
+    faqs: [
+      {
+        question: "Does rotating reduce image quality?",
+        answer:
+          "No. At 90° steps the pixel grid aligns exactly with the rotated canvas, so each pixel maps onto one destination pixel with no interpolation. The output is a lossless PNG, so the result is pixel-identical to the original in its new orientation. Mirroring is lossless for the same reason.",
+      },
+      {
+        question: "What rotation angles are available?",
+        answer:
+          "90° steps in either direction. The buttons accumulate rather than setting fixed positions, so two presses give 180°, three give 270°, and four bring you back to the start. Reset returns to zero. Arbitrary angles such as 45° are not offered, and they would require interpolation and leave blank corners.",
+      },
+      {
+        question: "Can I rotate and flip at the same time?",
+        answer:
+          "Yes. They are independent and combine freely. Because both are applied to the same canvas in sequence, a mirror after a rotation acts along the rotated axis — set the rotation first and use the preview to confirm the combination looks right.",
+      },
+      {
+        question: "What happens to the image dimensions?",
+        answer:
+          "For a quarter turn they swap: a 1920 × 1080 landscape image becomes 1080 × 1920. The canvas is rebuilt to fit the rotated image before drawing, so nothing is cropped off. A 180° turn or a mirror leaves the dimensions unchanged.",
+      },
+      {
+        question: "Why is the output always a PNG?",
+        answer:
+          "So the transformation costs nothing in quality. Re-encoding a JPEG would introduce a fresh round of compression on top of an operation that is otherwise lossless. The trade is a larger file, which the Compress Image tool can bring back down if you need it to.",
+      },
+      {
+        question: "Which formats can I upload?",
+        answer:
+          "JPEG, PNG and WebP. The file's leading bytes are checked rather than its extension, so GIF and BMP files are rejected with a message rather than failing midway. Convert those to a supported format first.",
+      },
+    ],
+  },
+  {
+    kind: "toolLinks",
+    heading: "Often Used Alongside",
+    tools: [
+      {
+        name: "Crop Image",
+        href: "/crop-image",
+        description: "Frame the shot once it is the right way up.",
+        icon: Crop,
+        accent: "from-sky-500 to-blue-500",
+      },
+      {
+        name: "Resize Image",
+        href: "/resize-image",
+        description: "Set the dimensions after a quarter turn has swapped width and height.",
+        icon: Maximize2,
+        accent: "from-rose-500 to-pink-500",
+      },
+      {
+        name: "Watermark Image",
+        href: "/watermark-image",
+        description: "Add a caption or credit once the orientation is settled.",
+        icon: Droplets,
+        accent: "from-amber-500 to-yellow-500",
+      },
+    ],
+  },
+  {
+    kind: "articleLinks",
+    heading: "Background Reading",
+    slugs: ["what-is-client-side-processing", "batch-image-processing-guide"],
+  },
+];
+
+const howToSteps = rotateSteps.map((s) => ({ name: s.title, text: s.description }));
+const faqSection = sections.find((s) => s.kind === "faq");
 
 function RotateImagePage() {
   return (
     <>
-      <ToolFAQSchema faqs={contentData.faqs} />
+      {faqSection?.kind === "faq" && <ToolFAQSchema faqs={faqSection.faqs} />}
       <HowToSchema name="How to Rotate or Flip an Image Online" steps={howToSteps} />
       <ToolPageLayout
         title="Rotate / Flip Image"
-        description="Rotate 90°–270° or mirror horizontally."
+        description="Turn in 90° steps or mirror it — baked into the pixels, so it looks right everywhere."
         icon={RotateCw}
         accent="from-purple-500 to-fuchsia-500"
-        contentSections={<ToolContentSections data={contentData} />}
+        contentSections={<ToolContentSections sections={sections} />}
       >
         <RotateFlipImagePanel />
       </ToolPageLayout>
