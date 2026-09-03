@@ -1,210 +1,249 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Droplets, ShieldCheck, Zap, Smartphone, Cloud, Palette, Move } from "lucide-react";
-import { Maximize2, Minimize2 } from "lucide-react";
+import { Droplets, Crop, Minimize2, RotateCw } from "lucide-react";
 import ToolPageLayout from "@/components/ToolPageLayout";
 import WatermarkImagePanel from "@/components/tools/WatermarkImagePanel";
-import ToolContentSections, { type ToolContentData } from "@/components/ToolContentSections";
+import ToolContentSections, { type ToolSection } from "@/components/ToolContentSections";
 import { ToolFAQSchema, HowToSchema } from "@/components/schema/Schema";
 
 export const Route = createFileRoute("/watermark-image")({
   head: () => ({
     meta: [
       { title: "Watermark Image Online Free | ConvertPDF" },
-      { name: "description", content: "Overlay custom text on any image online for free." },
+      {
+        name: "description",
+        content:
+          "Bake text into an image: your wording, colour, size, opacity and one of nine positions. Applied in your browser and saved as a lossless PNG.",
+      },
       { property: "og:title", content: "Watermark Image Online Free | ConvertPDF" },
-      { property: "og:description", content: "Overlay custom text on any image online for free." },
+      {
+        property: "og:description",
+        content:
+          "Bake text into an image: your wording, colour, size, opacity and one of nine positions. Applied in your browser and saved as a lossless PNG.",
+      },
     ],
     links: [{ rel: "canonical", href: "https://converttpdf.com/watermark-image" }],
   }),
   component: WatermarkImagePage,
 });
 
-const contentData: ToolContentData = {
-  whatIs: {
-    heading: "What Is Image Watermarking?",
-    paragraphs: [
-      'Image watermarking overlays a text label permanently onto a photograph or graphic to assert ownership, indicate status, or protect the image from being used without attribution. Photographers add their name or studio to preview images shared with clients. Businesses stamp internal screenshots as "CONFIDENTIAL" or design mockups as "DRAFT". Content creators add their handle to images before posting on social media, so the source is visible even when the image is shared or screenshotted by others.',
-      "**How it works technically:** This tool composites text onto your image using the browser's Canvas API. After drawing the original image onto an off-screen canvas, the tool applies your chosen font size, colour, opacity, and position settings to the canvas 2D context, then renders the watermark text at the exact location using the fillText method. The font size is defined as a percentage of the image's pixel width, so the text scales proportionally regardless of whether your image is 500px or 5000px wide. The final result is exported as a PNG with the watermark permanently embedded in the pixel data — not stored as a metadata tag or overlay layer, but baked into the image itself.",
-    ],
+const watermarkSteps = [
+  {
+    title: "Load an image",
+    description:
+      "Load a JPEG, PNG or WebP into the panel. The preview appears with the default watermark already applied — white CONFIDENTIAL, centred, at half opacity.",
   },
-  howTo: {
-    heading: "How to Add a Watermark in 3 Steps",
-    steps: [
-      {
-        title: "Upload your image",
-        description:
-          "Drag and drop an image onto the upload area, or click to browse. A preview appears with a live overlay showing where the watermark will be placed.",
-      },
-      {
-        title: "Customise the watermark",
-        description:
-          "Type your watermark text, then adjust the font size, opacity, colour, and position. The preview updates in real time so you can fine-tune the appearance before applying.",
-      },
-      {
-        title: "Apply and download",
-        description:
-          'Click "Add Watermark" to render the text into the image pixel data. The watermarked result is exported as a PNG and downloaded directly to your device.',
-      },
-    ],
+  {
+    title: "Set the text and its appearance",
+    description:
+      "Type your wording, pick a colour, and adjust size and opacity with the sliders. Size is expressed as a percentage of the image width, so the same setting looks proportionally the same on a 600-pixel image and a 6000-pixel one. Nine position buttons place the text in a three-by-three grid.",
   },
-  benefits: {
-    heading: "Why Use Our Watermark Tool",
-    items: [
-      {
-        icon: ShieldCheck,
-        title: "Completely private",
-        description:
-          "All watermarking runs inside your browser via the Canvas API. Your images and watermark text are never sent to any external server.",
-      },
-      {
-        icon: Palette,
-        title: "Full styling control",
-        description:
-          "Set the watermark text, choose a custom colour with the native colour picker, adjust font size as a percentage of image width, and control opacity from barely-there to fully bold.",
-      },
-      {
-        icon: Move,
-        title: "Nine placement positions",
-        description:
-          "Place the watermark at any of nine positions: four corners, four edge midpoints, or dead centre. Each placement suits a different use case and offers a different trade-off between deterrence and aesthetics.",
-      },
-      {
-        icon: Zap,
-        title: "Instant canvas rendering",
-        description:
-          "The browser's Canvas API composites text onto the image natively. The watermark is applied in a fraction of a second, regardless of image size.",
-      },
-      {
-        icon: Cloud,
-        title: "No signup needed",
-        description: "The tool is free and open. No account, no email, no hidden charges.",
-      },
-      {
-        icon: Smartphone,
-        title: "Works on any device",
-        description:
-          "Add watermarks from your phone, tablet, or desktop. The live preview adapts to your screen so you can see exactly how the watermark will look before downloading.",
-      },
-    ],
+  {
+    title: "Apply and download",
+    description:
+      'Click "Apply Watermark". The text is drawn onto a copy of the image at full resolution and exported as a PNG with -watermarked appended to the original name.',
   },
-  useCases: {
-    heading: "When to Watermark Images",
-    intro:
-      "Embedding text directly into image pixels is useful for protection, branding, and marking — here is when each scenario calls for a different approach:",
-    items: [
-      {
-        label: "Protecting photography for client preview (Workflow Example)",
-        description:
-          "A wedding photographer delivers a gallery of 60 preview images before the client has paid the final invoice. Each image is watermarked at the centre with the studio name at 40% opacity — visible enough that the images cannot be used commercially or posted without the mark, but transparent enough that the client can review composition and colour accurately. Once payment is received, the unwatermarked originals are delivered.",
-      },
-      {
-        label: "When NOT to use this tool",
-        description:
-          "Do not rely on a visible text watermark as a DRM (digital rights management) mechanism for highly valuable assets. A visible watermark can be cropped out from images where the subject does not fill the frame, or digitally removed with image editing software if it is semi-transparent. For maximum deterrence, place the watermark centrally where it overlaps the subject, or consider a specialist DRM service for commercial licensing scenarios.",
-      },
-      {
-        label: "Marking drafts and internal documents",
-        description:
-          'Stamp design mockups, report screenshots, or presentation slides as "DRAFT" or "INTERNAL ONLY" before circulating them in a team review, so recipients understand the content is not yet approved or cleared for external distribution.',
-      },
-      {
-        label: "Branding social media content",
-        description:
-          "Add your brand name, website URL, or social handle to images posted online. Even when the image is screenshotted and reshared by others, the attribution travels with it.",
-      },
-      {
-        label: "Asserting copyright on published work",
-        description:
-          'Place a visible copyright notice such as "© 2025 Your Name" on images published on the web. A visible copyright statement makes it unambiguous that the image is owned and that unauthorised reproduction is not permitted.',
-      },
-    ],
-  },
-  privacy: {
-    heading: "Private Image Watermarking",
-    paragraphs: [
-      "When you watermark an image here, the file is loaded into browser memory using the File API. The Canvas API draws the original image onto a hidden canvas, then renders the watermark text on top using the context's fillText method with your chosen font, colour, opacity, and position. The composited result is exported as a PNG blob — all within the browser's sandboxed JavaScript environment. The live preview you see before clicking Apply is a CSS overlay rendered in the DOM; the actual pixel composition happens only when you confirm.",
-      "No image data or watermark text is transmitted over the internet at any point. There are no server-side rendering queues, no cloud storage, and no logging of your watermark content. Once you close the tab, all in-memory canvas data and the image pixel buffer are discarded by the browser immediately.",
-    ],
-  },
-  faqs: [
-    {
-      question: "Where should I position the watermark for maximum deterrence?",
-      answer:
-        "The centre of the image is the hardest position from which to crop a watermark out, because it directly overlaps the main subject. Corner and edge positions are less intrusive but easier to crop away from images with generous whitespace around the edges. For protection, centre is most effective; for branding without interfering with composition, a corner is more aesthetically neutral.",
-    },
-    {
-      question: "How does the opacity setting affect protection?",
-      answer:
-        "Lower opacity makes the watermark more transparent and less distracting for legitimate viewers, but also makes it easier to mask or clone out with image editing software. Higher opacity is more visually disruptive but harder to remove digitally. A setting around 40–60% is a common practical balance between readability and deterrence.",
-    },
-    {
-      question: "How does the font size percentage work?",
-      answer:
-        "The font size control sets the watermark text size as a percentage of the image's pixel width. This means the watermark scales proportionally: a setting of 15% on a 2000px-wide image produces a larger text element than the same percentage on a 500px-wide image. This ensures the watermark is consistently visible regardless of the source image resolution.",
-    },
-    {
-      question: "Can I remove a watermark after it is applied?",
-      answer:
-        "Once applied, the watermark is permanently rendered into the pixel data of the output PNG. There is no separate layer that can be toggled off. Your original file remains untouched on your device, so you can always start over with the unwatermarked source.",
-    },
-    {
-      question: "What image formats can I watermark?",
-      answer:
-        "You can upload any format your browser supports, including JPEG, PNG, WebP, GIF, and BMP. The watermarked output is saved as a PNG to preserve quality and to support any transparency in the original.",
-    },
-    {
-      question: "Can I change the watermark font?",
-      answer:
-        "The tool uses the browser's default sans-serif font rendered in bold. The font size and colour are fully adjustable. Custom font family selection is not currently supported.",
-    },
-    {
-      question: "Do my images get uploaded to a server?",
-      answer:
-        "No. All processing happens locally in your browser using the Canvas API. Your images and watermark text stay on your device at all times. No network requests are made with your image data.",
-    },
-  ],
-  relatedTools: [
-    {
-      name: "Compress Image",
-      href: "/compress-image",
-      description:
-        "After watermarking, if the PNG output is larger than your sharing platform allows, compress it to a smaller JPEG while keeping the watermark embedded.",
-      icon: Minimize2,
-      accent: "from-lime-500 to-green-500",
-    },
-    {
-      name: "Resize Image",
-      href: "/resize-image",
-      description:
-        "If your platform requires specific pixel dimensions, resize the image to the target size before adding the watermark so the font scale matches the final output.",
-      icon: Maximize2,
-      accent: "from-rose-500 to-pink-500",
-    },
-    {
-      name: "Watermark PDF",
-      href: "/watermark-pdf",
-      description:
-        "If the asset you want to protect is a PDF document rather than a raster image, use the PDF watermark tool to stamp text across every page.",
-      icon: Droplets,
-      accent: "from-amber-500 to-yellow-500",
-    },
-  ],
-  relatedArticleSlugs: ["browser-pdf-converter-privacy", "best-free-pdf-tools"],
-};
+];
 
-const howToSteps = contentData.howTo.steps.map((s) => ({ name: s.title, text: s.description }));
+const sections: ToolSection[] = [
+  {
+    kind: "callout",
+    heading: "A Watermark Deters, It Does Not Protect",
+    tone: "warn",
+    paragraphs: [
+      "This bakes text permanently into the pixels, which is genuinely useful — it survives copying, screenshotting and re-uploading, and there is no layer to switch off. What it is not is a security control.",
+      "A watermark placed in a corner can be cropped away in seconds. A semi-transparent one over a simple background can be painted out. If an image is commercially valuable enough that someone would bother, treat the watermark as a claim of ownership and a deterrent rather than a lock — and place it across the subject, where removing it damages the thing they wanted.",
+    ],
+  },
+  {
+    kind: "prose",
+    heading: "How the Watermark Is Applied",
+    paragraphs: [
+      "The image is drawn onto an off-screen canvas at its original dimensions, and your text is painted on top of it in a single pass. Because it becomes part of the pixel data at that moment, there is no separate layer, no metadata tag and nothing that a viewer could choose not to display. Whatever the image is opened in, the text is simply part of the picture.",
+      "Size is calculated as a percentage of the image's width rather than in fixed points, which is what makes one setting work across wildly different images. Fifteen percent produces text roughly a seventh of the frame's width whether the photo is 600 or 6000 pixels across, so you are not re-tuning the slider for every file.",
+      "The output is a PNG at the original dimensions. Nothing is resized, nothing is re-compressed beyond the lossless PNG encode, and any transparency in the source is preserved — which means a watermark can be applied to a logo or cut-out without the background turning white.",
+    ],
+  },
+  {
+    kind: "steps",
+    heading: "Adding a Watermark",
+    variant: "timeline",
+    steps: watermarkSteps,
+  },
+  {
+    kind: "checklist",
+    heading: "Placing It Well",
+    intro:
+      "Most of the value is in where the text goes and how visible it is. A few things that consistently work:",
+    items: [
+      {
+        label: "Claiming a photograph you are sharing publicly",
+        description:
+          "A name or handle at moderate opacity marks the image as yours without dominating it. Corners are the least intrusive choice, and the honest trade is that they are also the easiest to crop off.",
+      },
+      {
+        label: "Marking proofs and previews",
+        description:
+          "Client proofs and portfolio samples benefit from a large, central SAMPLE or PROOF. Placing it over the subject is the point — it makes the preview unusable as a finished asset while still showing the work.",
+      },
+      {
+        label: "Labelling a document photo",
+        description:
+          "Photographing an ID or certificate for a specific application, then stamping the purpose across it, means a copy that leaks cannot easily be reused for something else.",
+      },
+      {
+        label: "Choosing a colour that survives the background",
+        description:
+          "White disappears over a bright sky and black vanishes into shadow. Pick the opposite of whatever sits beneath the text, and check the preview rather than assuming.",
+      },
+      {
+        label: "Getting opacity right",
+        description:
+          "Too faint and it is trivially cloned out; too solid and it ruins the image. Around half is a reasonable default — visible at a glance, still letting the picture through.",
+      },
+      {
+        label: "When this is not enough",
+        description:
+          "For genuinely valuable commercial licensing, a visible watermark is a deterrent rather than protection. Combine it with lower-resolution previews, or use a service built for rights management.",
+      },
+    ],
+  },
+  {
+    kind: "specTable",
+    heading: "The Five Controls",
+    intro: "Everything the tool exposes, and the two things worth knowing about how they behave:",
+    columns: ["Control", "What it does"],
+    rows: [
+      { label: "Text", value: "Any wording you type. Defaults to CONFIDENTIAL." },
+      {
+        label: "Colour",
+        value: "Free choice through the native colour picker. Defaults to white.",
+        note: "White works on dark images; switch to a dark colour over light backgrounds.",
+      },
+      {
+        label: "Size",
+        value: "A percentage of the image's width, from small to large. Defaults to 15%.",
+        note: "Proportional by design, so one setting suits images of very different resolutions.",
+      },
+      {
+        label: "Opacity",
+        value: "1 to 100. Defaults to 50, which reads clearly without hiding the image.",
+      },
+      {
+        label: "Position",
+        value: "A three-by-three grid — corners, edge centres, or the middle. Defaults to centre.",
+        note: "Padding from the edge scales with the text size, so corner placements stay clear of the border.",
+      },
+      {
+        label: "Repetition",
+        value: "None. The text is drawn once, not tiled across the image.",
+      },
+      { label: "Rotation", value: "None. The text is always drawn horizontally." },
+      {
+        label: "Output",
+        value: "PNG at the original dimensions, named with -watermarked appended.",
+      },
+    ],
+  },
+  {
+    kind: "callout",
+    heading: "Private Image Watermarking",
+    tone: "privacy",
+    policyLink: true,
+    paragraphs: [
+      "Both the image and the text stay on your device. The file is decoded into memory, drawn onto an off-screen canvas, and your wording is painted on before a PNG is exported — all in local JavaScript. Nothing is uploaded, and no third-party service sees either the picture or what you wrote on it.",
+      "That second part matters more than it might sound: watermark text is often a real name, a client's name, or a case reference. It is typed into the page and used locally, never transmitted. As with the other image tools here, EXIF metadata does not survive the canvas step, so the watermarked copy carries no capture time or GPS coordinates.",
+    ],
+  },
+  {
+    kind: "faq",
+    heading: "Watermark Image: Questions and Answers",
+    faqs: [
+      {
+        question: "Can the watermark be removed?",
+        answer:
+          "By someone determined, often yes. It is part of the pixels, so it survives copying and screenshotting and cannot be toggled off — but a corner placement can be cropped away, and a semi-transparent mark over a plain background can be edited out. Placing it across the subject makes removal far more damaging to the image.",
+      },
+      {
+        question: "Why is the size a percentage rather than a point size?",
+        answer:
+          "So one setting works across images of different resolutions. A fixed point size that looks right on a 600-pixel image would be almost invisible on a 6000-pixel one. Tying it to the image width keeps the text proportionally the same on both.",
+      },
+      {
+        question: "Does the preview match the final image exactly?",
+        answer:
+          "It is a close guide rather than a pixel-exact rendering. The preview positions the text with CSS over a scaled-down copy, while the output is drawn onto the full-resolution canvas, so the size and placement can differ very slightly. Treat the preview as a reliable indication of colour, opacity and position, and check the downloaded file if the placement is critical.",
+      },
+      {
+        question: "Can I tile the watermark across the whole image or angle it?",
+        answer:
+          "No. The text is drawn once, horizontally, at one of nine positions. Repeating patterns and diagonal text are not offered here — for those you would need a dedicated image editor.",
+      },
+      {
+        question: "Can I use a logo instead of text?",
+        answer:
+          "No, this tool applies text only. There is no image upload for the watermark itself, so a logo would need to be composited in an image editor.",
+      },
+      {
+        question: "Does watermarking reduce image quality?",
+        answer:
+          "No. The image is drawn at its original dimensions and exported as a lossless PNG, so the only pixels that change are the ones under the text. A JPEG source will produce a larger PNG file, which the Compress Image tool can bring back down.",
+      },
+      {
+        question: "What can I put a watermark on?",
+        answer:
+          "JPEG, PNG and WebP. Files are identified by their opening bytes rather than their extension, so GIF and BMP are declined with a message up front. Transparency in a PNG or WebP source is preserved in the output.",
+      },
+    ],
+  },
+  {
+    kind: "toolLinks",
+    heading: "Before and After Watermarking",
+    tools: [
+      {
+        name: "Crop Image",
+        href: "/crop-image",
+        description:
+          "Frame the shot first, so the watermark lands where you want it in the final crop.",
+        icon: Crop,
+        accent: "from-sky-500 to-blue-500",
+      },
+      {
+        name: "Rotate / Flip Image",
+        href: "/rotate-image",
+        description: "Fix orientation first — the watermark is always drawn horizontally.",
+        icon: RotateCw,
+        accent: "from-purple-500 to-fuchsia-500",
+      },
+      {
+        name: "Compress Image",
+        href: "/compress-image",
+        description: "Shrink the watermarked PNG for sharing without undoing the mark.",
+        icon: Minimize2,
+        accent: "from-lime-500 to-green-500",
+      },
+    ],
+  },
+  {
+    kind: "articleLinks",
+    heading: "More on Watermarking",
+    slugs: ["how-to-watermark-photos-online"],
+  },
+];
+
+const howToSteps = watermarkSteps.map((s) => ({ name: s.title, text: s.description }));
+const faqSection = sections.find((s) => s.kind === "faq");
 
 function WatermarkImagePage() {
   return (
     <>
-      <ToolFAQSchema faqs={contentData.faqs} />
+      {faqSection?.kind === "faq" && <ToolFAQSchema faqs={faqSection.faqs} />}
       <HowToSchema name="How to Watermark an Image Online" steps={howToSteps} />
       <ToolPageLayout
         title="Watermark Image"
-        description="Overlay custom text on any image."
+        description="Bake text into the pixels — your choice of wording, colour, size, opacity and position."
         icon={Droplets}
         accent="from-amber-500 to-yellow-500"
-        contentSections={<ToolContentSections data={contentData} />}
+        contentSections={<ToolContentSections sections={sections} />}
       >
         <WatermarkImagePanel />
       </ToolPageLayout>

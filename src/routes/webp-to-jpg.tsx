@@ -1,28 +1,24 @@
 import { createFileRoute } from "@tanstack/react-router";
-import {
-  Image as ImageIcon,
-  ShieldCheck,
-  Zap,
-  Smartphone,
-  Cloud,
-  Globe,
-  FileCheck,
-} from "lucide-react";
-import { FileImage, Minimize2 } from "lucide-react";
+import { Image as ImageIcon, FileImage, Minimize2, Maximize2 } from "lucide-react";
 import ToolPageLayout from "@/components/ToolPageLayout";
 import FormatConvertPanel from "@/components/tools/FormatConvertPanel";
-import ToolContentSections, { type ToolContentData } from "@/components/ToolContentSections";
+import ToolContentSections, { type ToolSection } from "@/components/ToolContentSections";
 import { ToolFAQSchema, HowToSchema } from "@/components/schema/Schema";
 
 export const Route = createFileRoute("/webp-to-jpg")({
   head: () => ({
     meta: [
       { title: "WEBP to JPG Converter Online Free | ConvertPDF" },
-      { name: "description", content: "Convert modern WEBP images to JPG format online for free." },
+      {
+        name: "description",
+        content:
+          "Turn a WebP into a JPEG that older software will actually open. Your browser decodes and re-encodes it at 92% quality — nothing is uploaded.",
+      },
       { property: "og:title", content: "WEBP to JPG Converter Online Free | ConvertPDF" },
       {
         property: "og:description",
-        content: "Convert modern WEBP images to JPG format online for free.",
+        content:
+          "Turn a WebP into a JPEG that older software will actually open. Your browser decodes and re-encodes it at 92% quality — nothing is uploaded.",
       },
     ],
     links: [{ rel: "canonical", href: "https://converttpdf.com/webp-to-jpg" }],
@@ -30,171 +26,241 @@ export const Route = createFileRoute("/webp-to-jpg")({
   component: WebpToJpgPage,
 });
 
-const contentData: ToolContentData = {
-  whatIs: {
+const convertSteps = [
+  {
+    title: "Select the WebP file",
+    description:
+      "Drop a .webp file onto the upload area or click to browse. This is usually something saved from a website, since few cameras or editors produce WebP directly. One file per conversion.",
+  },
+  {
+    title: "Check the preview",
+    description:
+      "A thumbnail appears once the file loads — useful confirmation here in particular, because Windows Explorer and macOS Finder often cannot generate WebP thumbnails at all, so this may be your first proper look at it.",
+  },
+  {
+    title: "Convert and download",
+    description:
+      'Click "Convert to JPG". Your browser decodes the WebP, flattens any transparency onto white, and re-encodes the pixels as a JPEG at 92% quality, keeping the original filename with a .jpg extension.',
+  },
+];
+
+const sections: ToolSection[] = [
+  {
+    kind: "prose",
     heading: "What Is WEBP to JPG Conversion?",
     paragraphs: [
-      "Converting a WEBP to a JPG bridges the gap between next-generation web optimization and universal legacy support. WebP is an advanced image format created by Google, designed to replace both JPEGs and PNGs on the web by offering superior compression algorithms. While it saves immense amounts of bandwidth, it remains stubbornly incompatible with many older offline applications.",
-      "**The Evolution of WebP and Legacy Compatibility Issues:** Despite being over a decade old, WebP adoption is highly fragmented outside of web browsers. Many standard desktop applications—including older versions of Photoshop, native Windows/Mac photo viewers, and corporate presentation software—simply do not know how to decode a WebP file. Converting to the universally standardized Joint Photographic Experts Group (JPEG) format ensures that your image can be opened, edited, and printed on literally any digital device manufactured in the last thirty years.",
-      "Our conversion engine operates locally to solve this problem instantly. Because modern web browsers inherently understand how to read WebP, our tool leverages your browser's native capabilities to decode the image, and then repacks those pixels into a highly compatible, traditional JPEG wrapper.",
+      "WebP is a Google-developed image format that compresses better than JPEG at comparable quality, which is why so much of the web now serves it. That efficiency is the whole point — and it is also why you end up here. Browsers handle WebP fluently; a great deal of desktop software still does not.",
+      "The conversion is a decode-and-re-encode. Your browser already understands WebP natively, so it decodes the image to raw pixels, paints them onto an off-screen canvas, and exports the result as a JPEG at 92% quality. Nothing is uploaded, and no separate decoder is needed — the capability is already in the browser you are reading this in.",
+      "Because both formats are lossy, this is a second round of compression rather than a straight repackaging. At 92% that generational loss is very hard to see, but it is real: you are not extracting an original, you are producing a new JPEG from decoded pixels. Keep the WebP if the file is one you may need to re-export later.",
     ],
   },
-  howTo: {
-    heading: "How to Convert WEBP to JPG in 3 Steps",
-    steps: [
-      {
-        title: "Import your WEBP asset",
-        description:
-          "Select the WebP file you downloaded from a website. The file remains entirely on your local machine during the process.",
-      },
-      {
-        title: "Check the preview",
-        description:
-          "Confirm the thumbnail is correct. This is especially helpful since many desktop file explorers won't generate thumbnails for WebP files.",
-      },
-      {
-        title: "Download universal JPG",
-        description:
-          "Click the convert button. The system will strip the WebP encoding, replace it with standard JPEG compression, and provide your new file immediately.",
-      },
-    ],
-  },
-  benefits: {
-    heading: "Why Translate WebP to JPEG",
-    items: [
-      {
-        icon: ShieldCheck,
-        title: "Strictly Offline Processing",
-        description:
-          "There is no risk of exposing proprietary designs or personal photos, as the decoding and re-encoding cycle happens entirely inside your browser.",
-      },
-      {
-        icon: Globe,
-        title: "Unlock Universal Access",
-        description:
-          "Eliminate 'Unsupported File Format' errors for good. JPEGs are guaranteed to open on legacy operating systems, smart TVs, and digital photo frames.",
-      },
-      {
-        icon: FileCheck,
-        title: "Presentation Ready",
-        description:
-          "Bypass the frustrating glitches that occur when trying to paste a WebP file into Microsoft Office, Keynote, or enterprise document editors.",
-      },
-      {
-        icon: Zap,
-        title: "Zero Delay Execution",
-        description:
-          "Skip the slow upload bars and queue times associated with remote converters. The local canvas renders the transition in fractions of a second.",
-      },
-      {
-        icon: Cloud,
-        title: "Cost-Free Utility",
-        description:
-          "An entirely unrestricted platform with no requirement to create an account, verify an email, or purchase a premium subscription.",
-      },
-      {
-        icon: Smartphone,
-        title: "Mobile Workflow Saver",
-        description:
-          "Many mobile apps refuse WebP uploads. Quickly convert them on your phone's browser so you can immediately post to social media or chat.",
-      },
-    ],
-  },
-  useCases: {
-    heading: "When Does WebP Require Conversion?",
+  {
+    kind: "decision",
+    heading: "Should You Convert At All?",
     intro:
-      "WebP is fantastic for website administrators, but it can be a headache for everyday end-users. You'll need to convert in these scenarios:",
+      "WebP exists because it is smaller than JPEG. Converting away from it is a compatibility decision, not a quality one, and it is not always the right call:",
+    branches: [
+      {
+        condition: "Software you need to use will not open the file.",
+        recommendation:
+          "This is the case the tool is for. Older Photoshop and Illustrator versions, many desktop viewers and a fair amount of enterprise software still reject WebP outright.",
+      },
+      {
+        condition: "An upload form only accepts .jpg, .jpeg or .png.",
+        recommendation:
+          "Convert. Plenty of government portals, job boards and print services validate by extension and will refuse a WebP before it ever reaches their server.",
+      },
+      {
+        condition: "You are building a website or web app.",
+        recommendation:
+          "Do not convert. WebP is smaller than the JPEG you would replace it with, so this would make your pages heavier for no benefit — the opposite of what you want.",
+      },
+      {
+        condition: "The image has a transparent background you need to keep.",
+        recommendation:
+          "Convert to PNG instead of JPEG. JPEG has no alpha channel, so transparency would be flattened onto white here.",
+        href: "/jpg-to-png",
+        linkLabel: "JPG to PNG",
+      },
+      {
+        condition: "The file is simply too large for what you need.",
+        recommendation:
+          "Converting to JPEG may not help, since WebP is usually the more efficient format already. Reduce the dimensions or the quality instead with",
+        href: "/compress-image",
+        linkLabel: "Compress Image",
+      },
+    ],
+  },
+  {
+    kind: "steps",
+    heading: "Converting a File",
+    steps: convertSteps,
+  },
+  {
+    kind: "definitions",
+    heading: "What Changes on the Way Out",
+    intro:
+      "The pixels you see stay essentially the same. Several things around them do not survive the conversion:",
+    terms: [
+      {
+        term: "Transparency becomes white",
+        definition:
+          "WebP supports an alpha channel and JPEG does not. Transparent regions are filled with solid white before encoding, because an unfilled canvas would export them as black instead.",
+      },
+      {
+        term: "Animation becomes a single frame",
+        definition:
+          "WebP can hold animation; JPEG cannot. An animated WebP is decoded to its first frame, which is what gets saved. The remaining frames are simply not carried across.",
+      },
+      {
+        term: "Quality is re-encoded at 92%",
+        definition:
+          "The output is a fresh JPEG rather than a repackaged original. At 92% the second round of lossy compression is very difficult to see, but it is a real generational step, so avoid repeating the round trip needlessly.",
+      },
+      {
+        term: "Images over 4096 pixels are scaled down",
+        definition:
+          "If either dimension exceeds 4096 pixels, the image is reduced proportionally to fit within that limit before encoding. Anything smaller passes through at its original size.",
+      },
+      {
+        term: "Metadata is dropped",
+        definition:
+          "Only pixels survive the canvas round-trip, so any embedded metadata is left behind. The result is a clean file with no capture details or location data attached.",
+      },
+    ],
+  },
+  {
+    kind: "checklist",
+    heading: "Where Conversion Actually Helps",
+    intro:
+      "Nearly every good reason to convert comes down to something downstream refusing to accept the format:",
     items: [
       {
-        label: "Fixing slide deck imports (Workflow Example)",
+        label: "Getting an image into a slide deck or document",
         description:
-          "You downloaded a perfect product image for a crucial presentation, but PowerPoint refuses to import the WebP file, showing a red 'X'. Converting it to a standard JPEG ensures the image drops seamlessly into your slides without any formatting errors or missing links.",
+          "PowerPoint, Keynote and a number of document editors either refuse WebP or import it as a broken placeholder. A JPEG drops in without argument.",
       },
       {
-        label: "When NOT to use this tool",
+        label: "Opening the file in older design software",
         description:
-          "Do not convert WebP files to JPG if you are building a modern website or web application. WebP is specifically designed to load significantly faster than JPEG on the internet. Converting it backward will only inflate file sizes and harm your page speed.",
+          "Photoshop and Illustrator gained WebP support relatively recently. On an older installation, converting first is usually faster than hunting down a plugin.",
       },
       {
-        label: "Importing into legacy Adobe software",
+        label: "Submitting to a portal that validates by extension",
         description:
-          "Older versions of Photoshop and Illustrator do not natively recognize the .webp extension, requiring a conversion to JPEG before you can begin your design work.",
+          "Many forms check the file extension against a fixed list before anything else happens. WebP is rarely on that list, however valid the image is.",
       },
       {
-        label: "Submitting digital forms",
+        label: "Ordering physical prints",
         description:
-          "Many government and corporate portals have strict upload validators that only accept .jpg, .jpeg, or .png. WebP files will be immediately rejected.",
+          "Photo kiosks and online print services almost universally expect JPEG. A WebP will typically stop the order at the upload step.",
       },
       {
-        label: "Ordering physical photo prints",
+        label: "Sharing where thumbnails matter",
         description:
-          "Almost all consumer photo printing kiosks and online canvas-printing services demand JPEGs. Trying to upload a WebP will halt the checkout process.",
+          "File explorers on both Windows and macOS often show WebP files as blank icons, which makes a folder of them hard to work through. JPEG previews everywhere.",
+      },
+      {
+        label: "When to leave it alone",
+        description:
+          "If the image is destined for a website, keep the WebP. Converting to JPEG will make it larger for the same visible quality, which is the wrong direction for page speed.",
       },
     ],
   },
-  privacy: {
+  {
+    kind: "callout",
     heading: "Secure Browser-Based Conversion",
+    tone: "privacy",
+    policyLink: true,
     paragraphs: [
-      "We prioritize the security of your files by keeping them strictly on your device. Unlike traditional format converters that upload your WebP image to a remote server cluster, this tool utilizes your browser's internal engine.",
-      "Your images are parsed, rendered, and repacked into JPEGs locally using your device's memory. No tracking cookies monitor your uploads, and there are absolutely no lingering copies of your photos left on third-party servers.",
+      "Your file stays on your device. The browser decodes the WebP using the support already built into it, draws the pixels onto an off-screen canvas, and exports a JPEG — entirely in local JavaScript. The image is never uploaded, and no third-party service is involved in the conversion.",
+      "Because only pixels survive the canvas step, whatever metadata the WebP carried does not reach the JPEG. When the tab closes, both the source image and the generated file are released from memory.",
     ],
   },
-  faqs: [
-    {
-      question: "Why do so many websites save images as WebP now?",
-      answer:
-        "Webmasters use WebP because it provides superior compression, which makes web pages load much faster and saves them money on server bandwidth. However, this optimization is designed for web browsers, which is why the format often struggles when downloaded to a local computer.",
-    },
-    {
-      question: "Will converting a WebP to JPG reduce its quality?",
-      answer:
-        "Because both formats typically employ lossy compression, converting between them involves re-compressing the data. We utilize a highly optimized algorithm to ensure any theoretical quality loss remains practically invisible to the human eye.",
-    },
-    {
-      question: "Can I convert an animated WebP file into an animated JPG?",
-      answer:
-        "No, the JPEG format does not support animation. If you upload an animated WebP, this tool will safely extract the first frame and save it as a static JPEG image.",
-    },
-    {
-      question: "Why did the transparent background turn white?",
-      answer:
-        "WebP supports alpha-channel transparency, but JPEG does not. To ensure your image doesn't break or render a glitchy black square, our converter automatically detects transparent areas and lays down a solid white background beneath them.",
-    },
-  ],
-  relatedTools: [
-    {
-      name: "PNG to JPG",
-      href: "/png-to-jpg",
-      description:
-        "Have other heavy screenshots or transparent images? Standardize your entire asset folder by converting them to JPG alongside your WebP files.",
-      icon: FileImage,
-      accent: "from-orange-500 to-amber-500",
-    },
-    {
-      name: "Compress Image",
-      href: "/compress-image",
-      description:
-        "Reduce the size of your newly created JPG files even further, making them perfect for strict email attachment limits or bulk storage.",
-      icon: Minimize2,
-      accent: "from-lime-500 to-green-500",
-    },
-  ],
-  relatedArticleSlugs: ["jpg-vs-png-guide", "browser-pdf-converter-privacy"],
-};
+  {
+    kind: "faq",
+    heading: "WEBP to JPG: Questions and Answers",
+    faqs: [
+      {
+        question: "Why do so many sites serve WebP now?",
+        answer:
+          "Because it compresses better than JPEG at similar quality, so pages load faster and cost less bandwidth to serve. That benefit is aimed at browsers, which is exactly why the format becomes awkward the moment you download a file and try to open it in something else.",
+      },
+      {
+        question: "Will converting reduce the quality?",
+        answer:
+          "Slightly, though it is hard to see. Both formats are lossy, so this is a second round of compression rather than a repackaging of the original. The output is encoded at 92% quality, which keeps the loss well below what is noticeable at normal viewing size — but it is still a real step, so avoid converting back and forth repeatedly.",
+      },
+      {
+        question: "What happens to an animated WebP?",
+        answer:
+          "JPEG cannot store animation, so only the first frame is decoded and saved. The result is a still image. If you need to keep the animation, JPEG is not a format that can hold it in any form.",
+      },
+      {
+        question: "My WebP had a transparent background — where did it go?",
+        answer:
+          "It was filled with white. WebP carries an alpha channel and JPEG has none, so the canvas is painted white before the image is drawn; leaving it unpainted would render those regions black instead. If the transparency matters, convert to PNG rather than JPEG.",
+      },
+      {
+        question: "Is there a size limit?",
+        answer:
+          "Images larger than 4096 pixels on the longest side are scaled down proportionally before encoding — a 5000-pixel-wide image comes out at 4096. Smaller images are untouched. Beyond that, the practical limit is your device's memory.",
+      },
+      {
+        question: "Can I convert several WebP files at once?",
+        answer:
+          "No, one file per conversion. You can run them one after another without reloading the page, since selecting a new file simply replaces the previous one.",
+      },
+    ],
+  },
+  {
+    kind: "toolLinks",
+    heading: "Other Conversions",
+    tools: [
+      {
+        name: "PNG to JPG",
+        href: "/png-to-jpg",
+        description: "The same re-encode, for heavy PNG screenshots and exports.",
+        icon: FileImage,
+        accent: "from-orange-500 to-amber-500",
+      },
+      {
+        name: "Compress Image",
+        href: "/compress-image",
+        description: "Shrink the result further with a quality control you can set yourself.",
+        icon: Minimize2,
+        accent: "from-lime-500 to-green-500",
+      },
+      {
+        name: "Resize Image",
+        href: "/resize-image",
+        description: "Cut the pixel dimensions, which reduces size far more than re-encoding.",
+        icon: Maximize2,
+        accent: "from-rose-500 to-pink-500",
+      },
+    ],
+  },
+  {
+    kind: "articleLinks",
+    heading: "More on WebP",
+    slugs: ["how-to-convert-webp-to-jpg", "browser-tech-replacing-desktop-apps"],
+  },
+];
 
-const howToSteps = contentData.howTo.steps.map((s) => ({ name: s.title, text: s.description }));
+const howToSteps = convertSteps.map((s) => ({ name: s.title, text: s.description }));
+const faqSection = sections.find((s) => s.kind === "faq");
 
 function WebpToJpgPage() {
   return (
     <>
-      <ToolFAQSchema faqs={contentData.faqs} />
+      {faqSection?.kind === "faq" && <ToolFAQSchema faqs={faqSection.faqs} />}
       <HowToSchema name="How to Convert WEBP to JPG Online" steps={howToSteps} />
       <ToolPageLayout
         title="WEBP to JPG"
-        description="Convert modern WEBP images to JPG format."
+        description="Turn a WebP into a JPEG that older software will actually open."
         icon={ImageIcon}
         accent="from-indigo-500 to-violet-500"
-        contentSections={<ToolContentSections data={contentData} />}
+        contentSections={<ToolContentSections sections={sections} />}
       >
         <FormatConvertPanel from="webp" to="jpg" />
       </ToolPageLayout>

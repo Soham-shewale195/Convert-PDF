@@ -1,213 +1,230 @@
 import { createFileRoute } from "@tanstack/react-router";
-import {
-  Crop,
-  ShieldCheck,
-  Zap,
-  Smartphone,
-  Cloud,
-  RectangleHorizontal,
-  Focus,
-} from "lucide-react";
-import { Maximize2, Minimize2, RotateCw } from "lucide-react";
+import { Crop, Maximize2, Minimize2, RotateCw } from "lucide-react";
 import ToolPageLayout from "@/components/ToolPageLayout";
 import CropImagePanel from "@/components/tools/CropImagePanel";
-import ToolContentSections, { type ToolContentData } from "@/components/ToolContentSections";
+import ToolContentSections, { type ToolSection } from "@/components/ToolContentSections";
 import { ToolFAQSchema, HowToSchema } from "@/components/schema/Schema";
 
 export const Route = createFileRoute("/crop-image")({
   head: () => ({
     meta: [
       { title: "Crop Image Online Free | ConvertPDF" },
-      { name: "description", content: "Trim images to any area you need online for free." },
+      {
+        name: "description",
+        content:
+          "Drag a box or pick 1:1, 16:9 or 4:3. The region is taken from the full-resolution original rather than the preview, and saved as a PNG.",
+      },
       { property: "og:title", content: "Crop Image Online Free | ConvertPDF" },
-      { property: "og:description", content: "Trim images to any area you need online for free." },
+      {
+        property: "og:description",
+        content:
+          "Drag a box or pick 1:1, 16:9 or 4:3. The region is taken from the full-resolution original rather than the preview, and saved as a PNG.",
+      },
     ],
     links: [{ rel: "canonical", href: "https://converttpdf.com/crop-image" }],
   }),
   component: CropImagePage,
 });
 
-const contentData: ToolContentData = {
-  whatIs: {
-    heading: "What Is Image Cropping?",
-    paragraphs: [
-      "Image cropping removes the outer areas of a photograph or graphic that you do not want to keep, leaving only the rectangular region you select. Unlike resizing — which scales the entire image to new dimensions — cropping is a selection operation: you choose a sub-rectangle of the original, and everything outside it is discarded. The pixel dimensions of the output are determined by the size of the crop region, not by scaling.",
-      "**How it works technically:** This tool uses react-image-crop to render an interactive crop overlay directly on your image preview. When you drag the crop handles, you are defining the source rectangle. On confirmation, the browser's Canvas API uses the drawImage method with source-coordinate parameters (sx, sy, sWidth, sHeight) to extract exactly that region from the full-resolution image. The extraction happens at the original naturalWidth and naturalHeight of the source file, not at the scaled preview size — so what you crop is always at full original quality, saved as a lossless PNG.",
-    ],
+const cropSteps = [
+  {
+    title: "Load an image",
+    description:
+      "Add a JPEG, PNG or WebP by dropping it in or browsing for it. It appears at whatever size fits the panel, with no selection made yet — the Crop button stays greyed out until there is one.",
   },
-  howTo: {
-    heading: "How to Crop an Image in 3 Steps",
-    steps: [
-      {
-        title: "Upload your image",
-        description:
-          "Drag and drop an image onto the upload area, or click to browse. A full-size preview appears with the interactive crop overlay ready to use.",
-      },
-      {
-        title: "Select the crop area",
-        description:
-          "Drag the crop handles to frame the region you want to keep. Choose a preset aspect ratio (1:1, 16:9, 4:3) or leave it in Free mode to define any custom rectangle.",
-      },
-      {
-        title: "Crop and download",
-        description:
-          'Click "Crop Image" to extract the selected area. The cropped image is exported as a PNG at the original source resolution and downloaded to your device.',
-      },
-    ],
+  {
+    title: "Make a selection",
+    description:
+      "Drag across the image to draw a box in Free mode, or click 1:1, 16:9 or 4:3 to have one placed for you at that ratio, centred and covering about 90% of the frame. Either way the button becomes available once a selection exists, and you can keep adjusting the handles afterwards.",
   },
-  benefits: {
-    heading: "Why Use Our Image Cropper",
-    items: [
-      {
-        icon: ShieldCheck,
-        title: "Completely private",
-        description:
-          "All cropping runs inside your browser via the Canvas API. Your images are never transmitted to any server — the file stays on your device throughout.",
-      },
-      {
-        icon: Focus,
-        title: "Visual drag-and-drop selection",
-        description:
-          "The crop rectangle is positioned by dragging directly on your image preview. The handles snap and resize visually, so what you see in the overlay is precisely what gets extracted.",
-      },
-      {
-        icon: RectangleHorizontal,
-        title: "Preset aspect ratios",
-        description:
-          "Choose Free, 1:1, 16:9, or 4:3 to lock the selection to a specific shape. The rectangle auto-centres and constrains itself to the chosen ratio so you do not have to calculate dimensions manually.",
-      },
-      {
-        icon: Zap,
-        title: "Full-resolution extraction",
-        description:
-          "The crop is applied to the original pixel data, not the scaled preview. The output reflects the actual dimensions of the selected region at full source resolution.",
-      },
-      {
-        icon: Cloud,
-        title: "No account required",
-        description: "Free and open with no usage limits. No signup, no email, no hidden charges.",
-      },
-      {
-        icon: Smartphone,
-        title: "Works on any device",
-        description:
-          "The drag-and-drop crop interface adapts to touch screens on mobile and trackpad interactions on desktop.",
-      },
-    ],
+  {
+    title: "Apply and download",
+    description:
+      'Click "Apply Crop". Your selection is translated from preview coordinates into the image\'s real pixel coordinates, the region is copied out at full resolution, and the result downloads as a PNG with -cropped appended.',
   },
-  useCases: {
-    heading: "When to Crop Images",
-    intro:
-      "Cropping is the right tool when you want to change the composition or shape of an image without scaling the content — these are the most common situations:",
-    items: [
-      {
-        label: "Preparing a 1:1 social media post from a landscape photo (Workflow Example)",
-        description:
-          "A travel blogger wants to post a wide 16:9 landscape photograph to Instagram, which displays feed posts in a square format. Using the 1:1 crop preset, they drag the selection to centre on the most interesting part of the scene — the mountain peak — discarding the sky on the left and road on the right. The result is a square crop that focuses the viewer's attention without any scaling or distortion.",
-      },
-      {
-        label: "When NOT to use this tool",
-        description:
-          "Do not crop if your goal is to change the size of the image while preserving the full composition. Cropping removes parts of the image permanently. If you need the whole image at a different pixel size, use the Resize tool instead. Also, do not crop if you need the output at a specific pixel dimension — cropping controls shape, not final size. Resize after cropping if an exact output dimension is required.",
-      },
-      {
-        label: "Removing distracting background elements",
-        description:
-          "A product shot has too much empty table visible around the item. Cropping tightly around the product removes the dead space and produces a cleaner image for an online store listing.",
-      },
-      {
-        label: "Matching a specific aspect ratio requirement",
-        description:
-          "E-commerce platforms, print services, and presentation templates often require images at a defined aspect ratio. Use the preset crop ratios to extract the correctly shaped region from a source image before uploading.",
-      },
-      {
-        label: "Isolating a subject from a group photo",
-        description:
-          "A headshot is needed from a group photograph. Use free-form crop to frame tightly around the individual, producing a portrait-style crop from a wider shot.",
-      },
-    ],
-  },
-  privacy: {
-    heading: "Private Image Cropping",
-    paragraphs: [
-      "When you crop an image here, the file is loaded into your browser's memory using the File API. The interactive crop overlay is rendered in the DOM as a visual guide — this process involves no data transfer. When you apply the crop, the Canvas API's drawImage method extracts the selected pixel region from the full-resolution source and exports it as a PNG blob, entirely within the browser's sandboxed JavaScript environment.",
-      "At no point is your image data sent over the internet. The original file remains untouched on your device — the tool works on an in-memory copy. If you close the tab or navigate away, all in-memory image data is immediately released. There are no server-side processing queues, no temporary storage, and no analytics on your file content.",
-    ],
-  },
-  faqs: [
-    {
-      question: "Why does my aspect ratio preset matter?",
-      answer:
-        "The aspect ratio defines the shape of your crop — the relationship between width and height. A 1:1 ratio produces a square, which is commonly used for profile photos and social media feed posts. A 16:9 ratio produces a widescreen rectangle, which suits YouTube thumbnails, website headers, and presentation slides. A 4:3 ratio is a standard photographic format used in many print sizes. Choosing the right preset ensures your cropped image fits its destination without additional letterboxing or distortion.",
-    },
-    {
-      question: "What image formats can I crop?",
-      answer:
-        "You can upload any format your browser supports, including JPEG, PNG, WebP, GIF, and BMP. The cropped output is saved as a PNG file to preserve the extracted region at full quality and to support transparency.",
-    },
-    {
-      question: "Is the crop applied at the original full resolution?",
-      answer:
-        "Yes. The interactive overlay is displayed on a scaled preview for usability, but the actual crop operation uses the naturalWidth and naturalHeight of the source image. The pixel coordinates are scaled back to the original dimensions before extraction, so the output reflects the true resolution of the selected area.",
-    },
-    {
-      question: "Does cropping reduce image quality?",
-      answer:
-        "No. The crop is extracted pixel-for-pixel from the original image data and saved as a lossless PNG. No encoding quality is reduced during the operation. The output will be smaller in pixel dimensions than the original, but the pixels that remain are identical to those in the source.",
-    },
-    {
-      question: "Can I undo a crop after downloading?",
-      answer:
-        "The tool does not modify your original file. Your source image remains untouched on your device. If you are not satisfied with a crop, upload the original again and select a different area — there is no permanent change to your file.",
-    },
-    {
-      question: "Do my images get uploaded to a server?",
-      answer:
-        "No. ConvertPDF processes everything inside your web browser using the Canvas API. Your images are read from disk, cropped locally in memory, and exported as a file — entirely without network requests.",
-    },
-  ],
-  relatedTools: [
-    {
-      name: "Resize Image",
-      href: "/resize-image",
-      description:
-        "After cropping to the right composition, resize the cropped image to a specific pixel dimension required by your platform or submission form.",
-      icon: Maximize2,
-      accent: "from-rose-500 to-pink-500",
-    },
-    {
-      name: "Compress Image",
-      href: "/compress-image",
-      description:
-        "After cropping out unnecessary areas, compress the result to reduce file size further before uploading to a website or sending by email.",
-      icon: Minimize2,
-      accent: "from-lime-500 to-green-500",
-    },
-    {
-      name: "Rotate / Flip Image",
-      href: "/rotate-image",
-      description:
-        "If your image is rotated incorrectly, fix the orientation first — then crop to the final composition you want.",
-      icon: RotateCw,
-      accent: "from-purple-500 to-fuchsia-500",
-    },
-  ],
-  relatedArticleSlugs: ["jpg-vs-png-guide", "browser-pdf-converter-privacy"],
-};
+];
 
-const howToSteps = contentData.howTo.steps.map((s) => ({ name: s.title, text: s.description }));
+const sections: ToolSection[] = [
+  {
+    kind: "prose",
+    heading: "What Cropping Does",
+    paragraphs: [
+      "Cropping removes everything outside a rectangle and keeps what is inside it, unchanged. That makes it the least destructive of the three size-related operations here: resizing recalculates every pixel, compressing re-encodes them, and cropping simply copies a region across untouched.",
+      "The mechanics matter because of one common worry. The image on screen is scaled to fit the panel — often a good deal smaller than the file itself — so it would be reasonable to assume the crop happens at that reduced size. It does not. When you apply the crop, the selection is converted from the preview's coordinate space into the source image's real pixel coordinates, and the region is extracted from the full-resolution original.",
+      "The consequence is that a crop taken from a large photograph is still a large image. Selecting a quarter of a 4000-pixel-wide photo gives you a 1000-pixel-wide result with all of its original detail intact — not a blurry enlargement of a thumbnail. No scaling or resampling happens at any point.",
+    ],
+  },
+  {
+    kind: "steps",
+    heading: "Cropping an Image",
+    steps: cropSteps,
+  },
+  {
+    kind: "checklist",
+    heading: "When Cropping Is the Right Move",
+    intro:
+      "Cropping changes what the image is about. Reach for it whenever the problem is the framing rather than the file:",
+    items: [
+      {
+        label: "Fitting a required aspect ratio",
+        description:
+          "Profile pictures want square, video thumbnails want 16:9. Cropping to the ratio keeps everything undistorted, where resizing to those proportions would stretch faces and text out of shape.",
+      },
+      {
+        label: "Tightening a loose composition",
+        description:
+          "Removing empty sky, a cluttered edge or an unwanted passer-by draws attention to the subject and, as a side effect, cuts the file size along with the discarded pixels.",
+      },
+      {
+        label: "Pulling a headshot from a group photo",
+        description:
+          "Free mode is ideal here. Because extraction happens at full resolution, a tight crop from a high-megapixel photo is still perfectly usable on its own.",
+      },
+      {
+        label: "Removing something before sharing",
+        description:
+          "A document edge, a screen reflection, a name badge. Cropping deletes those pixels from the file rather than covering them, so they cannot be recovered from the result.",
+      },
+      {
+        label: "When to reach for a different tool",
+        description:
+          "If the framing is fine and the file is merely too large, cropping is the wrong lever — resize or compress instead. And if the image is sideways, rotate it first, since the crop box works against the image as it currently sits.",
+      },
+    ],
+  },
+  {
+    kind: "comparison",
+    heading: "What You See and What You Get",
+    intro:
+      "The single most common question about any browser-based cropper is whether the preview size limits the output. It does not, and this is where the two differ:",
+    columns: ["The preview on screen", "The exported file"],
+    rows: [
+      {
+        aspect: "Image size",
+        a: "Scaled down to fit the panel — frequently far smaller than the source.",
+        b: "Full original resolution. The preview's scale is never applied to the result.",
+      },
+      {
+        aspect: "Your crop rectangle",
+        a: "Drawn and measured in preview coordinates.",
+        b: "Converted to the image's true pixel coordinates before anything is extracted.",
+      },
+      {
+        aspect: "Detail",
+        a: "Limited by how large the preview is drawn on your screen.",
+        b: "Every pixel of the selected region, exactly as it was in the source.",
+      },
+      {
+        aspect: "Resampling",
+        a: "The browser scales the whole image down to display it.",
+        b: "None. Pixels are copied, never recomputed.",
+      },
+      {
+        aspect: "Format",
+        a: "Whatever you uploaded.",
+        b: "Always PNG, so nothing is lost in the export.",
+      },
+    ],
+  },
+  {
+    kind: "callout",
+    heading: "Private Image Cropping",
+    tone: "privacy",
+    policyLink: true,
+    paragraphs: [
+      "Cropping happens entirely on your device. The image is decoded into memory, the selected region is copied onto an off-screen canvas, and a PNG is exported — all in local JavaScript. Your image is never uploaded, and no third-party service sees it.",
+      "That matters more here than for most operations, because cropping is so often used to remove something sensitive before sharing: an address on an envelope, a face at the edge of a photo, an account number on a statement. Those pixels are discarded locally and never reach the output file. The canvas step also drops EXIF metadata, so capture time and any embedded GPS coordinates go with them.",
+    ],
+  },
+  {
+    kind: "faq",
+    heading: "Crop Image: Questions and Answers",
+    faqs: [
+      {
+        question: "Does cropping reduce the image quality?",
+        answer:
+          "No. The selected region is copied out of the full-resolution source without any scaling or resampling, and saved as a lossless PNG. The pixels you keep are identical to the ones in the original — you simply have fewer of them.",
+      },
+      {
+        question: "The preview looks small — will my crop be low resolution?",
+        answer:
+          "No. The preview is scaled to fit the panel, but your selection is translated into the source image's real pixel coordinates before extraction. Cropping a quarter of a 4000-pixel-wide photograph gives a 1000-pixel-wide result at full detail, not a blown-up thumbnail.",
+      },
+      {
+        question: "Why is the Crop button greyed out?",
+        answer:
+          "Because nothing is selected yet. Free mode starts with no box on the image, so the button stays disabled until you drag one out. Clicking one of the ratio presets also satisfies this — it places a centred selection for you, which is often the quickest way to get started.",
+      },
+      {
+        question: "Can I crop to an exact pixel size?",
+        answer:
+          "Not directly — the box is dragged rather than typed, with optional ratio constraints. To hit exact dimensions, crop to the right aspect ratio here and then set the precise pixel size with the Resize Image tool.",
+      },
+      {
+        question: "What do the aspect presets do?",
+        answer:
+          "They constrain the box to 1:1, 16:9 or 4:3 and re-centre a fresh selection at that ratio, covering about 90% of the image to start. You can still move and resize it; it just stays at those proportions. Free mode removes the constraint entirely.",
+      },
+      {
+        question: "Why is the output a PNG when I uploaded a JPEG?",
+        answer:
+          "So the crop is not compounded by a second round of lossy compression. Re-encoding a JPEG always costs a little quality; exporting as PNG keeps the extracted region exactly as it was. If you need a smaller JPEG afterwards, run the result through Compress Image.",
+      },
+      {
+        question: "What can I load into the cropper?",
+        answer:
+          "JPEG, PNG and WebP. The check looks at the opening bytes of the file, not the name on it, which is why a GIF or BMP is refused up front instead of breaking partway through. Re-save those in one of the three supported formats first.",
+      },
+    ],
+  },
+  {
+    kind: "toolLinks",
+    heading: "Natural Next Steps",
+    tools: [
+      {
+        name: "Resize Image",
+        href: "/resize-image",
+        description: "Set the exact pixel dimensions once the framing is right.",
+        icon: Maximize2,
+        accent: "from-rose-500 to-pink-500",
+      },
+      {
+        name: "Compress Image",
+        href: "/compress-image",
+        description: "Shrink the cropped PNG into a lighter JPEG for sharing.",
+        icon: Minimize2,
+        accent: "from-lime-500 to-green-500",
+      },
+      {
+        name: "Rotate / Flip Image",
+        href: "/rotate-image",
+        description: "Straighten a sideways photo first — the crop box works on it as it sits.",
+        icon: RotateCw,
+        accent: "from-purple-500 to-fuchsia-500",
+      },
+    ],
+  },
+  {
+    kind: "articleLinks",
+    heading: "Framing and Ratios",
+    slugs: ["image-aspect-ratio-cropping-guide"],
+  },
+];
+
+const howToSteps = cropSteps.map((s) => ({ name: s.title, text: s.description }));
+const faqSection = sections.find((s) => s.kind === "faq");
 
 function CropImagePage() {
   return (
     <>
-      <ToolFAQSchema faqs={contentData.faqs} />
+      {faqSection?.kind === "faq" && <ToolFAQSchema faqs={faqSection.faqs} />}
       <HowToSchema name="How to Crop an Image Online" steps={howToSteps} />
       <ToolPageLayout
         title="Crop Image"
-        description="Trim images to any area you need."
+        description="Drag a box, keep what is inside it — extracted at full resolution, never rescaled."
         icon={Crop}
         accent="from-sky-500 to-blue-500"
-        contentSections={<ToolContentSections data={contentData} />}
+        contentSections={<ToolContentSections sections={sections} />}
       >
         <CropImagePanel />
       </ToolPageLayout>

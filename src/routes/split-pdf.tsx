@@ -1,9 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Scissors, ShieldCheck, Zap, Smartphone, Cloud, Package, FileOutput } from "lucide-react";
-import { FileStack, Minimize2, RotateCw } from "lucide-react";
+import { Scissors, FileStack, Minimize2, RotateCw } from "lucide-react";
 import ToolPageLayout from "@/components/ToolPageLayout";
 import SplitPdfPanel from "@/components/tools/SplitPdfPanel";
-import ToolContentSections, { type ToolContentData } from "@/components/ToolContentSections";
+import ToolContentSections, { type ToolSection } from "@/components/ToolContentSections";
 import { ToolFAQSchema, HowToSchema } from "@/components/schema/Schema";
 
 export const Route = createFileRoute("/split-pdf")({
@@ -13,13 +12,13 @@ export const Route = createFileRoute("/split-pdf")({
       {
         name: "description",
         content:
-          "Split a PDF into individual pages online for free. Each page is saved as a separate file and packaged in a ZIP — all processed in your browser.",
+          "Split a PDF into one file per page, or extract only the pages you name — 1-3, 5, 8-10. Everything arrives as a single ZIP, built in your browser.",
       },
       { property: "og:title", content: "Split PDF Online Free | ConvertPDF" },
       {
         property: "og:description",
         content:
-          "Split a PDF into individual pages online for free. Each page is saved as a separate file and packaged in a ZIP.",
+          "Split a PDF into one file per page, or extract only the pages you name — 1-3, 5, 8-10. Everything arrives as a single ZIP, built in your browser.",
       },
     ],
     links: [{ rel: "canonical", href: "https://converttpdf.com/split-pdf" }],
@@ -27,193 +26,228 @@ export const Route = createFileRoute("/split-pdf")({
   component: SplitPdfPage,
 });
 
-const contentData: ToolContentData = {
-  whatIs: {
+const splitSteps = [
+  {
+    title: "Upload one PDF",
+    description:
+      "Drop your multi-page PDF onto the upload area or click to browse. The splitter works on a single document at a time — if you select several files, only the first is kept.",
+  },
+  {
+    title: "Choose a split mode",
+    description:
+      'Leave it on "Every page" to get one PDF per page across the whole document, or switch to "Custom pages" and type the pages you want — for example 1-3, 5, 8-10. Either way, each page keeps its original formatting, dimensions, and orientation.',
+  },
+  {
+    title: "Download and unzip",
+    description:
+      "Every file the run produced is bundled into one ZIP archive named after your source document. The whole operation finishes before the download starts, so you receive the complete set in a single file — extract it and take what you need.",
+  },
+];
+
+const sections: ToolSection[] = [
+  {
+    kind: "prose",
     heading: "What Is PDF Splitting?",
     paragraphs: [
-      "PDF splitting breaks a multi-page PDF document into separate files. This tool offers two modes. **Every page** produces exactly as many output files as there are pages in the source document, one file for each page — a complete set of isolated pages. **Custom pages** lets you type the pages you actually want, such as 1-3, 5, 8-10, and extracts only those. Either way you get a single ZIP containing the results.",
-      "**How custom selection groups pages:** In Custom pages mode, each comma-separated group becomes one output PDF, so a range stays a single document. Entering 1-3, 5, 8-10 produces three files — pages-1-3.pdf with three pages, page-5.pdf with one, and pages-8-10.pdf with three. If you would rather have each page separately, list them individually: 1,2,3 produces three one-page files. Ranges are inclusive and 1-indexed.",
-      "**How the split works technically:** The tool loads your PDF using pdf-lib and reads the total page count. In Every page mode it loops from page 0 through to the last page, creating a brand-new empty PDFDocument for each index, copying that single page from the source using copyPages(src, [i]), and serialising it — producing page-1.pdf, page-2.pdf, and so on. Custom pages mode uses the same copyPages call but passes the whole run of indices at once, so a group arrives as one multi-page document. All resulting files are then packed into a single ZIP archive by JSZip, named after your original file (e.g. contract-pages.zip). The entire split happens before any download begins — you receive one ZIP containing everything at once.",
+      "PDF splitting breaks a multi-page document into separate files, and this tool offers two ways to do it. Every page produces exactly as many output files as the source has pages — a 35-page document yields 35 files. Custom pages lets you type only the pages you actually want, such as 1-3, 5, 8-10, and extracts just those. Either mode hands you a single ZIP containing the results.",
+      "The grouping rule in Custom pages mode is worth understanding before you type anything, because it decides how many files come back. Each comma-separated group becomes one output PDF, so a range stays a single document: entering 1-3, 5, 8-10 produces three files — pages-1-3.pdf holding three pages, page-5.pdf holding one, and pages-8-10.pdf holding three. If you would rather have each page on its own, list them individually instead, since 1,2,3 produces three separate one-page files. Ranges are inclusive and numbered from 1.",
+      "Mechanically, the tool loads your PDF with pdf-lib and reads the total page count. Every page mode loops from the first page to the last, creating a new empty document each time and copying one page into it. Custom pages mode calls the same copy operation but passes a whole run of page indices at once, which is why a range arrives as one multi-page document. The resulting files are packed into a ZIP by JSZip and handed to your browser as a single download.",
+      "Pages are copied rather than redrawn in both modes, so text stays selectable, images keep their original encoding, and nothing is rescaled or reformatted. A landscape A4 page comes out as a landscape A4 page; a custom-sized slide keeps its exact dimensions.",
     ],
   },
-  howTo: {
-    heading: "How to Split a PDF in 3 Steps",
-    steps: [
-      {
-        title: "Upload your PDF",
-        description:
-          "Drag and drop your multi-page PDF onto the upload area, or click to browse. The file is loaded directly into your browser — it never leaves your device.",
-      },
-      {
-        title: "Choose a split mode",
-        description:
-          'Leave it on "Every page" to get one PDF per page, or switch to "Custom pages" and type the pages you want — for example 1-3, 5, 8-10. Then click to run. Either way, the original formatting, dimensions, and orientation of every page are preserved.',
-      },
-      {
-        title: "Download the ZIP",
-        description:
-          "Every file the split produced is packaged into a single ZIP archive named after your original document. Download it, unzip it, and share or archive the files individually.",
-      },
-    ],
-  },
-  benefits: {
-    heading: "Why Use Our PDF Splitter",
-    items: [
-      {
-        icon: ShieldCheck,
-        title: "Fully private",
-        description:
-          "Your document stays in your browser. No pages are uploaded, stored, or transmitted anywhere — not during the split and not during the ZIP generation.",
-      },
-      {
-        icon: FileOutput,
-        title: "One PDF per page",
-        description:
-          "Every page becomes its own standalone PDF file. Each output file contains exactly one page, named sequentially (page-1.pdf, page-2.pdf, …) for easy identification.",
-      },
-      {
-        icon: Package,
-        title: "ZIP download",
-        description:
-          "All split pages are bundled into a single ZIP archive by JSZip before download — one click to receive everything, then extract only what you need.",
-      },
-      {
-        icon: Zap,
-        title: "Fast processing",
-        description:
-          "Page extraction and ZIP generation happen in your browser in seconds. Each page is processed independently, so even documents with many pages complete quickly.",
-      },
-      {
-        icon: Cloud,
-        title: "Free, no account",
-        description: "No signup, no login, no subscription. Just open the tool and split your PDF.",
-      },
-      {
-        icon: Smartphone,
-        title: "Works on mobile",
-        description:
-          "Split PDFs from your phone or tablet — the interface adapts to any screen size without requiring an app installation.",
-      },
-    ],
-  },
-  useCases: {
-    heading: "When to Split a PDF",
+  {
+    kind: "decision",
+    heading: "Which Mode Do You Need?",
     intro:
-      "Splitting is the right operation whenever you need to break apart a document's pages into individually usable units. Here is when it helps most — and when a different approach is better:",
-    items: [
+      "The two modes cover different jobs, and the grouping rule means the same pages can arrive as one file or several depending on how you type them. Find the row that matches your goal:",
+    branches: [
       {
-        label: "Extracting a specific page from a legal filing (Workflow Example)",
-        description:
-          "A legal assistant receives a 35-page court filing as a single PDF — one pleading per page. They upload it to the splitter and receive a ZIP containing page-1.pdf through page-35.pdf. They extract page-3.pdf (the specific motion needed by counsel) and forward only that file, without sending the full dossier. The original document is untouched on their device.",
+        condition: "You want every page as a separate, individually shareable file.",
+        recommendation:
+          'Leave the mode on "Every page". You get one PDF per page, named page-1.pdf upward.',
       },
       {
-        label: "When NOT to use this tool",
-        description:
-          "Splitting is the wrong operation when the document should stay whole. If the goal is simply a smaller file, use the Compress PDF tool instead — breaking a report or an essay into pieces does not make it easier to read or to send. Splitting also cannot reorder pages on its own: to change their sequence, extract what you need here and then reassemble it with the Merge PDF tool. And if you want pages from several different documents combined, that is a merge, not a split.",
+        condition: "You want a consecutive range — say pages 5 to 12 — as one combined PDF.",
+        recommendation:
+          'Switch to "Custom pages" and enter 5-12. The range stays together as a single eight-page document, so there is no reassembly step.',
       },
       {
-        label: "Separating invoices from a batch statement",
-        description:
-          "Many accounting systems export monthly billing as a single PDF with one invoice per page. Split the document to get individual invoice files ready for separate filing, forwarding to different departments, or matching against purchase orders.",
+        condition: "You want particular pages, each as its own file.",
+        recommendation:
+          "Use Custom pages but list them separately rather than as a range: 1,2,3 gives three one-page files, where 1-3 would give one file of three pages.",
       },
       {
-        label: "Distributing form pages to different recipients",
-        description:
-          "A multi-page application packet has different sections for different people: page 1 for the applicant, page 2 for a supervisor, page 3 for HR. Split once, then send each page to the appropriate recipient without sharing the whole packet.",
+        condition: "You want to reorder pages, or pull pages from several different documents.",
+        recommendation:
+          "Splitting cannot reorder anything on its own. Extract what you need here, then assemble it in the order you want with",
+        href: "/merge-pdf",
+        linkLabel: "Merge PDF",
       },
       {
-        label: "Selectively re-assembling a document",
-        description:
-          "Split a large PDF to get every page as an individual file, discard the pages you no longer need, and use the Merge PDF tool to combine only the pages you want to keep into a new, cleaner document.",
+        condition: "You only want the document to be smaller, and the page structure is fine.",
+        recommendation: "Splitting will not help. Reduce the file size instead with",
+        href: "/compress-pdf",
+        linkLabel: "Compress PDF",
+      },
+      {
+        condition: "Some pages are sideways or upside down.",
+        recommendation:
+          "Fix the orientation before splitting, so each extracted page comes out correct.",
+        href: "/rotate-pdf",
+        linkLabel: "Rotate PDF",
       },
     ],
   },
-  privacy: {
+  {
+    kind: "steps",
+    heading: "How to Split a PDF",
+    steps: splitSteps,
+  },
+  {
+    kind: "definitions",
+    heading: "What You Get in the Download",
+    intro:
+      "The output is a single ZIP rather than a series of separate downloads. Here is what is inside it and how it is labelled:",
+    terms: [
+      {
+        term: "One ZIP archive, named after your file",
+        definition:
+          "The archive takes your original filename with -pages appended, so contract.pdf produces contract-pages.zip. Only the archive is downloaded; your source PDF is never modified.",
+      },
+      {
+        term: "page-1.pdf, page-2.pdf, page-3.pdf …",
+        definition:
+          "In Every page mode each file is numbered sequentially and 1-indexed, so page-1.pdf is the first page of the document. The numbering always matches the source document's own page order.",
+      },
+      {
+        term: "page-5.pdf and pages-8-10.pdf",
+        definition:
+          "In Custom pages mode the filename reflects what the group holds. A single page becomes page-5.pdf; a range becomes pages-8-10.pdf and contains all three pages. The numbers always refer to positions in the original document.",
+      },
+      {
+        term: "One file per group, not per page",
+        definition:
+          "In Custom pages mode the number of files equals the number of comma-separated groups you typed, not the number of pages you selected. Typing the same group twice still produces one file rather than a duplicate.",
+      },
+      {
+        term: "Original formatting, carried across",
+        definition:
+          "Text, fonts, vector graphics, embedded images, and annotations are copied straight from the source. Nothing is re-rendered or re-encoded, so there is no quality loss.",
+      },
+      {
+        term: "Built entirely before the download begins",
+        definition:
+          "The tool completes every file and finishes zipping before your browser is offered the archive, which is why a long document takes a moment before the download appears.",
+      },
+    ],
+  },
+  {
+    kind: "callout",
     heading: "Secure Page Extraction",
+    tone: "privacy",
+    policyLink: true,
     paragraphs: [
-      "When you split a PDF here, your browser handles every step locally. The File API reads your document into memory, pdf-lib parses the full PDF structure and extracts each page into its own new PDFDocument, and JSZip bundles all the resulting files into a downloadable ZIP archive — all within the browser's sandboxed JavaScript environment. No document data leaves your device at any point, including during the ZIP generation step.",
-      "There are no server requests, no cloud queues, and no logging of your file contents or page count. If the document contains confidential information — personnel records, financial statements, legal filings — each page stays on your machine throughout the entire operation. Closing the tab immediately releases all in-memory data.",
+      "Your browser handles every step locally. The File API reads the document into memory, pdf-lib parses its structure and copies the pages you asked for into new documents, and JSZip bundles the results into a downloadable archive — all inside the browser's sandboxed JavaScript environment. Your document is never uploaded, including during the ZIP generation step.",
+      "There are no server-side queues, no temporary cloud storage, and no logging of your file contents or page count. When the document holds confidential material — personnel records, financial statements, legal filings — every page stays on your machine for the whole operation, and closing the tab releases the in-memory data immediately.",
     ],
   },
-  faqs: [
-    {
-      question: "Does the tool split every page, or can I choose a range?",
-      answer:
-        "Either. Every page mode creates one output PDF for each page, from page 1 through to the last. Custom pages mode lets you type exactly what you want — 1-3, 5, 8-10 — and each comma-separated group becomes one PDF, so pages 1-3 arrive as a single three-page document rather than three separate files. To get them separately instead, list the pages individually as 1,2,3.",
-    },
-    {
-      question: "Does splitting a PDF degrade the quality of individual pages?",
-      answer:
-        "No. Each page is copied directly from the original PDF using pdf-lib's copyPages method with a single-element index array. All text, images, fonts, vector graphics, and annotations are preserved exactly as they appear in the source document. No re-rendering or re-encoding occurs.",
-    },
-    {
-      question: "What format is the download?",
-      answer:
-        "You receive a single ZIP file containing one PDF per page. Files are named sequentially starting from page-1.pdf. The ZIP itself is named after your original file (for example, report-pages.zip). Extract the ZIP to access the individual page files.",
-    },
-    {
-      question: "Is there a limit on the number of pages I can split?",
-      answer:
-        "There is no hard page limit. The tool can handle documents with many pages, though very large files may be constrained by your device's available memory — pdf-lib loads the entire source document into RAM before processing begins. Documents under 25 MB work reliably on most devices.",
-    },
-    {
-      question: "Will the split pages keep their original page size and orientation?",
-      answer:
-        "Yes. Each extracted page retains the exact dimensions, orientation, and content box of the original. A landscape A4 page stays landscape A4. A custom-sized slide stays at its original dimensions. The tool does not rescale or reformat any page.",
-    },
-    {
-      question: "Can I split a password-protected PDF?",
-      answer:
-        "If the PDF requires a password to open, the browser cannot access its contents and the split will fail. Remove the password protection first using your PDF software, then use the splitter.",
-    },
-    {
-      question: "Can I split and then re-merge selected pages?",
-      answer:
-        "Yes — this is a practical way to reorder or remove pages from a document. Split your PDF to get every page as an individual file, select only the pages you want to keep, and use the Merge PDF tool to combine them into a new document in any order you choose.",
-    },
-  ],
-  relatedTools: [
-    {
-      name: "Merge PDF",
-      href: "/merge-pdf",
-      description:
-        "After splitting, use Merge PDF to reassemble only the pages you want into a new document — useful for reordering, removing, or combining pages from multiple sources.",
-      icon: FileStack,
-      accent: "from-blue-500 to-cyan-500",
-    },
-    {
-      name: "Compress PDF",
-      href: "/compress-pdf",
-      description:
-        "If the source document is large before splitting, compress it first to reduce the size of each resulting page file and the overall ZIP download.",
-      icon: Minimize2,
-      accent: "from-emerald-500 to-teal-500",
-    },
-    {
-      name: "Rotate PDF",
-      href: "/rotate-pdf",
-      description:
-        "Fix the orientation of specific pages before splitting — so each extracted page file is already correctly oriented and ready to use.",
-      icon: RotateCw,
-      accent: "from-amber-500 to-orange-500",
-    },
-  ],
-  relatedArticleSlugs: ["how-to-merge-pdf-files-online", "best-free-pdf-tools"],
-};
+  {
+    kind: "faq",
+    heading: "Split PDF: Questions and Answers",
+    faqs: [
+      {
+        question: "Can I choose a page range instead of splitting everything?",
+        answer:
+          "Yes. Every page mode creates one output PDF for each page, from the first through to the last. Custom pages mode lets you type exactly what you want — 1-3, 5, 8-10 — and each comma-separated group becomes one PDF, so pages 1-3 arrive as a single three-page document rather than three separate files. To get them separately instead, list the pages individually as 1,2,3.",
+      },
+      {
+        question: "What happens if I type a page that does not exist?",
+        answer:
+          "The tool checks your selection against the document's real page count before it starts, and tells you which page was out of range rather than producing a partial ZIP. Backwards ranges, numbers below 1, and text it cannot read are all caught at the same point, so nothing runs until the selection makes sense.",
+      },
+      {
+        question: "Does splitting reduce the quality of individual pages?",
+        answer:
+          "No. Each page is copied directly out of the original document rather than re-rendered. Text, images, fonts, vector graphics, and annotations are preserved exactly as they appear in the source, and no re-encoding takes place.",
+      },
+      {
+        question: "What format is the download?",
+        answer:
+          "A single ZIP file, named after your original document — report.pdf becomes report-pages.zip. Inside, Every page mode gives you page-1.pdf upward, one per page. Custom pages mode names each file after the group it holds, so a single page is page-5.pdf and a range is pages-8-10.pdf. Extract the archive to reach them.",
+      },
+      {
+        question: "Is there a limit on the number of pages I can split?",
+        answer:
+          "There is no page limit built into the tool. Memory sets the real boundary: the source document is read into RAM before splitting starts, and each file produced stays there until the ZIP is assembled. Very large documents on low-memory devices are where you would notice this.",
+      },
+      {
+        question: "Will the split pages keep their original size and orientation?",
+        answer:
+          "Yes. Every extracted page keeps the exact dimensions, orientation, and content box of the original. A landscape A4 page stays landscape A4, and a custom-sized slide keeps its dimensions. Nothing is rescaled or reformatted.",
+      },
+      {
+        question: "Can I split a password-protected PDF?",
+        answer:
+          "No. Encrypted PDFs are detected as the file loads and the tool stops with a message naming the file, rather than failing partway through. This applies to any encryption, including documents that open without a password but carry permission restrictions such as print-only. Remove the password or the restrictions in your PDF software, then upload the unprotected copy.",
+      },
+      {
+        question: "Can I split more than one document at a time?",
+        answer:
+          "No — the splitter takes a single file. If you select multiple files, only the first one is used. Split each document in a separate pass; you can start another straight afterwards without reloading the page.",
+      },
+    ],
+  },
+  {
+    kind: "toolLinks",
+    heading: "Where to Go After Splitting",
+    tools: [
+      {
+        name: "Merge PDF",
+        href: "/merge-pdf",
+        description:
+          "Reassemble the files you extracted into a new document — the standard way to reorder pages or combine sources.",
+        icon: FileStack,
+        accent: "from-blue-500 to-cyan-500",
+      },
+      {
+        name: "Compress PDF",
+        href: "/compress-pdf",
+        description:
+          "Shrink the source document before splitting to keep each resulting file smaller.",
+        icon: Minimize2,
+        accent: "from-emerald-500 to-teal-500",
+      },
+      {
+        name: "Rotate PDF",
+        href: "/rotate-pdf",
+        description:
+          "Correct page orientation before splitting so every extracted page is right way up.",
+        icon: RotateCw,
+        accent: "from-amber-500 to-orange-500",
+      },
+    ],
+  },
+  {
+    kind: "articleLinks",
+    heading: "Guides on Working With Pages",
+    slugs: ["how-to-split-pdf-pages", "digital-document-workflow-students"],
+  },
+];
 
-const howToSteps = contentData.howTo.steps.map((s) => ({ name: s.title, text: s.description }));
+const howToSteps = splitSteps.map((s) => ({ name: s.title, text: s.description }));
+const faqSection = sections.find((s) => s.kind === "faq");
 
 function SplitPdfPage() {
   return (
     <>
-      <ToolFAQSchema faqs={contentData.faqs} />
+      {faqSection?.kind === "faq" && <ToolFAQSchema faqs={faqSection.faqs} />}
       <HowToSchema name="How to Split a PDF Online" steps={howToSteps} />
       <ToolPageLayout
         title="Split PDF"
         description="Extract every page, or just the pages you choose, packaged in a single ZIP download."
         icon={Scissors}
         accent="from-pink-500 to-rose-500"
-        contentSections={<ToolContentSections data={contentData} />}
+        contentSections={<ToolContentSections sections={sections} />}
       >
         <SplitPdfPanel />
       </ToolPageLayout>

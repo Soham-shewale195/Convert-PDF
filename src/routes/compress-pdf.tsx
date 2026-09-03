@@ -1,9 +1,19 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Minimize2, Zap, ShieldCheck, Smartphone, Cloud, FileText, Layers } from "lucide-react";
-import { FileStack, Scissors, Image as ImageIcon } from "lucide-react";
+import {
+  Minimize2,
+  ShieldCheck,
+  FileText,
+  Layers,
+  SlidersHorizontal,
+  ImageOff,
+  BarChart3,
+  FileStack,
+  Scissors,
+  Image as ImageIcon,
+} from "lucide-react";
 import ToolPageLayout from "@/components/ToolPageLayout";
 import CompressPdfPanel from "@/components/tools/CompressPdfPanel";
-import ToolContentSections, { type ToolContentData } from "@/components/ToolContentSections";
+import ToolContentSections, { type ToolSection } from "@/components/ToolContentSections";
 import { ToolFAQSchema, HowToSchema } from "@/components/schema/Schema";
 
 export const Route = createFileRoute("/compress-pdf")({
@@ -13,13 +23,13 @@ export const Route = createFileRoute("/compress-pdf")({
       {
         name: "description",
         content:
-          "Reduce PDF file size online for free with three quality levels. No uploads, no signup — your PDF stays on your device.",
+          "Shrink a PDF for free using three quality levels. Every preset recompresses images, Low the most gently. No uploads and no signup required.",
       },
       { property: "og:title", content: "Compress PDF Online Free | ConvertPDF" },
       {
         property: "og:description",
         content:
-          "Reduce PDF file size online for free with three quality levels. No uploads, no signup — your PDF stays on your device.",
+          "Shrink a PDF for free using three quality levels. Every preset recompresses images, Low the most gently. No uploads and no signup required.",
       },
     ],
     links: [{ rel: "canonical", href: "https://converttpdf.com/compress-pdf" }],
@@ -27,195 +37,288 @@ export const Route = createFileRoute("/compress-pdf")({
   component: CompressPdfPage,
 });
 
-const contentData: ToolContentData = {
-  whatIs: {
+const compressSteps = [
+  {
+    title: "Select your PDF",
+    description:
+      "Drop a PDF onto the upload area or click to browse. The compressor handles one document at a time, and the file is loaded straight into your browser's memory.",
+  },
+  {
+    title: "Choose Low, Medium, or High",
+    description:
+      "The three presets appear once a file is loaded. They run the same pipeline and differ only in how hard they push image quality: Low re-encodes images at 82%, Medium — the default — at 75%, and High at 50%. Text, fonts, and vector artwork are never altered by any of them.",
+  },
+  {
+    title: "Compress and compare",
+    description:
+      'Click "Compress PDF" and watch the progress messages as the document is analysed object by object. A text-heavy file finishes quickly; an image-heavy one can take a while, because every image is decoded and re-encoded individually. When it finishes, the panel shows your original size, the compressed size, and the reduction actually achieved.',
+  },
+];
+
+const sections: ToolSection[] = [
+  {
+    kind: "prose",
     heading: "What Is PDF Compression?",
     paragraphs: [
-      "PDF compression reduces the file size of a PDF document so it transfers faster, fits within email attachment limits, and occupies less storage. The key detail is that not all PDFs are bloated for the same reason: some are large because they contain high-resolution images; others are large because of unoptimised internal structure, redundant object dictionaries, and legacy cross-reference tables that accumulate during document generation.",
-      "**How this tool works technically:** Every preset calls pdf-lib's save method with the useObjectStreams flag set to true. That instruction tells pdf-lib to re-serialise your PDF using cross-reference streams and object streams — a structural optimisation introduced in PDF 1.5 and defined in the ISO 32000 specification. The tool parses every internal object in the document, repacks multiple objects together into compressed streams, and replaces uncompressed flat xref tables with a compressed cross-reference stream. This structural step is lossless: no text is reworded, no font is modified.",
-      "**Three presets, and what each one really does:** All three run the same pipeline and differ only in how hard they push image quality. **Low** re-encodes embedded images as JPEG at 82% quality, **Medium** — the default — at 75%, and **High** at 50%. Every preset is therefore a lossy operation on images: each discards some image data permanently in exchange for a smaller file, with Low discarding the least. Text, fonts and vector content are never altered by any preset, so the document stays searchable and selectable whichever level you choose. No preset preserves images byte-for-byte, so keep your original if you need one.",
-      "**Which images actually get recompressed:** JPEG, PNG-style Flate-compressed images, and JPEG 2000 are all decoded and re-encoded, including those whose colour space is written as an ICCBased profile — the usual output of Word, InDesign and scanner software. JPEG 2000 matters more than it sounds: it is common in exported lecture notes and slide decks, where it can account for the overwhelming majority of the file. A few kinds are deliberately left alone: CCITT and JBIG2 fax-style scans, transparency masks, and CMYK or indexed-palette images, none of which can be re-encoded without risking a corrupted or colour-shifted result. Every recompressed image is only substituted when the new version is genuinely smaller, so no image is ever made bigger.",
+      "PDF compression reduces a document's file size so it transfers faster, fits within email attachment limits, and occupies less storage. The important detail is that PDFs are not all large for the same reason. Some are heavy because they contain high-resolution photographs. Others are heavy because of unoptimised internal structure — redundant object dictionaries and legacy cross-reference tables that pile up during document generation.",
+      "This tool addresses both, in two layers. Every preset performs a structural re-save: the document is re-serialised using object streams and a compressed cross-reference stream, a technique introduced in PDF 1.5 and defined in the ISO 32000 specification. Multiple internal objects are repacked together and the flat xref table is replaced. This layer is completely lossless — no text is reworded, no font is modified.",
+      "The second layer applies to images, and it is worth being blunt about it: all three presets re-encode them. Low writes JPEG at 82% quality, Medium at 75%, and High at 50%. Every preset is therefore a lossy operation on images, each discarding some data permanently in exchange for a smaller file, with Low discarding the least. No preset preserves images byte-for-byte, so if you need a faithful copy, keep your original file alongside the compressed one.",
+      "Which images get recompressed depends on how they are encoded rather than on the preset. JPEG, PNG-style Flate-compressed images, and JPEG 2000 are all decoded and re-encoded, including those whose colour space is written as an ICCBased profile — the usual output of Word, InDesign and scanner software. JPEG 2000 matters more than it sounds: it is common in exported lecture notes and slide decks, where it can account for the overwhelming majority of the file. A few kinds are deliberately left alone, and the table below sets out exactly which.",
     ],
   },
-  howTo: {
-    heading: "How to Compress a PDF in 3 Steps",
-    steps: [
+  {
+    kind: "matrix",
+    heading: "What Each Preset Changes",
+    intro:
+      "Image recompression is applied conservatively, because re-encoding the wrong kind of image can wreck transparency or shift colours. Anything the tool cannot re-encode safely is passed through byte-for-byte. This is what happens to each part of your document:",
+    columnHeadings: ["Low", "Medium", "High"],
+    rows: [
       {
-        title: "Select your PDF",
-        description:
-          "Drag and drop your PDF file onto the upload area above, or click to browse your device. The file is loaded directly into your browser's memory.",
+        label: "Document structure (xref table, object dictionaries)",
+        cells: ["Repacked", "Repacked", "Repacked"],
       },
       {
-        title: "Pick a preset and compress",
-        description:
-          'Choose Low for the gentlest recompression, Medium (the default) for a balance of size and quality, or High for the smallest file. Click "Compress PDF" and the work happens entirely within your browser.',
+        label: "Text, fonts, and vector graphics",
+        cells: ["Untouched", "Untouched", "Untouched"],
       },
       {
-        title: "Download the result",
-        description:
-          "Once compression is finished, download your smaller PDF. The original file is untouched — you always keep your source document.",
+        label: "JPEG images",
+        cells: ["Re-encoded at 82%", "Re-encoded at 75%", "Re-encoded at 50%"],
+      },
+      {
+        label: "PNG-style images stored with Flate compression",
+        cells: ["Re-encoded at 82%", "Re-encoded at 75%", "Re-encoded at 50%"],
+      },
+      {
+        label: "JPEG 2000 images",
+        cells: ["Re-encoded at 82%", "Re-encoded at 75%", "Re-encoded at 50%"],
+      },
+      {
+        label: "An image that carries a transparency mask",
+        cells: ["Re-encoded, mask kept", "Re-encoded, mask kept", "Re-encoded, mask kept"],
+      },
+      {
+        label: "The transparency mask itself",
+        cells: ["Untouched", "Untouched", "Untouched"],
+      },
+      {
+        label: "CMYK, indexed-palette, Separation or Lab images",
+        cells: ["Untouched", "Untouched", "Untouched"],
+      },
+      {
+        label: "Bitonal CCITT or JBIG2 scans (typical fax and black-and-white scans)",
+        cells: ["Untouched", "Untouched", "Untouched"],
+      },
+      {
+        label: "Any image that would come out larger",
+        cells: ["Original kept", "Original kept", "Original kept"],
       },
     ],
   },
-  benefits: {
-    heading: "Why Use Our PDF Compressor",
+  {
+    kind: "steps",
+    heading: "Compressing a Document",
+    steps: compressSteps,
+  },
+  {
+    kind: "cards",
+    heading: "What the Compressor Guarantees",
+    columns: 3,
     items: [
       {
         icon: ShieldCheck,
-        title: "No file uploads",
+        title: "Your PDF is never uploaded",
         description:
-          "Your PDF is processed entirely in your browser and is never uploaded. No third-party service is contacted at any point.",
+          "Parsing, rewriting, and exporting all happen inside your browser. The document itself is never transmitted, and no third-party service is contacted.",
       },
       {
-        icon: Zap,
-        title: "Runs on your device",
+        icon: SlidersHorizontal,
+        title: "You pick the trade-off",
         description:
-          "Small documents finish in moments. Image-heavy ones take longer, because every image is decoded and recompressed individually rather than handed to a server.",
+          "Three quality levels, chosen before anything is processed. Low keeps the most image detail, High produces the smallest file.",
       },
       {
         icon: FileText,
-        title: "You choose the trade-off",
+        title: "Text is never re-rendered",
         description:
-          "Text and fonts are never altered by any preset. Low re-encodes images at 82% quality, Medium at 75%, and High at 50% — you decide how much detail to trade for size.",
+          "No preset touches text, fonts, or vector artwork. Documents stay searchable and selectable, and signatures keep their appearance.",
       },
       {
-        icon: Cloud,
-        title: "No account required",
+        icon: ImageOff,
+        title: "Risky images are skipped",
         description:
-          "Open the page, drop your file, and download. No signup, no email, no paywall.",
-      },
-      {
-        icon: Smartphone,
-        title: "Mobile friendly",
-        description:
-          "Works on phones and tablets. The responsive interface adapts to any screen size.",
+          "Bitonal scans, CMYK and indexed-palette images, and transparency masks are left untouched rather than re-encoded badly.",
       },
       {
         icon: Layers,
-        title: "Biggest gains on image-heavy files",
+        title: "A larger result is never substituted",
         description:
-          "The largest reductions come from documents full of photographs, diagrams or scanned pages, where recompressing the images dominates. Text-rich exports from Word or reporting systems still benefit from the structural pass, but the saving is smaller.",
+          "If re-encoding an image would make it bigger than the original, the tool keeps the original bytes instead.",
+      },
+      {
+        icon: BarChart3,
+        title: "The real numbers are shown",
+        description:
+          "After compressing, the panel reports your actual before and after sizes and the true percentage reduction — no estimates.",
       },
     ],
   },
-  useCases: {
-    heading: "When to Compress a PDF",
+  {
+    kind: "callout",
+    heading: "Your Document Stays on Your Device",
+    tone: "privacy",
+    policyLink: true,
+    paragraphs: [
+      "Compression runs inside your web browser. Your file is read into local memory through the File API and handed to pdf-lib, a JavaScript library that parses the full PDF object graph, walks its indirect objects, and re-serialises the document with object streams enabled. Image re-encoding is performed by drawing each eligible image onto an in-page canvas and exporting it again — also entirely local. Your document is never uploaded, and no third-party service is contacted at any point.",
+      "One detail worth stating plainly rather than glossing over: when a document contains JPEG 2000 images, the decoder for that format is fetched from this site the first time it is needed, in the same way the rest of the page loads. It carries no part of your document — nothing of your file travels with that request. Beyond it, compressing produces no network activity at all.",
+      "There are no server-side queues, no temporary cloud storage, and no logging of your document's contents. That matters for sensitive material: a contract with personal details, a financial statement, or a confidential internal report is processed and discarded within your own device. Close the tab and everything held in memory is released.",
+    ],
+  },
+  {
+    kind: "checklist",
+    heading: "Choosing a Preset in Practice",
     intro:
-      "Compression is the right choice when a file needs to be smaller and a small, controlled loss of image detail is acceptable. Here are the scenarios where it makes the most difference — and one where it will not:",
+      "Which preset helps depends entirely on why your file is large. These are the situations that come up most:",
     items: [
       {
-        label: "Reducing a contract exported from Word (Workflow Example)",
+        label: "A contract or report exported from Word",
         description:
-          "A legal team exports a 30-page contract from Microsoft Word as a PDF. Word-to-PDF exports frequently leave behind uncompressed xref tables and redundant object dictionaries. Running the file through the compressor re-encodes those internal structures using object streams — every word, every signature field, and every font stays intact, but the file is meaningfully smaller and fits comfortably within a standard email attachment limit.",
+          "Office exports frequently leave uncompressed xref tables and redundant object dictionaries behind, and the structural pass alone often makes a worthwhile dent. If the document is mostly text, any preset gives a similar result, because there is little image data for the quality setting to act on.",
       },
       {
-        label: "When NOT to use this tool",
+        label: "A photo-heavy brochure or portfolio",
         description:
-          "Every preset reduces encoding quality rather than pixel dimensions, so a very high-resolution scan can still come out large — a 6000-pixel-wide page stays 6000 pixels wide. If you need true downsampling to a lower resolution, this compressor does not do that. Some image types are also left untouched by design: CCITT and JBIG2 fax-style scans, transparency masks, and CMYK or indexed-palette images, none of which can be re-encoded safely without risking a corrupted or colour-shifted result. If a document is built entirely from those, expect little movement at any preset.",
+          "This is where the presets genuinely diverge and where the largest reductions come from. Start with Low, check how the images look, and step up to Medium or High only if you need more. Compare the reported reduction against the visible cost before you commit.",
       },
       {
-        label: "Meeting email attachment limits",
+        label: "A black-and-white scanned document",
         description:
-          "Many email providers cap attachments at 10–25 MB. Reports and proposals full of screenshots or scanned pages routinely overshoot that. Compressing brings them back within range, and Low is usually enough when the images need to stay close to the original.",
+          "Scans stored as bitonal CCITT or JBIG2 images are skipped by every preset, so the reduction may be very small no matter what you pick. That is a deliberate safeguard — re-encoding a bitonal scan as JPEG would look worse and could make it larger.",
       },
       {
-        label: "Preparing PDFs for portal uploads",
+        label: "A file that must stay byte-faithful",
         description:
-          "Government forms, university submission portals, and corporate LMS platforms frequently enforce strict file size caps. Compressing before upload avoids rejection without removing pages or retyping anything.",
+          "No preset can give you that, because all three re-encode images. For an archive, a legal submission, or a print workflow where the images must be exactly as supplied, keep the original file and treat the compressed copy as a distribution version only.",
       },
       {
-        label: "Archiving generated reports",
+        label: "A document that is taking a long time",
         description:
-          "Programmatically generated PDFs — from billing systems, CRMs, or reporting tools — often carry significant structural overhead. Compressing archived copies before long-term storage reduces cumulative storage costs; choose Low to keep any embedded images close to the original.",
+          "Every image is decoded and re-encoded one at a time, so a long image-heavy document can run for a minute or more. The progress messages name the object being processed, so a slow run is working rather than stuck.",
+      },
+      {
+        label: "When this tool is the wrong choice",
+        description:
+          "The compressor reduces encoding quality but never reduces pixel dimensions. A 6000-pixel-wide scan stays 6000 pixels wide, so a very high-resolution document can remain large even on High. If you need genuine downsampling to smaller dimensions, this tool does not do that.",
       },
     ],
   },
-  privacy: {
-    heading: "Your Privacy Is Protected",
-    paragraphs: [
-      "When you compress a PDF here, the entire process runs inside your web browser. Your file is read into local memory using the browser's File API, then passed to pdf-lib — a JavaScript library that parses the full PDF object graph and re-serialises it with object streams enabled. Every step — parsing, decoding each image, re-encoding it, and exporting the result — happens within the browser's sandboxed JavaScript environment. Your document is never uploaded, and no third-party service is contacted at any point. On files containing JPEG 2000 images, the decoder for that format is loaded from this site the first time it is needed, in the same way the rest of the page loads; it carries no part of your document.",
-      "There are no server-side queues, no temporary cloud storage, and no logging of your document contents. This matters particularly for sensitive materials: a contract with personal details, a financial statement, or a confidential internal report is processed and discarded entirely within your own device. Close the browser tab and everything held in memory is released immediately.",
+  {
+    kind: "faq",
+    heading: "Compress PDF: Questions and Answers",
+    faqs: [
+      {
+        question: "What does 'object-stream compression' actually mean?",
+        answer:
+          "A PDF is a collection of individual objects — fonts, images, page dictionaries, content streams — indexed by a cross-reference table. Older PDFs store that index as plain uncompressed text. Object-stream compression, added in PDF 1.5, repacks many objects together into compressed streams and replaces the flat index with a compressed cross-reference stream. The visible content is identical; only the internal encoding changes.",
+      },
+      {
+        question: "Which images actually get recompressed?",
+        answer:
+          "Images encoded as JPEG, as PNG-style Flate streams, or as JPEG 2000 — including those whose colour space is recorded as an ICCBased profile, which is what Word, InDesign and most scanner software produce. Left alone are bitonal CCITT and JBIG2 scans, transparency masks themselves, and CMYK, indexed-palette, Separation or Lab images, none of which can be re-encoded without risking a corrupted or colour-shifted result. An image that merely has a transparency mask is still recompressed; its mask is preserved intact alongside it.",
+      },
+      {
+        question: "Does compression reduce text or image quality?",
+        answer:
+          "Text, fonts, and vector graphics are never altered by any preset; they are restructured, not re-rendered. Images are re-encoded by all three: Low at 82% quality, Medium at 75%, and High at 50%. Each discards some image data permanently, Low the least. No preset preserves images exactly, so if you need a byte-faithful copy, keep your original file.",
+      },
+      {
+        question: "What size reduction can I expect?",
+        answer:
+          "It varies too much to promise a figure. The largest reductions come from documents full of photographs, diagrams or scanned pages, because recompressing images is where most of the saving is found. Text-only documents change far less, since only the internal structure can be tightened. The panel reports the actual reduction for your specific file once it finishes, so you can decide from the real number rather than an estimate.",
+      },
+      {
+        question: "Why is it taking so long?",
+        answer:
+          "Because every eligible image is decoded, redrawn and re-encoded individually, and that work scales with how many images the document holds rather than with its page count. A text-heavy file finishes quickly; a long image-heavy one can run for a minute or more. The progress messages update as each object is processed, so you can tell a slow run from a stalled one.",
+      },
+      {
+        question: "Could the compressed file come out larger than the original?",
+        answer:
+          "Individual images are protected against this — a re-encoded image is only substituted when it is genuinely smaller than the original, otherwise the original bytes are kept. The document as a whole is re-serialised with object streams, which on an already well-optimised PDF may yield little or no gain. The panel shows both sizes, so you can simply discard the result and keep your original if it did not help.",
+      },
+      {
+        question: "Is there a file size limit?",
+        answer:
+          "The tool imposes none. What actually limits you is RAM: the whole document is parsed in memory, and each image being re-encoded occupies more of it on top. Large image-heavy documents on low-memory devices are where you would run into trouble.",
+      },
+      {
+        question: "Why does the result look different in Safari?",
+        answer:
+          "Image re-encoding uses the browser's own canvas export, and Safari does not always honour the requested JPEG quality value the way other browsers do — it may apply system graphics defaults instead. The panel shows a note about this in Safari whichever preset you choose, since all three re-encode images through the same canvas path.",
+      },
+      {
+        question: "Can I compress a password-protected PDF?",
+        answer:
+          "No. Encryption is detected as the file loads and the tool stops with a message naming the file rather than producing a broken download. This applies to any encrypted PDF, including one that opens without a password but carries permission restrictions such as print-only. Remove the password or the restrictions in your PDF software first, then compress the unprotected copy.",
+      },
+      {
+        question: "Can I compress several PDFs at once?",
+        answer:
+          "No — the tool processes one document per pass. Compress each file separately. If you have merged several PDFs into one, you can of course compress the merged document in a single operation.",
+      },
     ],
   },
-  faqs: [
-    {
-      question: "What exactly does 'object-stream compression' mean?",
-      answer:
-        "PDF files are made up of individual objects — fonts, images, page dictionaries, content streams — connected by a cross-reference (xref) table. Older PDFs store these as plain text entries in an uncompressed xref table. Object-stream compression, introduced in PDF 1.5, repacks multiple objects together into compressed streams and replaces the flat xref table with a compressed cross-reference stream. The document's visual content is unchanged; only the internal encoding structure is rewritten.",
-    },
-    {
-      question: "Does compressing a PDF reduce the quality of images or text?",
-      answer:
-        "Text, fonts, and vector graphics are never altered by any preset — those are only ever restructured, not re-rendered. Images are re-encoded by all three: Low at 82% quality, Medium (the default) at 75%, and High at 50%. Each discards some image data permanently, Low the least. No preset preserves images exactly, so if you need a byte-faithful copy, keep your original file alongside the compressed one.",
-    },
-    {
-      question: "What kind of size reduction can I expect?",
-      answer:
-        "It depends entirely on what is making the file large. Documents full of photographs, diagrams or scanned pages see the biggest reductions, because recompressing images is where most of the saving comes from. Text-only documents change far less, since only the internal structure can be tightened. The panel reports your actual before and after sizes once it finishes, so you can judge the real result rather than rely on an estimate.",
-    },
-    {
-      question: "Is there a file size limit for compression?",
-      answer:
-        "There is no hard limit imposed by the tool. The practical limit is your device's available RAM — pdf-lib loads the entire file into memory during parsing. Files under 25 MB work well on most devices without issue.",
-    },
-    {
-      question: "Can I compress password-protected PDFs?",
-      answer:
-        "If the PDF requires a password to open, the browser cannot read its contents and compression will not work. PDFs with permission-level restrictions (like print-only) may still be compressible depending on the encryption method, as the browser can still access the content.",
-    },
-    {
-      question: "Does compression work on scanned PDFs?",
-      answer:
-        "Yes, and scans are where the tool does its best work, since the images dominate the file. All three presets re-encode them: Low keeps the most detail, High produces the smallest file. The exception is fax-style bitonal scans stored as CCITT or JBIG2, which are left untouched because re-encoding them as JPEG would look worse and often produce a larger file.",
-    },
-    {
-      question: "Can I compress multiple PDFs at once?",
-      answer:
-        "Currently the tool processes one PDF at a time. For multiple files, compress each one individually. If you have recently merged several PDFs into one document, you can also compress the merged result in a single pass.",
-    },
-  ],
-  relatedTools: [
-    {
-      name: "Merge PDF",
-      href: "/merge-pdf",
-      description:
-        "After combining several documents into one, compress the merged result to keep the final file as small as possible before sharing or archiving.",
-      icon: FileStack,
-      accent: "from-blue-500 to-cyan-500",
-    },
-    {
-      name: "Split PDF",
-      href: "/split-pdf",
-      description:
-        "If only specific pages need to be shared, split the document first and then compress the individual page files you actually need to distribute.",
-      icon: Scissors,
-      accent: "from-pink-500 to-rose-500",
-    },
-    {
-      name: "Watermark PDF",
-      href: "/watermark-pdf",
-      description:
-        "Add a confidentiality stamp or copyright notice to your document before compressing — the watermark is embedded in the content before the structural re-encoding step.",
-      icon: ImageIcon,
-      accent: "from-violet-500 to-purple-500",
-    },
-  ],
-  relatedArticleSlugs: ["compress-pdf-without-losing-quality", "best-free-pdf-tools"],
-};
+  {
+    kind: "toolLinks",
+    heading: "Tools That Pair With Compression",
+    tools: [
+      {
+        name: "Merge PDF",
+        href: "/merge-pdf",
+        description:
+          "Combine documents first, then compress the merged result to keep the final file as small as possible.",
+        icon: FileStack,
+        accent: "from-blue-500 to-cyan-500",
+      },
+      {
+        name: "Split PDF",
+        href: "/split-pdf",
+        description:
+          "If only certain pages need sharing, extract them first and compress just the pages you actually send.",
+        icon: Scissors,
+        accent: "from-pink-500 to-rose-500",
+      },
+      {
+        name: "Watermark PDF",
+        href: "/watermark-pdf",
+        description:
+          "Stamp a confidentiality or copyright notice onto the document before the compression pass.",
+        icon: ImageIcon,
+        accent: "from-violet-500 to-purple-500",
+      },
+    ],
+  },
+  {
+    kind: "articleLinks",
+    heading: "More on File Size",
+    slugs: ["compress-pdf-without-losing-quality", "why-compress-pdfs-for-email"],
+  },
+];
 
-const howToSteps = contentData.howTo.steps.map((s) => ({ name: s.title, text: s.description }));
+const howToSteps = compressSteps.map((s) => ({ name: s.title, text: s.description }));
+const faqSection = sections.find((s) => s.kind === "faq");
 
 function CompressPdfPage() {
   return (
     <>
-      <ToolFAQSchema faqs={contentData.faqs} />
+      {faqSection?.kind === "faq" && <ToolFAQSchema faqs={faqSection.faqs} />}
       <HowToSchema name="How to Compress a PDF Online" steps={howToSteps} />
       <ToolPageLayout
         title="Compress PDF"
         description="Reduce PDF file size with three quality levels — entirely in your browser."
         icon={Minimize2}
         accent="from-emerald-500 to-teal-500"
-        contentSections={<ToolContentSections data={contentData} />}
+        contentSections={<ToolContentSections sections={sections} />}
       >
         <CompressPdfPanel />
       </ToolPageLayout>
