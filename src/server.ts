@@ -103,6 +103,7 @@ const SITEMAP_URLS: { loc: string; changefreq: string; priority: string }[] = [
   { loc: "https://converttpdf.com/pdf-to-jpg", changefreq: "monthly", priority: "0.9" },
   { loc: "https://converttpdf.com/jpg-to-pdf", changefreq: "monthly", priority: "0.9" },
   { loc: "https://converttpdf.com/text-to-pdf", changefreq: "monthly", priority: "0.9" },
+  { loc: "https://converttpdf.com/word-to-pdf", changefreq: "monthly", priority: "0.9" },
   { loc: "https://converttpdf.com/excel-to-pdf", changefreq: "monthly", priority: "0.9" },
   { loc: "https://converttpdf.com/rotate-pdf", changefreq: "monthly", priority: "0.9" },
   { loc: "https://converttpdf.com/watermark-pdf", changefreq: "monthly", priority: "0.9" },

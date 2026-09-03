@@ -10,6 +10,7 @@ import {
   Droplets,
   FileSpreadsheet,
   RotateCw,
+  FileType2,
   Plus,
 } from "lucide-react";
 
@@ -22,7 +23,8 @@ type ToolId =
   | "text2pdf"
   | "watermark"
   | "excel2pdf"
-  | "rotate";
+  | "rotate"
+  | "word2pdf";
 
 const TOOLS: {
   id: ToolId;
@@ -95,6 +97,14 @@ const TOOLS: {
     icon: FileSpreadsheet,
     accent: "from-green-500 to-emerald-500",
     path: "/excel-to-pdf",
+  },
+  {
+    id: "word2pdf",
+    title: "Word to PDF",
+    desc: "Convert .docx documents to PDF.",
+    icon: FileType2,
+    accent: "from-sky-500 to-blue-600",
+    path: "/word-to-pdf",
   },
   {
     id: "rotate",

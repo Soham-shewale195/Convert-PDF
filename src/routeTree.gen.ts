@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WordToPdfRouteImport } from './routes/word-to-pdf'
 import { Route as WebpToJpgRouteImport } from './routes/webp-to-jpg'
 import { Route as WatermarkPdfRouteImport } from './routes/watermark-pdf'
 import { Route as WatermarkImageRouteImport } from './routes/watermark-image'
@@ -63,6 +64,11 @@ import { Route as BlogBrowserPdfConverterPrivacyRouteImport } from './routes/blo
 import { Route as BlogBestFreePdfToolsRouteImport } from './routes/blog/best-free-pdf-tools'
 import { Route as BlogBatchImageProcessingGuideRouteImport } from './routes/blog/batch-image-processing-guide'
 
+const WordToPdfRoute = WordToPdfRouteImport.update({
+  id: '/word-to-pdf',
+  path: '/word-to-pdf',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WebpToJpgRoute = WebpToJpgRouteImport.update({
   id: '/webp-to-jpg',
   path: '/webp-to-jpg',
@@ -377,6 +383,7 @@ export interface FileRoutesByFullPath {
   '/watermark-image': typeof WatermarkImageRoute
   '/watermark-pdf': typeof WatermarkPdfRoute
   '/webp-to-jpg': typeof WebpToJpgRoute
+  '/word-to-pdf': typeof WordToPdfRoute
   '/blog/batch-image-processing-guide': typeof BlogBatchImageProcessingGuideRoute
   '/blog/best-free-pdf-tools': typeof BlogBestFreePdfToolsRoute
   '/blog/browser-pdf-converter-privacy': typeof BlogBrowserPdfConverterPrivacyRoute
@@ -432,6 +439,7 @@ export interface FileRoutesByTo {
   '/watermark-image': typeof WatermarkImageRoute
   '/watermark-pdf': typeof WatermarkPdfRoute
   '/webp-to-jpg': typeof WebpToJpgRoute
+  '/word-to-pdf': typeof WordToPdfRoute
   '/blog/batch-image-processing-guide': typeof BlogBatchImageProcessingGuideRoute
   '/blog/best-free-pdf-tools': typeof BlogBestFreePdfToolsRoute
   '/blog/browser-pdf-converter-privacy': typeof BlogBrowserPdfConverterPrivacyRoute
@@ -488,6 +496,7 @@ export interface FileRoutesById {
   '/watermark-image': typeof WatermarkImageRoute
   '/watermark-pdf': typeof WatermarkPdfRoute
   '/webp-to-jpg': typeof WebpToJpgRoute
+  '/word-to-pdf': typeof WordToPdfRoute
   '/blog/batch-image-processing-guide': typeof BlogBatchImageProcessingGuideRoute
   '/blog/best-free-pdf-tools': typeof BlogBestFreePdfToolsRoute
   '/blog/browser-pdf-converter-privacy': typeof BlogBrowserPdfConverterPrivacyRoute
@@ -545,6 +554,7 @@ export interface FileRouteTypes {
     | '/watermark-image'
     | '/watermark-pdf'
     | '/webp-to-jpg'
+    | '/word-to-pdf'
     | '/blog/batch-image-processing-guide'
     | '/blog/best-free-pdf-tools'
     | '/blog/browser-pdf-converter-privacy'
@@ -600,6 +610,7 @@ export interface FileRouteTypes {
     | '/watermark-image'
     | '/watermark-pdf'
     | '/webp-to-jpg'
+    | '/word-to-pdf'
     | '/blog/batch-image-processing-guide'
     | '/blog/best-free-pdf-tools'
     | '/blog/browser-pdf-converter-privacy'
@@ -655,6 +666,7 @@ export interface FileRouteTypes {
     | '/watermark-image'
     | '/watermark-pdf'
     | '/webp-to-jpg'
+    | '/word-to-pdf'
     | '/blog/batch-image-processing-guide'
     | '/blog/best-free-pdf-tools'
     | '/blog/browser-pdf-converter-privacy'
@@ -711,6 +723,7 @@ export interface RootRouteChildren {
   WatermarkImageRoute: typeof WatermarkImageRoute
   WatermarkPdfRoute: typeof WatermarkPdfRoute
   WebpToJpgRoute: typeof WebpToJpgRoute
+  WordToPdfRoute: typeof WordToPdfRoute
   BlogBatchImageProcessingGuideRoute: typeof BlogBatchImageProcessingGuideRoute
   BlogBestFreePdfToolsRoute: typeof BlogBestFreePdfToolsRoute
   BlogBrowserPdfConverterPrivacyRoute: typeof BlogBrowserPdfConverterPrivacyRoute
@@ -742,6 +755,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/word-to-pdf': {
+      id: '/word-to-pdf'
+      path: '/word-to-pdf'
+      fullPath: '/word-to-pdf'
+      preLoaderRoute: typeof WordToPdfRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/webp-to-jpg': {
       id: '/webp-to-jpg'
       path: '/webp-to-jpg'
@@ -1143,6 +1163,7 @@ const rootRouteChildren: RootRouteChildren = {
   WatermarkImageRoute: WatermarkImageRoute,
   WatermarkPdfRoute: WatermarkPdfRoute,
   WebpToJpgRoute: WebpToJpgRoute,
+  WordToPdfRoute: WordToPdfRoute,
   BlogBatchImageProcessingGuideRoute: BlogBatchImageProcessingGuideRoute,
   BlogBestFreePdfToolsRoute: BlogBestFreePdfToolsRoute,
   BlogBrowserPdfConverterPrivacyRoute: BlogBrowserPdfConverterPrivacyRoute,

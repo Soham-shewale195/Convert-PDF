@@ -261,7 +261,7 @@ const sections: ToolSection[] = [
   {
     kind: "articleLinks",
     heading: "Further Reading",
-    slugs: ["text-to-pdf-converter-guide", "pdf-vs-word-differences"],
+    slugs: ["text-to-pdf-converter-guide"],
   },
 ];
 

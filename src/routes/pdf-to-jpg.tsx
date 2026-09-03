@@ -272,7 +272,7 @@ const sections: ToolSection[] = [
   {
     kind: "articleLinks",
     heading: "More on Rendering PDFs",
-    slugs: ["how-to-convert-pdf-to-word", "browser-pdf-converter-privacy"],
+    slugs: ["browser-pdf-converter-privacy"],
   },
 ];
 

@@ -1,6 +1,6 @@
 export async function validateMagicNumbers(
   file: File,
-  expectedTypes: ("image" | "pdf")[],
+  expectedTypes: ("image" | "pdf" | "docx")[],
 ): Promise<boolean> {
   const slice = file.slice(0, 8);
   const buffer = await slice.arrayBuffer();
@@ -15,9 +15,13 @@ export async function validateMagicNumbers(
     jpeg: ["FFD8FF"], // JPEG
     png: ["89504E47"], // PNG
     webp: ["52494646"], // RIFF (starts at 0, WebP at 8 but checking first 4 is usually okay)
+    // .docx is an OOXML package, i.e. a ZIP. "PK\x03\x04" is a populated
+    // archive; the empty/spanned variants cannot hold a document.
+    zip: ["504B0304"],
   };
 
   const isPdf = signatures.pdf.some((sig) => hex.startsWith(sig));
+  const isDocx = signatures.zip.some((sig) => hex.startsWith(sig));
   const isImage =
     signatures.jpeg.some((sig) => hex.startsWith(sig)) ||
     signatures.png.some((sig) => hex.startsWith(sig)) ||
@@ -26,6 +30,7 @@ export async function validateMagicNumbers(
   for (const type of expectedTypes) {
     if (type === "pdf" && isPdf) return true;
     if (type === "image" && isImage) return true;
+    if (type === "docx" && isDocx) return true;
   }
 
   return false;

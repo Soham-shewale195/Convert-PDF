@@ -1,5 +1,5 @@
 import { useState, lazy, Suspense } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Toaster } from "sonner";
 import { FileText, FileType2, Sparkles } from "lucide-react";
@@ -94,12 +94,12 @@ function Index() {
             >
               <FileText className="w-4 h-4" /> Convert PDF to Word
             </button>
-            <button
-              onClick={() => scrollToConverter("word2pdf")}
+            <Link
+              to="/word-to-pdf"
               className="glass px-5 sm:px-6 py-3 sm:py-3.5 rounded-full font-medium hover:bg-white/10 transition inline-flex items-center justify-center gap-2 text-sm sm:text-base"
             >
               <FileType2 className="w-4 h-4" /> Convert Word to PDF
-            </button>
+            </Link>
           </motion.div>
 
           {/* Floating doc icons */}
