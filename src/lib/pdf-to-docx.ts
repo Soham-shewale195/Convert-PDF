@@ -199,8 +199,50 @@ function inferAlignment(lines: Line[], blockX0: number, blockX1: number): Align 
   return "left";
 }
 
-/** Splits a page's lines into paragraphs on vertical gaps. */
-function groupParagraphs(lines: Line[]): Line[][] {
+/**
+ * Enumerated-list openers: bullet glyphs, dashes, "1." / "1)" / "(1)",
+ * "a." / "b)", and the common roman numerals.
+ *
+ * A list set at ordinary line spacing is indistinguishable from a wrapped
+ * paragraph by vertical gap alone, which is exactly how four numbered lines
+ * came back merged into one run-on paragraph. Marker detection separates the
+ * two, and it is safe in that direction: text that has merely wrapped
+ * essentially never resumes with a fresh list marker.
+ *
+ * Multi-character romans are listed explicitly rather than matched as
+ * [ivxlcdm]+, which would also swallow ordinary words such as "mix." at the
+ * start of a wrapped line. Single letters are already covered by the [A-Za-z]
+ * branch, so i., v. and x. still work.
+ */
+const LIST_MARKER = new RegExp(
+  "^(?:" +
+    "[•▪‣◦·∙*]\\s+" + // • ▪ ‣ ◦ · ∙ *
+    "|[-–—]\\s+" + // - – —
+    "|\\(?\\d{1,3}[.)]\\s+" + // 1.  1)  (1)
+    "|\\(?[A-Za-z][.)]\\s+" + // a.  b)  (c)
+    "|\\(?(?:ii|iii|iv|vi|vii|viii|ix|xi|xii)[.)]\\s+" + // ii. iv) …
+    ")",
+  "i",
+);
+
+/** True when a line opens a new list item rather than continuing a paragraph. */
+function startsListItem(line: Line): boolean {
+  return LIST_MARKER.test(line.text);
+}
+
+/**
+ * Splits a page's lines into paragraphs on vertical gaps and list markers.
+ *
+ * `blockX1` is the right edge of the page's text column, which is what makes
+ * the marker rule safe. A marker prefix on its own is ambiguous: prose that
+ * wraps can legitimately resume with something like "2. appears mid-sentence".
+ * The tell is the previous line. A line that stops well short of the column
+ * edge ended deliberately, so a marker after it opens a new item; a line that
+ * ran to the edge merely wrapped, so what follows is continuation text.
+ * Runs of markers are also treated as a list, which covers the case of a long
+ * first item that happens to fill its line.
+ */
+function groupParagraphs(lines: Line[], blockX1: number): Line[][] {
   const out: Line[][] = [];
   let current: Line[] = [];
   for (let i = 0; i < lines.length; i++) {
@@ -212,8 +254,19 @@ function groupParagraphs(lines: Line[]): Line[][] {
     const prev = current[current.length - 1];
     const gap = prev.y - line.y;
     const expected = Math.max(prev.size, line.size);
-    // A gap much larger than one line, or a size change, starts a new block.
-    if (gap > expected * PARAGRAPH_GAP_RATIO || Math.abs(prev.size - line.size) > 1.5) {
+
+    const prevEndedShort = blockX1 - prev.x1 > Math.max(prev.size * 2, EDGE_TOLERANCE * 2);
+    const inMarkerRun =
+      startsListItem(prev) || (i + 1 < lines.length && startsListItem(lines[i + 1]));
+    const opensListItem = startsListItem(line) && (prevEndedShort || inMarkerRun);
+
+    // A gap much larger than one line, a size change, or a genuine list marker
+    // all start a new block.
+    if (
+      gap > expected * PARAGRAPH_GAP_RATIO ||
+      Math.abs(prev.size - line.size) > 1.5 ||
+      opensListItem
+    ) {
       out.push(current);
       current = [line];
     } else {
@@ -241,6 +294,12 @@ type BandHit = { page: number; y: number; text: string; line: Line };
  * every page's body.
  */
 function findRepeating(hits: BandHit[], pageCount: number): Set<string> {
+  // Repetition cannot be established from a single page: on a one-page document
+  // every band line trivially appears on "100% of pages", which promoted the
+  // first line of ordinary body text into a Word header and cut it out of the
+  // document. Two pages are the minimum evidence for a running header.
+  if (pageCount < 2) return new Set();
+
   const bySig = new Map<string, BandHit[]>();
   for (const h of hits) {
     const sig = signature(h.text);
@@ -396,7 +455,7 @@ export async function convertPdfToDocx(
       const blockX0 = Math.min(...body.map((l) => l.x0));
       const blockX1 = Math.max(...body.map((l) => l.x1));
 
-      for (const para of groupParagraphs(body)) {
+      for (const para of groupParagraphs(body, blockX1)) {
         const align = inferAlignment(para, blockX0, blockX1);
         const runs: InstanceType<typeof TextRun>[] = [];
 
