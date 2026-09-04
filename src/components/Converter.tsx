@@ -15,8 +15,30 @@ import { toast } from "sonner";
 import { useRewardedDownload } from "@/hooks/monetization/useRewardedDownload";
 import { validateMagicNumbers } from "@/utils/validation";
 
-export type Mode = "pdf2word" | "word2pdf";
+/**
+ * Only PDF to Word runs inline on the homepage. Word to PDF moved to its own
+ * page at /word-to-pdf, which offers a Fast/Faithful choice this switcher
+ * cannot express, so the inline word2pdf path was removed rather than left
+ * unreachable behind a link.
+ */
+export type Mode = "pdf2word";
 type Status = "idle" | "ready" | "converting" | "done";
+
+/** How PDF to Word should treat the source: rebuild it, or capture it. */
+type PdfMode = "fast" | "faithful";
+
+const PDF_MODES: { id: PdfMode; name: string; desc: string }[] = [
+  {
+    id: "fast",
+    name: "Fast — editable text",
+    desc: "Rebuilds your document as clean, selectable text. Smaller file, searchable — but colours, tables and exact layout aren't kept.",
+  },
+  {
+    id: "faithful",
+    name: "Faithful — visual match",
+    desc: "Matches your PDF's colours, images, tables and layout exactly — each page is captured as it appears. Trade-off: the text isn't selectable, editable, or searchable, and the file is larger.",
+  },
+];
 
 const MAX_SIZE = 25 * 1024 * 1024; // 25 MB
 
@@ -32,12 +54,10 @@ export default function Converter({ mode, setMode }: ConverterProps) {
   const { prepareDownload, renderStatusCard, renderModal } = useRewardedDownload();
   const [resultName, setResultName] = useState<string>("");
   const [dragOver, setDragOver] = useState(false);
+  const [pdfMode, setPdfMode] = useState<PdfMode>("fast");
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const accept =
-    mode === "pdf2word"
-      ? ".pdf,application/pdf"
-      : ".docx,application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+  const accept = ".pdf,application/pdf";
 
   const reset = () => {
     setFile(null);
@@ -53,22 +73,14 @@ export default function Converter({ mode, setMode }: ConverterProps) {
       return false;
     }
 
-    if (mode === "pdf2word") {
-      const isPdf = await validateMagicNumbers(f, ["pdf"]);
-      if (!isPdf) {
-        toast.error("Invalid file signature. File does not appear to be a real PDF.");
-        return false;
-      }
-    }
-
-    const isPdf = f.type === "application/pdf" || f.name.toLowerCase().endsWith(".pdf");
-    const isDocx = f.name.toLowerCase().endsWith(".docx");
-    if (mode === "pdf2word" && !isPdf) {
-      toast.error("Please upload a PDF file");
+    // Check the bytes, not the name, so a renamed file is refused up front.
+    if (!(await validateMagicNumbers(f, ["pdf"]))) {
+      toast.error("Invalid file signature. File does not appear to be a real PDF.");
       return false;
     }
-    if (mode === "word2pdf" && !isDocx) {
-      toast.error("Please upload a .docx file");
+
+    if (!(f.type === "application/pdf" || f.name.toLowerCase().endsWith(".pdf"))) {
+      toast.error("Please upload a PDF file");
       return false;
     }
     return true;
@@ -97,51 +109,21 @@ export default function Converter({ mode, setMode }: ConverterProps) {
     setProgress(5);
 
     try {
-      if (mode === "pdf2word") {
-        const { convertPdfToDocx } = await import("@/lib/pdf-to-docx");
-        const { blob } = await convertPdfToDocx(await file.arrayBuffer(), (pct) =>
-          setProgress(pct),
-        );
-        const name = file.name.replace(/\.pdf$/i, "") + ".docx";
-        setResultName(name);
-        await prepareDownload(blob, name);
-      } else {
-        const buf = await file.arrayBuffer();
-        setProgress(25);
-        const mammoth: any = await import("mammoth");
-        const { value: text } = await mammoth.extractRawText({ arrayBuffer: buf });
-        setProgress(55);
-        const { jsPDF } = await import("jspdf");
-        const pdf = new jsPDF({ unit: "pt", format: "a4" });
-        const margin = 48;
-        const pageW = pdf.internal.pageSize.getWidth();
-        const pageH = pdf.internal.pageSize.getHeight();
-        const maxW = pageW - margin * 2;
-        pdf.setFont("helvetica", "normal");
-        pdf.setFontSize(11);
-
-        const paragraphs = text.split(/\n+/);
-        let y = margin;
-        const lineH = 16;
-        for (const p of paragraphs) {
-          const wrapped = pdf.splitTextToSize(p || " ", maxW);
-          for (const line of wrapped) {
-            if (y + lineH > pageH - margin) {
-              pdf.addPage();
-              y = margin;
-            }
-            pdf.text(line, margin, y);
-            y += lineH;
-          }
-          y += 6;
-        }
-        setProgress(90);
-        const rawBlob = pdf.output("blob");
-        const blob = new Blob([rawBlob], { type: "application/pdf" });
-        const name = file.name.replace(/\.docx$/i, "") + ".pdf";
-        setResultName(name);
-        await prepareDownload(blob, name);
-      }
+      const buffer = await file.arrayBuffer();
+      const name = file.name.replace(/\.pdf$/i, "") + ".docx";
+      // Two genuinely different pipelines: Fast reconstructs the text,
+      // Faithful captures each page as an image. Each is loaded only when
+      // chosen, so neither weighs on the other.
+      const { blob } =
+        pdfMode === "faithful"
+          ? await (
+              await import("@/lib/pdf-to-docx-faithful")
+            ).convertPdfToDocxFaithful(buffer, (pct) => setProgress(pct))
+          : await (
+              await import("@/lib/pdf-to-docx")
+            ).convertPdfToDocx(buffer, (pct) => setProgress(pct));
+      setResultName(name);
+      await prepareDownload(blob, name);
 
       setProgress(100);
       setStatus("done");
@@ -165,7 +147,7 @@ export default function Converter({ mode, setMode }: ConverterProps) {
                 setMode("pdf2word");
                 reset();
               }}
-              className={`flex-1 sm:flex-none px-4 sm:px-5 py-2 rounded-full text-sm font-medium transition-all ${mode === "pdf2word" ? "btn-gradient" : "text-muted-foreground hover:text-foreground"}`}
+              className={`flex-1 sm:flex-none px-4 sm:px-5 py-2 rounded-full text-sm font-medium transition-all btn-gradient`}
             >
               PDF → Word
             </button>
@@ -222,7 +204,7 @@ export default function Converter({ mode, setMode }: ConverterProps) {
                 <Upload className="w-7 h-7 sm:w-9 sm:h-9" />
               </motion.div>
               <h3 className="text-lg sm:text-xl lg:text-2xl font-semibold mb-2 group-hover:text-primary transition-colors duration-300">
-                Drop your {mode === "pdf2word" ? "PDF" : "Word"} file here
+                Drop your PDF file here
               </h3>
               <p className="text-sm sm:text-base text-muted-foreground mb-4 sm:mb-6">
                 or click to browse · max 25 MB
@@ -274,6 +256,37 @@ export default function Converter({ mode, setMode }: ConverterProps) {
                   <p className="text-xs text-muted-foreground flex items-center gap-2">
                     <Loader2 className="w-3 h-3 animate-spin" /> Converting… {progress}%
                   </p>
+                </div>
+              )}
+
+              {status === "ready" && (
+                <div className="space-y-3">
+                  <label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground block">
+                    Conversion Mode
+                  </label>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {PDF_MODES.map((m) => {
+                      const isSelected = pdfMode === m.id;
+                      return (
+                        <button
+                          key={m.id}
+                          type="button"
+                          aria-pressed={isSelected}
+                          onClick={() => setPdfMode(m.id)}
+                          className={`p-3.5 rounded-xl border text-left transition-all duration-200 flex flex-col justify-between ${
+                            isSelected
+                              ? "border-primary bg-primary/10 shadow-[0_0_15px_rgba(139,92,246,0.15)] ring-1 ring-primary"
+                              : "border-white/10 hover:border-white/20 bg-white/[0.02] hover:bg-white/[0.04]"
+                          }`}
+                        >
+                          <span className="font-semibold text-sm mb-1">{m.name}</span>
+                          <span className="text-xs text-muted-foreground leading-relaxed">
+                            {m.desc}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
               )}
 
