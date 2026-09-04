@@ -1,4 +1,5 @@
 import { useCallback, useRef, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Upload,
@@ -168,15 +169,14 @@ export default function Converter({ mode, setMode }: ConverterProps) {
             >
               PDF → Word
             </button>
-            <button
-              onClick={() => {
-                setMode("word2pdf");
-                reset();
-              }}
-              className={`flex-1 sm:flex-none px-4 sm:px-5 py-2 rounded-full text-sm font-medium transition-all ${mode === "word2pdf" ? "btn-gradient" : "text-muted-foreground hover:text-foreground"}`}
+            {/* Word to PDF is a dedicated page rather than an inline mode: it
+                offers a Fast/Faithful choice that does not fit this switcher. */}
+            <Link
+              to="/word-to-pdf"
+              className="flex-1 sm:flex-none px-4 sm:px-5 py-2 rounded-full text-sm font-medium transition-all text-center text-muted-foreground hover:text-foreground"
             >
               Word → PDF
-            </button>
+            </Link>
           </div>
           <p className="text-xs text-muted-foreground text-center sm:text-right">
             100% private · runs in your browser
