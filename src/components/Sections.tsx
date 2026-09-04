@@ -28,7 +28,7 @@ export function Features() {
     {
       icon: Sparkles,
       title: "High Quality",
-      desc: "Preserves text layout and structure across pages.",
+      desc: "Keeps fonts, sizes, alignment and page breaks.",
     },
     {
       icon: Smartphone,

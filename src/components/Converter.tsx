@@ -97,56 +97,10 @@ export default function Converter({ mode, setMode }: ConverterProps) {
 
     try {
       if (mode === "pdf2word") {
-        const buf = await file.arrayBuffer();
-        setProgress(20);
-        const pdfjs: any = await import("pdfjs-dist");
-        // worker via CDN to avoid bundler config
-        pdfjs.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
-        const pdf = await pdfjs.getDocument({ data: buf }).promise;
-
-        if (pdf.numPages > 100) {
-          throw new Error("PDF exceeds the 100-page limit for Word conversion.");
-        }
-
-        setProgress(35);
-        const { Document, Packer, Paragraph, TextRun, HeadingLevel } = await import("docx");
-
-        const children: any[] = [];
-        for (let i = 1; i <= pdf.numPages; i++) {
-          const page = await pdf.getPage(i);
-          const content = await page.getTextContent();
-          // Group items by y to reconstruct lines
-          const lines: Record<string, string[]> = {};
-          for (const item of content.items as any[]) {
-            const y = Math.round(item.transform[5]);
-            (lines[y] ||= []).push(item.str);
-          }
-          const keys = Object.keys(lines)
-            .map(Number)
-            .sort((a, b) => b - a);
-
-          children.push(
-            new Paragraph({
-              heading: HeadingLevel.HEADING_2,
-              children: [new TextRun({ text: `Page ${i}`, bold: true })],
-              spacing: { before: 200, after: 120 },
-            }),
-          );
-          for (const k of keys) {
-            const text = lines[k].join(" ").trim();
-            if (text) children.push(new Paragraph({ children: [new TextRun(text)] }));
-          }
-          setProgress(35 + Math.round((i / pdf.numPages) * 50));
-
-          // Yield execution to the main thread to prevent UI freezing
-          await new Promise((r) => setTimeout(r, 0));
-        }
-
-        const doc = new Document({ sections: [{ children }] });
-        const rawBlob = await Packer.toBlob(doc);
-        const blob = new Blob([rawBlob], {
-          type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-        });
+        const { convertPdfToDocx } = await import("@/lib/pdf-to-docx");
+        const { blob } = await convertPdfToDocx(await file.arrayBuffer(), (pct) =>
+          setProgress(pct),
+        );
         const name = file.name.replace(/\.pdf$/i, "") + ".docx";
         setResultName(name);
         await prepareDownload(blob, name);
