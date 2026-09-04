@@ -12,13 +12,13 @@ export const Route = createFileRoute("/word-to-pdf")({
       {
         name: "description",
         content:
-          "Turn a .docx into a PDF in your browser. Headings, bold, lists, tables, images and links come across; original fonts and page setup do not.",
+          "Convert a .docx to PDF in your browser, two ways: rebuild it as clean searchable text, or keep your document's own fonts, colours and page layout.",
       },
       { property: "og:title", content: "Word to PDF Converter Online Free | ConvertPDF" },
       {
         property: "og:description",
         content:
-          "Turn a .docx into a PDF in your browser. Headings, bold, lists, tables, images and links come across; original fonts and page setup do not.",
+          "Convert a .docx to PDF in your browser, two ways: rebuild it as clean searchable text, or keep your document's own fonts, colours and page layout.",
       },
     ],
     links: [{ rel: "canonical", href: "https://converttpdf.com/word-to-pdf" }],
@@ -35,23 +35,23 @@ const convertSteps = [
   {
     title: "Convert",
     description:
-      'Click "Convert to PDF". The document\'s structure is read first — headings, emphasis, lists, tables, images and links — and then redrawn onto A4 pages. Nothing is uploaded; the whole conversion runs in this tab.',
+      'Pick a mode, then click "Convert to PDF". Fast reads the document\'s structure — headings, emphasis, lists, tables, images and links — and redraws it as text on A4 pages. Faithful lays the document out with its own fonts and page setup and captures each page as it appears. Nothing is uploaded either way; the whole conversion runs in this tab.',
   },
   {
     title: "Download, and check the summary",
     description:
-      "The finished PDF downloads under your original filename with a .pdf extension. A short message reports how many tables and images were carried across, and says so explicitly if an image could not be embedded rather than leaving you to spot the gap.",
+      "The finished PDF downloads under your original filename with a .pdf extension. A short message afterwards says what actually happened — how many tables and images Fast carried across, or how many pages Faithful rendered, and whether any font had to be substituted — rather than leaving you to spot it yourself.",
   },
 ];
 
 const sections: ToolSection[] = [
   {
     kind: "callout",
-    heading: "A Rebuild, Not a Photocopy",
+    heading: "Two Modes, Opposite Trade-Offs",
     tone: "warn",
     paragraphs: [
-      "This converter reads your document's structure and redraws it as a PDF. It is not a rendering engine like Word's own Save as PDF, so the result will not be pixel-identical to what you see in Word. What it does keep is the things that carry meaning: heading levels, bold and italic, list markers and numbering, table rows and columns, images, and working hyperlinks.",
-      "What it does not keep is the visual identity: your original fonts, text colours and sizes, alignment, page headers and footers, and the exact page breaks. Everything is set in one typeface on a clean A4 page. If the document must look precisely as it does in Word — a branded template, a legal filing with fixed pagination — export it from Word itself. The table below is a complete account of both sides.",
+      "No single conversion can be both fully editable and visually exact, because the two goals pull against each other. A PDF whose text you can select and search has to be rebuilt from the document's structure, and rebuilding means making fresh layout decisions. A PDF that looks like your document has to preserve those decisions, which means capturing the page as it appears rather than re-typesetting it. This tool offers both and asks you to choose.",
+      "Fast reads the structure and redraws it as real text: heading levels, bold and italic, list markers and numbering, table rows and columns, images, and working hyperlinks all survive, but the visual design does not — everything is set in one typeface on a clean A4 page. Faithful renders the document as laid out and places each finished page into the PDF: fonts, colours, sizes, alignment, headers, footers and page breaks come through, at the cost that each page is an image, so its text cannot be selected or searched. Faithful is a close match rather than a reproduction — it is not Word's own rendering engine, so small differences remain, and the table below lists them. Pick Fast when the words matter and someone may need to search or copy them; pick Faithful when the document has to look right.",
     ],
   },
   {
@@ -60,7 +60,8 @@ const sections: ToolSection[] = [
     paragraphs: [
       "A .docx is not really a document in the way it appears on screen. It is a ZIP package holding XML that describes content and intent — this run is bold, this paragraph is a level-two heading, these cells form a table — plus the images. How that turns into a page is decided at display time by whichever program opens it, which is why a document can reflow when it moves between machines, or between Word and Google Docs.",
       "A PDF is the opposite. It records finished pages: this glyph at this coordinate, this rule at that one. Converting is therefore not a repackaging but a rebuild — something has to make the layout decisions that Word would otherwise make live, and here that something is this page.",
-      "The conversion runs in two stages. First the .docx is parsed into a structural description of the document. Then that structure is drawn onto A4 pages: headings become progressively smaller bold lines, bold and italic runs keep their emphasis mid-sentence, list items get bullets or numbers, tables are drawn as real bordered grids, and images are embedded where their format allows. Body text is set in Helvetica at 11 points with 48-point margins, and pages break automatically as the content fills them.",
+      "Fast runs that rebuild in two stages. The .docx is parsed into a structural description of the document, and that structure is then drawn onto A4 pages: headings become progressively smaller bold lines, bold and italic runs keep their emphasis mid-sentence, list items get bullets or numbers, tables are drawn as real bordered grids, and images are embedded where their format allows. Body text is set in Helvetica at 11 points with 48-point margins, and pages break as the content fills them. Those numbers are Fast's own, not your document's.",
+      "Faithful works the other way around. The document is laid out with its own styling — its fonts, its spacing, its table widths, its section and page breaks — and each resulting page is captured and placed into the PDF at the page size the document itself specifies. There are no fixed margins or type sizes to quote here, because none are imposed: whatever the document asks for is what gets drawn.",
     ],
   },
   {
@@ -69,77 +70,112 @@ const sections: ToolSection[] = [
     steps: convertSteps,
   },
   {
-    kind: "specTable",
+    kind: "matrix",
     heading: "What Survives, and What Does Not",
     intro:
-      "This is the honest, complete account — verified by converting a document containing every one of these features and inspecting the resulting PDF, not inferred from the library's documentation:",
-    columns: ["Feature in your .docx", "What happens"],
+      "The two modes fail in opposite directions, so the honest answer depends on which you pick. Everything below was checked by converting a document containing each of these features and comparing the result against the same file exported from Word itself — not inferred from documentation:",
+    columnHeadings: ["Fast", "Faithful"],
     rows: [
       {
-        label: "Headings",
-        value: "Kept. Heading levels 1 to 6 become progressively smaller bold lines.",
-        note: "The hierarchy survives, but not Word's heading fonts or colours.",
+        label: "Selectable, searchable text",
+        cells: [
+          "Yes. The output is real text you can copy, search and edit.",
+          "No. Each page is an image of the page, so text cannot be selected or searched.",
+        ],
+      },
+      {
+        label: "Original fonts",
+        cells: [
+          "Not kept. Everything is set in one typeface.",
+          "Kept when the document embeds the font, or when your device already has it. Anything else falls back to the closest match your device can offer.",
+        ],
+      },
+      {
+        label: "Text colour",
+        cells: ["Not kept. Everything comes out black.", "Kept."],
+      },
+      {
+        label: "Text size",
+        cells: [
+          "Heading levels keep a size hierarchy, but body text is one fixed size.",
+          "Kept, at the sizes the document sets.",
+        ],
       },
       {
         label: "Bold and italic",
-        value: "Kept, including where the emphasis changes partway through a sentence.",
+        cells: ["Kept, including mid-sentence.", "Kept."],
       },
       {
         label: "Underline and strikethrough",
-        value: "Lost. The words remain but render as ordinary text.",
+        cells: ["Lost. The words remain as ordinary text.", "Kept."],
       },
       {
-        label: "Bulleted and numbered lists",
-        value:
-          "Kept. Bullets are drawn as •, numbered items are renumbered from 1, and nested lists are indented a further level.",
+        label: "Alignment",
+        cells: [
+          "Lost. Everything is drawn left-aligned.",
+          "Kept, including centred, right-aligned and justified text.",
+        ],
+      },
+      {
+        label: "Headings",
+        cells: [
+          "The hierarchy survives, but not Word's heading fonts or colours.",
+          "Kept as laid out. A heading styled through the document's theme font may render in a different typeface of similar character.",
+        ],
+      },
+      {
+        label: "Lists",
+        cells: [
+          "Kept. Bullets are drawn as •, numbered items renumbered from 1.",
+          "Kept as laid out.",
+        ],
       },
       {
         label: "Tables",
-        value:
-          "Kept as a real bordered grid, so rows and columns stay aligned and the data remains readable.",
-        note: "Columns are divided evenly rather than at Word's widths. Cells merged across columns are honoured; cells merged down rows are not.",
+        cells: [
+          "Kept as a bordered grid with evenly divided columns. Cells merged across columns are honoured; cells merged down rows are not.",
+          "Kept as laid out, including merged cells, shading and column widths.",
+        ],
       },
       {
         label: "Images",
-        value: "Embedded when they are PNG or JPEG, which covers almost everything Word produces.",
-        note: "Any image in another format is left out, and the tool tells you how many were skipped.",
+        cells: ["Embedded when they are PNG or JPEG.", "Kept as laid out."],
       },
       {
         label: "Hyperlinks",
-        value:
-          "Kept and clickable. The destination URL is carried into the PDF, not just the link text.",
-      },
-      {
-        label: "Text alignment",
-        value: "Lost. Centred and right-aligned text is drawn left-aligned.",
-      },
-      {
-        label: "Fonts, text colour and text size",
-        value: "Not carried over. Body text is Helvetica at 11 points throughout.",
-      },
-      {
-        label: "Page setup",
-        value:
-          "Replaced. Output is A4 portrait with 48-point margins, and pages break where the content runs out of room.",
+        cells: [
+          "Kept and clickable — the destination travels into the PDF.",
+          "Visible, but not clickable. A page image carries no links.",
+        ],
       },
       {
         label: "Headers, footers and page numbers",
-        value: "Not carried over.",
+        cells: ["Not carried over.", "Kept, with page numbers filled in for each page."],
       },
       {
-        label: "Footnotes, comments, text boxes and multi-column layouts",
-        value: "Not reproduced.",
+        label: "Page size and page breaks",
+        cells: [
+          "Replaced with A4 and fixed margins; pages break where content runs out of room.",
+          "Your document's own page size, and breaks where Word puts them.",
+        ],
       },
       {
-        label: "Accented Latin text",
-        value:
-          "Kept. Characters such as café, naïve and Müller come through correctly, as do en and em dashes.",
+        label: "Line spacing",
+        cells: [
+          "Fixed, and unrelated to the document's own.",
+          "Very close to the original, though occasionally a shade looser.",
+        ],
       },
       {
         label: "Non-Latin scripts",
-        value:
-          "Not supported. Cyrillic, Greek, Arabic, Hebrew and CJK have no glyphs in the built-in font and render as unreadable characters.",
-        note: "If your document uses those scripts, export from Word instead — see the FAQ below.",
+        cells: [
+          "Not supported. Cyrillic, Greek, Arabic and CJK come out as unreadable characters.",
+          "Rendered correctly, provided your device has a font for the script.",
+        ],
+      },
+      {
+        label: "File size",
+        cells: ["Smaller.", "Larger, because every page carries a full-resolution image."],
       },
     ],
   },
@@ -243,7 +279,7 @@ const sections: ToolSection[] = [
       {
         question: "Will the PDF look exactly like my Word document?",
         answer:
-          "No, and it is better to know that up front. The converter rebuilds your document rather than photographing it: heading levels, bold and italic, list markers, table structure, images and hyperlinks are preserved, but your original fonts, colours, alignment, headers and footers are not. Everything is set in one typeface on a clean A4 page. When appearance matters more than content, use Word's own Save as PDF.",
+          "That depends on the mode, and neither answer is an unqualified yes. Fast rebuilds the document rather than photographing it: heading levels, bold and italic, list markers, table structure, images and hyperlinks are preserved, but your original fonts, colours, alignment, headers and footers are not, and everything is set in one typeface on a clean A4 page. Faithful comes close — fonts, colours, sizes, alignment, headers, footers and page breaks all come through — but it is not Word's own rendering engine, so expect small residual differences such as slightly looser line spacing, and a heading styled through the document's theme font may resolve to a different typeface of similar character. Faithful's text is also part of a page image, so it cannot be selected or searched.",
       },
       {
         question: "Do tables survive the conversion?",
@@ -263,7 +299,7 @@ const sections: ToolSection[] = [
       {
         question: "Does it work with languages other than English?",
         answer:
-          "Only for languages written in the Latin alphabet. Accented characters such as é, ï, ç and ü come through correctly, along with en dashes, em dashes and typographic quotes. Cyrillic, Greek, Arabic, Hebrew, Chinese, Japanese and Korean do not: the built-in PDF font has no glyphs for them, so that text arrives unreadable. For documents in those scripts, export from Word, which embeds the fonts your document actually uses.",
+          "In Faithful mode, yes. Cyrillic, Greek, Arabic, Hebrew, Chinese, Japanese and Korean all render correctly, because the page is drawn with real fonts before it is captured — the only requirement is that your device has a font covering that script. Fast is Latin-only: accented characters such as é, ï, ç and ü come through, along with en dashes, em dashes and typographic quotes, but the built-in PDF font has no glyphs for non-Latin scripts, so that text arrives unreadable. For a document in one of those scripts, use Faithful, or export from Word.",
       },
       {
         question: "Are my hyperlinks still clickable?",
@@ -331,7 +367,7 @@ function WordToPdfPage() {
       <HowToSchema name="How to Convert Word to PDF Online" steps={howToSteps} />
       <ToolPageLayout
         title="Word to PDF"
-        description="Convert a .docx into a PDF — structure, tables and images kept, original styling not."
+        description="Convert a .docx into a PDF — as searchable text, or as a close visual match. Two modes, opposite trade-offs."
         icon={FileType2}
         accent="from-sky-500 to-blue-600"
         contentSections={<ToolContentSections sections={sections} />}
