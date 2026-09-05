@@ -149,7 +149,7 @@ function Contact() {
           </Link>
         </li>
         <li>
-          <a href="/#pdf-tools" className="text-primary hover:underline">
+          <a href="/#tools" className="text-primary hover:underline">
             Explore PDF Tools
           </a>
         </li>

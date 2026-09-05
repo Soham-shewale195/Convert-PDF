@@ -33,17 +33,20 @@ function AboutUs() {
           <p className="mb-4">
             ConvertPDF is a modern, privacy-first document utility platform designed to solve an
             everyday problem: processing PDF files and images safely and efficiently without
-            compromising data security. Our purpose is to provide users with a complete suite of
-            professional-grade conversion and editing tools that run entirely inside their web
-            browser.
+            compromising data security. We provide a complete suite of professional-grade conversion
+            and editing tools that run entirely inside your web browser.
           </p>
           <p>
             Unlike traditional cloud-based solutions that require you to upload your files to remote
-            servers, ConvertPDF brings the processing power directly to your device. We believe that
-            whether you are manipulating a personal tax return, a confidential legal contract, or
-            simply cropping a photograph, you should not be forced to hand over your data to a third
-            party. Our privacy-first architecture guarantees that your files never leave your
-            device, offering unparalleled security and peace of mind.
+            servers, ConvertPDF brings the processing power directly to your device. There's no
+            account to create and no personal information to hand over — just open a tool and use
+            it. Whether you are converting a PDF to an editable Word document, merging sensitive
+            contracts, or cropping a photo, your files never leave your device. For the reasoning
+            behind that choice and the commitments it comes with, see our{" "}
+            <Link to="/mission" className="text-primary hover:underline">
+              Mission
+            </Link>{" "}
+            page.
           </p>
         </section>
 
@@ -72,37 +75,6 @@ function AboutUs() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-semibold mb-4 text-foreground">Why Trust ConvertPDF</h2>
-          <p className="mb-4">
-            Trust is earned through transparency and verifiable technology. We do not ask you to
-            trust a privacy policy detailing how we handle your data on our servers; instead, we
-            have designed a system where we never receive your data in the first place.
-          </p>
-          <ul className="list-disc pl-6 space-y-2 mb-4">
-            <li>
-              <strong>Files stay inside the browser:</strong> All modifications, compressions, and
-              conversions happen in your device's memory.
-            </li>
-            <li>
-              <strong>No server uploads:</strong> There is no backend server infrastructure
-              receiving, processing, or temporarily storing your files.
-            </li>
-            <li>
-              <strong>No account required:</strong> We do not ask for your email address, name, or
-              payment details. You can use the tools anonymously.
-            </li>
-            <li>
-              <strong>Modern browser technology:</strong> We use native Web APIs that sandbox the
-              execution securely within your browser environment.
-            </li>
-            <li>
-              <strong>Privacy-first architecture:</strong> The entire application is engineered from
-              the ground up to guarantee local execution.
-            </li>
-          </ul>
-        </section>
-
-        <section>
           <h2 className="text-2xl font-semibold mb-4 text-foreground">Who Should Use ConvertPDF</h2>
           <p className="mb-4">
             Our tools are designed to be accessible to anyone handling digital documents, regardless
@@ -119,11 +91,16 @@ function AboutUs() {
             </li>
             <li>
               <strong>Teachers:</strong> Extract specific chapters from textbooks to share with
-              classes, or annotate worksheets before distributing them.
+              classes, or convert scanned handouts to editable Word files with{" "}
+              <Link to="/word-to-pdf" className="text-primary hover:underline">
+                PDF ↔ Word
+              </Link>{" "}
+              conversion.
             </li>
             <li>
               <strong>Office Workers:</strong> Rotate scanned documents that were uploaded upside
-              down, or quickly reformat reports for management without risking company data.
+              down, turn a PDF report back into an editable Word document, or reformat files for
+              management without risking company data.
             </li>
             <li>
               <strong>Businesses:</strong> Protect sensitive financial statements, client contracts,
@@ -154,29 +131,30 @@ function AboutUs() {
           </p>
           <ul className="list-disc pl-6 space-y-2 mb-4">
             <li>
-              <strong>React:</strong> The user interface is built using React, a popular JavaScript
-              library that ensures a fast, responsive, and intuitive experience as you navigate
-              between tools.
+              <strong>React and TypeScript:</strong> The interface is built with React for a fast,
+              responsive experience, and the codebase is written in TypeScript to catch errors early
+              and keep the application stable during heavy document processing.
             </li>
             <li>
-              <strong>TypeScript:</strong> The codebase is written in TypeScript to catch errors
-              early and ensure the application remains stable and reliable during heavy document
-              processing.
+              <strong>pdf-lib and pdf.js:</strong> For PDF manipulation — merging, splitting,
+              rotating, watermarking — we rely on <code>pdf-lib</code>, which reads, modifies, and
+              saves PDF documents entirely within the browser's memory. Rendering and text
+              extraction, including our PDF ↔ Word tools, use Mozilla's <code>pdf.js</code>.
             </li>
             <li>
-              <strong>pdf-lib:</strong> For PDF manipulation (such as merging, splitting, and
-              rotating), we rely on <code>pdf-lib</code>. This powerful JavaScript library reads,
-              modifies, and saves PDF documents entirely within the browser's memory.
+              <strong>mammoth and docx:</strong> Converting between Word and PDF uses{" "}
+              <code>mammoth</code> to read .docx content and the <code>docx</code> library to
+              generate Word-compatible output, all in-browser.
             </li>
             <li>
-              <strong>HTML5 Canvas API:</strong> Our image compression, resizing, cropping, and
-              format conversion tools utilise the browser's native Canvas API. This allows for rapid
-              pixel-level manipulation without needing external libraries or server rendering.
+              <strong>HTML5 Canvas API:</strong> Our image compression, resizing, cropping, format
+              conversion, and page-rendering tools use the browser's native Canvas API for
+              pixel-level manipulation without external libraries or server rendering.
             </li>
             <li>
-              <strong>Client-Side Processing:</strong> By utilizing modern Browser APIs (such as the
-              File API and Web Workers), we read the binary data of your files locally, process them
-              using your device's CPU, and trigger a local download once finished.
+              <strong>Client-side file handling:</strong> We read the binary data of your files
+              locally using standard Browser and File APIs, process them using your device's CPU,
+              and trigger a local download once finished — no data is transmitted anywhere.
             </li>
           </ul>
         </section>
@@ -202,36 +180,9 @@ function AboutUs() {
         </section>
 
         <section>
-          <h2 className="text-2xl font-semibold mb-4 text-foreground">Our Values</h2>
-          <p className="mb-4">Everything we build is guided by five core principles:</p>
-          <ul className="list-disc pl-6 space-y-2 mb-4">
-            <li>
-              <strong>Privacy:</strong> Your data is your own. We build tools that do not require
-              you to surrender control of your documents.
-            </li>
-            <li>
-              <strong>Simplicity:</strong> We design clean, straightforward interfaces that do
-              exactly what you need without unnecessary complexity.
-            </li>
-            <li>
-              <strong>Accessibility:</strong> High-quality tools should be free and available to
-              anyone with a modern web browser.
-            </li>
-            <li>
-              <strong>Performance:</strong> By processing locally, we eliminate upload times,
-              resulting in instantaneous conversions limited only by your device's hardware.
-            </li>
-            <li>
-              <strong>Transparency:</strong> We are honest about how our tools work, what
-              technologies we use, and how we fund the project.
-            </li>
-          </ul>
-        </section>
-
-        <section>
           <h2 className="text-2xl font-semibold mb-4 text-foreground">Learn More</h2>
           <p>
-            To understand more about our overarching goals, read our{" "}
+            To understand the values and commitments behind these tools, read our{" "}
             <Link to="/mission" className="text-primary hover:underline">
               Mission
             </Link>{" "}
@@ -247,10 +198,14 @@ function AboutUs() {
           </p>
           <p className="mt-4">
             You can also try our most popular tools like{" "}
+            <Link to="/word-to-pdf" className="text-primary hover:underline">
+              Word to PDF
+            </Link>
+            ,{" "}
             <Link to="/compress-pdf" className="text-primary hover:underline">
               Compress PDF
-            </Link>{" "}
-            and{" "}
+            </Link>
+            , and{" "}
             <Link to="/merge-pdf" className="text-primary hover:underline">
               Merge PDF
             </Link>

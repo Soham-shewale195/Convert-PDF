@@ -61,9 +61,7 @@ function Mission() {
 
         <section>
           <h2 className="text-2xl font-semibold mb-4 text-foreground">Our Commitment</h2>
-          <p className="mb-4">
-            To achieve our mission, we have made four core commitments to our users:
-          </p>
+          <p className="mb-4">To achieve our mission, we hold ourselves to six core commitments:</p>
           <ul className="list-disc pl-6 space-y-2 mb-4">
             <li>
               <strong>Privacy by Default:</strong> We commit to maintaining a zero-upload
@@ -71,39 +69,29 @@ function Mission() {
               to our servers.
             </li>
             <li>
+              <strong>Simplicity:</strong> We commit to clean, straightforward interfaces that do
+              exactly what you need, without unnecessary complexity or a learning curve.
+            </li>
+            <li>
               <strong>Accessibility:</strong> We commit to designing user interfaces that are clean,
               intuitive, and usable by individuals of all technical skill levels across all modern
               devices.
             </li>
             <li>
-              <strong>Free Tools:</strong> We commit to keeping our core document utilities free of
-              charge so that premium features are not locked behind subscription paywalls.
+              <strong>Performance:</strong> We commit to fast, local processing — by eliminating
+              upload time, conversions are limited only by your device's own hardware.
             </li>
             <li>
-              <strong>Continuous Improvements:</strong> We commit to continually refining our
+              <strong>Free and Transparent Tools:</strong> We commit to keeping our core document
+              utilities free of charge, and to being upfront about how the project is funded and how
+              our tools work.
+            </li>
+            <li>
+              <strong>Continuous Improvement:</strong> We commit to continually refining our
               algorithms, expanding our toolset, and improving performance based on real-world usage
               and feedback.
             </li>
           </ul>
-        </section>
-
-        <section>
-          <h2 className="text-2xl font-semibold mb-4 text-foreground">
-            The Technology Behind Our Mission
-          </h2>
-          <p className="mb-4">
-            Our mission is only made possible by recent advancements in web browser technology. A
-            few years ago, performing heavy document manipulation inside a web page was slow and
-            impractical. Today, modern browsers are incredibly powerful computation engines.
-          </p>
-          <p>
-            We utilize robust JavaScript libraries like <code>pdf-lib</code> to read and modify the
-            complex binary structure of PDF documents entirely within the browser's memory. For
-            image manipulation, we leverage the HTML5 Canvas API, which provides
-            hardware-accelerated pixel rendering directly on your screen. By utilizing these
-            client-side technologies, we can deliver instantaneous, high-quality conversions that
-            rival traditional desktop software, all while keeping your data strictly on your device.
-          </p>
         </section>
 
         <section>
@@ -124,7 +112,7 @@ function Mission() {
           <h2 className="text-2xl font-semibold mb-4 text-foreground">Explore ConvertPDF</h2>
           <p className="mb-4">
             The best way to understand our mission is to experience it firsthand. You can read more
-            about the origins of the project on our{" "}
+            about the origins of the project and the technology behind it on our{" "}
             <Link to="/about" className="text-primary hover:underline">
               About
             </Link>{" "}
@@ -136,10 +124,14 @@ function Mission() {
           </p>
           <p>
             Try our secure{" "}
-            <a href="/#pdf-tools" className="text-primary hover:underline">
+            <a href="/#tools" className="text-primary hover:underline">
               PDF Tools
-            </a>{" "}
-            and{" "}
+            </a>
+            , our{" "}
+            <Link to="/word-to-pdf" className="text-primary hover:underline">
+              PDF ↔ Word
+            </Link>{" "}
+            converter, and our{" "}
             <a href="/#image-tools" className="text-primary hover:underline">
               Image Tools
             </a>{" "}
