@@ -66,8 +66,78 @@ const FONT_ALIASES: Record<string, string> = {
   courier: "Courier New",
   couriernew: "Courier New",
   consolas: "Consolas",
-  symbol: "Symbol",
+  // Common Office/Windows families that previously fell through to a generic
+  // serif or sans. Each ships with Windows and with Office on macOS, so naming
+  // them is safe; the closest stock substitute is used where a family is not
+  // universally present.
+  comicsansms: "Comic Sans MS",
+  trebuchetms: "Trebuchet MS",
+  papyrus: "Papyrus",
+  bookantiqua: "Book Antiqua",
+  palatino: "Palatino Linotype",
+  palatinolinotype: "Palatino Linotype",
+  centurygothic: "Century Gothic",
+  franklingothic: "Franklin Gothic Book",
+  franklingothicbook: "Franklin Gothic Book",
+  impact: "Impact",
+  rockwell: "Rockwell",
 };
+
+/**
+ * Dingbat and symbol families, which cannot be substituted with a text font.
+ *
+ * A PDF stores these glyphs at Private Use Area codepoints — 0xF000 plus the
+ * original byte — so a Wingdings tick extracts as U+F0FC rather than as any
+ * meaningful character. Mapping such a run to Arial does not produce a wrong
+ * letter so much as no glyph at all, because Arial has nothing in that range.
+ *
+ * Naming the original family instead makes those codepoints round-trip: Word
+ * renders U+F0FC in Wingdings as the tick it started as. These are all stock
+ * Office fonts, so this is safe wherever Word itself is. Where a family is not
+ * installed the glyphs will not resolve, which is why the conversion warns.
+ */
+const SYMBOL_FONT_PATTERNS: { test: RegExp; family: string }[] = [
+  { test: /^wingdings\s*-?\s*2/, family: "Wingdings 2" },
+  { test: /^wingdings\s*-?\s*3/, family: "Wingdings 3" },
+  { test: /wingdings/, family: "Wingdings" },
+  { test: /webdings/, family: "Webdings" },
+  { test: /zapf\s*dingbats|monotype\s*sorts/, family: "Wingdings" },
+  { test: /^symbol(mt|ps)?\b|^symbol$/, family: "Symbol" },
+];
+
+function symbolFamilyFor(lowerName: string): string | null {
+  for (const { test, family } of SYMBOL_FONT_PATTERNS) if (test.test(lowerName)) return family;
+  return null;
+}
+
+/** Private Use Area, where symbol fonts park their glyphs as 0xF000 + byte. */
+const isPrivateUse = (cp: number) => cp >= 0xe000 && cp <= 0xf8ff;
+
+/**
+ * Splits a fragment so a symbol font is applied only where it actually helps.
+ *
+ * Extraction is not all-or-nothing on these fonts: a Wingdings run can come
+ * back as a mix of Private Use codepoints and genuine Unicode, because pdf.js
+ * resolves some glyphs properly — a tick may arrive as U+2713 rather than
+ * U+F0FC. Private Use characters need the original family to mean anything;
+ * a real Unicode character does not, and forcing Wingdings onto it would
+ * replace a glyph that renders with one that does not. Each kind therefore
+ * keeps the font that can actually draw it.
+ */
+function symbolSegments(text: string, font: ResolvedFont): { text: string; font: ResolvedFont }[] {
+  if (!font.symbolFont || !text) return [{ text, font }];
+
+  const textFallback: ResolvedFont = { ...font, family: "Arial", symbolFont: false };
+  const segments: { text: string; font: ResolvedFont }[] = [];
+
+  for (const ch of text) {
+    const wanted = isPrivateUse(ch.codePointAt(0) ?? 0) ? font : textFallback;
+    const last = segments[segments.length - 1];
+    if (last && last.font.family === wanted.family) last.text += ch;
+    else segments.push({ text: ch, font: wanted });
+  }
+  return segments;
+}
 
 const GENERIC_FALLBACK: Record<string, string> = {
   serif: "Times New Roman",
@@ -75,7 +145,15 @@ const GENERIC_FALLBACK: Record<string, string> = {
   monospace: "Courier New",
 };
 
-export type ResolvedFont = { family: string; bold: boolean; italic: boolean };
+export type ResolvedFont = {
+  family: string;
+  bold: boolean;
+  italic: boolean;
+  /** True for dingbat/symbol families, whose glyphs only survive if the reader
+   *  has that exact font. Surfaced so the conversion can say so rather than
+   *  substituting a text font and quietly producing nothing legible. */
+  symbolFont: boolean;
+};
 
 /**
  * Turns a PDF font name into a usable Word family plus weight/slant.
@@ -87,6 +165,11 @@ export function resolveFont(rawName: string, genericBucket?: string): ResolvedFo
 
   const bold = /bold|black|heavy|semibold|demibold|[-,_]bd\b/.test(lower);
   const italic = /italic|oblique|[-,_]it\b/.test(lower);
+
+  // Symbol families are decided before the stem is cleaned, because stripping
+  // non-letters would collapse "Wingdings 2" into plain "Wingdings".
+  const symbol = symbolFamilyFor(lower);
+  if (symbol) return { family: symbol, bold, italic, symbolFont: true };
 
   // Strip style words and punctuation to get at the family stem.
   const stem = lower
@@ -104,7 +187,7 @@ export function resolveFont(rawName: string, genericBucket?: string): ResolvedFo
         ? "Courier New"
         : "Arial");
 
-  return { family, bold, italic };
+  return { family, bold, italic, symbolFont: false };
 }
 
 /* ------------------------------------------------------------------ */
@@ -366,6 +449,7 @@ export async function convertPdfToDocx(
   /* --- pass 1: extract every page's lines --- */
   const perPage: { lines: Line[]; width: number; height: number }[] = [];
   const fontsSeen = new Set<string>();
+  const symbolFontsSeen = new Set<string>();
 
   for (let n = 1; n <= doc.numPages; n++) {
     const page = await doc.getPage(n);
@@ -394,6 +478,7 @@ export async function convertPdfToDocx(
       const bucket = (content.styles?.[fontId] as { fontFamily?: string } | undefined)?.fontFamily;
       const font = resolveFont(rawName, bucket);
       fontsSeen.add(font.family);
+      if (font.symbolFont) symbolFontsSeen.add(font.family);
 
       frags.push({
         text: str,
@@ -490,18 +575,24 @@ export async function convertPdfToDocx(
             } else if (f.spaceBefore) {
               gap = " ";
             }
-            const same =
-              pending &&
-              pending.font.family === f.font.family &&
-              pending.font.bold === f.font.bold &&
-              pending.font.italic === f.font.italic &&
-              Math.abs(pending.size - f.size) < 0.6;
-            if (same) pending!.text += gap + f.text;
-            else {
-              // The gap belongs to the boundary, so it opens the new run rather
-              // than trailing the old one.
-              flush();
-              pending = { font: f.font, size: f.size, text: gap + f.text };
+
+            for (const seg of symbolSegments(f.text, f.font)) {
+              const segFont = seg.font;
+              const segGap = gap;
+              gap = "";
+              const same =
+                pending &&
+                pending.font.family === segFont.family &&
+                pending.font.bold === segFont.bold &&
+                pending.font.italic === segFont.italic &&
+                Math.abs(pending.size - f.size) < 0.6;
+              if (same) pending!.text += segGap + seg.text;
+              else {
+                // The gap belongs to the boundary, so it opens the new run
+                // rather than trailing the old one.
+                flush();
+                pending = { font: segFont, size: f.size, text: segGap + seg.text };
+              }
             }
           });
         });
@@ -522,8 +613,20 @@ export async function convertPdfToDocx(
 
   onProgress?.(85, "Building the Word document...");
 
+  if (symbolFontsSeen.size && import.meta.env?.DEV) {
+    // Developer-facing only. These runs keep their original family so their
+    // Private Use Area codepoints still resolve, but that depends on the
+    // reader having the font — there is no text-font substitute that would
+    // render them, so the limitation is stated rather than papered over.
+    console.warn(
+      `[pdf-to-docx] Symbol/dingbat fonts kept as-is: ${[...symbolFontsSeen].join(", ")}. ` +
+        `Their glyphs render only where those fonts are installed; no text font can stand in for them.`,
+    );
+  }
+
   const first = perPage[0];
-  const chromeFont = [...fontsSeen][0] || "Arial";
+  // Header/footer chrome should never inherit a dingbat family.
+  const chromeFont = [...fontsSeen].find((f) => !symbolFontsSeen.has(f)) || "Arial";
 
   /**
    * Builds a header/footer paragraph. Numbers in running chrome are almost

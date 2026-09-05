@@ -15,7 +15,7 @@ The product's core pitch is privacy: files never leave the user's device.
 - Styling: Tailwind CSS v4, Radix UI primitives, Framer Motion
 - Processing libraries: `pdf-lib`, `pdfjs-dist`, `mammoth`, `docx`, `jszip`, `xlsx`, Canvas API for images
 - Deployment: Cloudflare Workers (`server.ts` is the SSR/Workers entry point, `wrangler.toml` / `wrangler.jsonc` configure it)
-- Package manager: this repo has both `bun.lock` and `package-lock.json` — check with the user which one is actually in use before adding dependencies
+- Package manager: **npm only** — `package-lock.json` is the lockfile. A stale `bun.lock` predating this work was removed; bun is not used anywhere, and nothing in `package.json`, the scripts or CI references it. Still ask before adding a dependency.
 - Originally scaffolded with Lovable (see `.lovable/project.json`)
 - Linting/formatting: ESLint + Prettier (`npm run lint`, `npm run format`)
 - No test suite yet (unit tests are on the roadmap, not implemented)
