@@ -404,6 +404,287 @@ function findRepeating(hits: BandHit[], pageCount: number): Set<string> {
 }
 
 /* ------------------------------------------------------------------ */
+/*  ruled-table detection                                               */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Table recovery, deliberately limited to tables that draw their own borders.
+ *
+ * A PDF has no table concept — only positioned text and drawing operators — so
+ * anything inferred from whitespace alignment would be a guess, and a wrongly
+ * reconstructed table reads worse than no table at all. Detection therefore
+ * keys on actual ruling: a grid of thin filled rectangles. Text merely arranged
+ * in columns draws no rules and is left to the paragraph path untouched.
+ *
+ * Every check below is a reason to give up rather than guess. When a region
+ * fails any of them the whole region falls back to plain paragraphs, which is
+ * the behaviour that shipped before tables existed.
+ */
+
+/** A ruled segment. `pos` is x for a vertical rule, y for a horizontal one. */
+type Rule = { pos: number; a: number; b: number };
+
+type Lattice = {
+  /** Grid lines: columns ascending, rows descending (PDF y grows upward). */
+  colX: number[];
+  rowY: number[];
+  vRules: Rule[];
+  hRules: Rule[];
+  x0: number;
+  x1: number;
+  y0: number;
+  y1: number;
+};
+
+/** Grid-line positions closer than this are the same line. */
+const RULE_TOLERANCE = 2;
+/** A filled rectangle thinner than this in one axis is a rule, not a box. */
+const RULE_THICKNESS = 2.5;
+/** Shorter marks are underlines or punctuation, not table ruling. */
+const MIN_RULE_LENGTH = 8;
+/** Segments at least this close belong to the same table. */
+const JOIN_TOLERANCE = 4;
+/** Text may sit this far outside its cell band before the region is abandoned. */
+const CELL_SLACK = 3;
+
+/** Collapses near-identical positions into single grid lines. */
+function clusterPositions(values: number[]): number[] {
+  const sorted = [...values].sort((a, b) => a - b);
+  const out: number[] = [];
+  for (const v of sorted) {
+    if (!out.length || Math.abs(v - out[out.length - 1]) > RULE_TOLERANCE) out.push(v);
+  }
+  return out;
+}
+
+type SegBox = { x0: number; x1: number; y0: number; y1: number };
+
+const segBox = (r: Rule, vertical: boolean): SegBox =>
+  vertical
+    ? { x0: r.pos - 1, x1: r.pos + 1, y0: r.a, y1: r.b }
+    : { x0: r.a, x1: r.b, y0: r.pos - 1, y1: r.pos + 1 };
+
+const boxesTouch = (p: SegBox, q: SegBox) =>
+  !(
+    p.x1 < q.x0 - JOIN_TOLERANCE ||
+    q.x1 < p.x0 - JOIN_TOLERANCE ||
+    p.y1 < q.y0 - JOIN_TOLERANCE ||
+    q.y1 < p.y0 - JOIN_TOLERANCE
+  );
+
+/**
+ * Finds ruled grids on a page.
+ *
+ * Segments are grouped into connected components first, so two tables on one
+ * page stay separate. Clustering every rule on the page into one grid would
+ * fuse them into a single bogus table spanning both.
+ */
+function detectLattices(
+  fnArray: ArrayLike<number>,
+  argsArray: ArrayLike<unknown>,
+  constructPathOp: number,
+  pageWidth: number,
+  pageHeight: number,
+): Lattice[] {
+  const vRules: Rule[] = [];
+  const hRules: Rule[] = [];
+
+  for (let i = 0; i < fnArray.length; i++) {
+    if (fnArray[i] !== constructPathOp) continue;
+    const args = argsArray[i] as unknown[] | undefined;
+    const bb = args?.[2] as ArrayLike<number> | undefined;
+    if (!bb || bb.length < 4) continue;
+    const x0 = Math.min(bb[0], bb[2]);
+    const x1 = Math.max(bb[0], bb[2]);
+    const y0 = Math.min(bb[1], bb[3]);
+    const y1 = Math.max(bb[1], bb[3]);
+    const w = x1 - x0;
+    const h = y1 - y0;
+    // A page-sized rectangle is a background wash, not table ruling.
+    if (w > pageWidth * 0.95 && h > pageHeight * 0.95) continue;
+    if (h <= RULE_THICKNESS && w > MIN_RULE_LENGTH) {
+      hRules.push({ pos: (y0 + y1) / 2, a: x0, b: x1 });
+    } else if (w <= RULE_THICKNESS && h > MIN_RULE_LENGTH) {
+      vRules.push({ pos: (x0 + x1) / 2, a: y0, b: y1 });
+    }
+  }
+
+  const all = [
+    ...vRules.map((r) => ({ r, vertical: true })),
+    ...hRules.map((r) => ({ r, vertical: false })),
+  ];
+  if (!all.length) return [];
+
+  // Union-find over touching segments, so each component is one table.
+  const parent = all.map((_, i) => i);
+  const find = (i: number): number => (parent[i] === i ? i : (parent[i] = find(parent[i])));
+  const boxes = all.map((s) => segBox(s.r, s.vertical));
+  for (let i = 0; i < all.length; i++) {
+    for (let j = i + 1; j < all.length; j++) {
+      if (boxesTouch(boxes[i], boxes[j])) parent[find(i)] = find(j);
+    }
+  }
+
+  const groups = new Map<number, typeof all>();
+  all.forEach((s, i) => {
+    const k = find(i);
+    const g = groups.get(k);
+    if (g) g.push(s);
+    else groups.set(k, [s]);
+  });
+
+  const lattices: Lattice[] = [];
+  for (const group of groups.values()) {
+    const v = group.filter((s) => s.vertical).map((s) => s.r);
+    const h = group.filter((s) => !s.vertical).map((s) => s.r);
+    const colX = clusterPositions(v.map((r) => r.pos));
+    const rowY = clusterPositions(h.map((r) => r.pos)).reverse(); // top → bottom
+    // Two columns and two rows need three lines each. Fewer means a rule or a
+    // box outline, not a grid.
+    if (colX.length < 3 || rowY.length < 3) continue;
+    lattices.push({
+      colX,
+      rowY,
+      vRules: v,
+      hRules: h,
+      x0: colX[0],
+      x1: colX[colX.length - 1],
+      y0: rowY[rowY.length - 1],
+      y1: rowY[0],
+    });
+  }
+  // Top-most table first, matching reading order.
+  return lattices.sort((a, b) => b.y1 - a.y1);
+}
+
+/**
+ * True when ruling is actually drawn across the whole span between two lines.
+ *
+ * Coverage is tested against the union of collinear segments, not any single
+ * one. Word draws a table's borders per cell rather than as one long rule, so
+ * the line under a merged header arrives as one segment per underlying column
+ * with hairline gaps between them. Asking whether one segment spans the range
+ * would read every such border as missing, and merge detection keys on exactly
+ * that absence.
+ */
+const ruleCovers = (rules: Rule[], pos: number, from: number, to: number) => {
+  const lo = Math.min(from, to);
+  const hi = Math.max(from, to);
+  const collinear = rules
+    .filter((r) => Math.abs(r.pos - pos) <= RULE_TOLERANCE)
+    .sort((a, b) => a.a - b.a);
+  let reach = lo;
+  for (const seg of collinear) {
+    // Sorted by start, so a segment beginning past the reach leaves a real gap.
+    if (seg.a > reach + RULE_TOLERANCE) break;
+    reach = Math.max(reach, seg.b);
+    if (reach >= hi - RULE_TOLERANCE) return true;
+  }
+  return reach >= hi - RULE_TOLERANCE;
+};
+
+type CellPlan = { row: number; col: number; colSpan: number; rowSpan: number; frags: Frag[] };
+
+/**
+ * Resolves a lattice into cells, spans and their text.
+ *
+ * A merged cell is read from absent ruling: where the interior vertical line
+ * between two columns is not drawn across a row band, those two cells are one.
+ * The same test transposed gives vertical merges. Returns null whenever the
+ * region cannot be resolved confidently, so the caller falls back to prose.
+ */
+function planTable(lat: Lattice, frags: Frag[]): CellPlan[] | null {
+  const rows = lat.rowY.length - 1;
+  const cols = lat.colX.length - 1;
+  if (rows < 2 || cols < 2) return null;
+
+  // A real grid line is drawn down most of the table; a merge removes it from
+  // a few bands at most. A line present in only a band or two is evidence the
+  // region is not one grid — a nested table, for instance, contributes lines
+  // that exist inside a single row. Reading that as a merge would flatten the
+  // nesting into a plausible-looking but wrong shape, so the region is given
+  // up instead. The cost is that a two-row table with a merged header also
+  // falls back to prose, which is the safer way to be wrong.
+  for (let c = 1; c < cols; c++) {
+    let drawn = 0;
+    for (let r = 0; r < rows; r++) {
+      if (ruleCovers(lat.vRules, lat.colX[c], lat.rowY[r], lat.rowY[r + 1])) drawn++;
+    }
+    if (drawn <= rows * 0.5) return null;
+  }
+  for (let r = 1; r < rows; r++) {
+    let drawn = 0;
+    for (let c = 0; c < cols; c++) {
+      if (ruleCovers(lat.hRules, lat.rowY[r], lat.colX[c], lat.colX[c + 1])) drawn++;
+    }
+    if (drawn <= cols * 0.5) return null;
+  }
+
+  const covered: boolean[][] = Array.from({ length: rows }, () => new Array(cols).fill(false));
+  const plans: CellPlan[] = [];
+
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      if (covered[r][c]) continue;
+      const top = lat.rowY[r];
+      const bottom = lat.rowY[r + 1];
+
+      let colSpan = 1;
+      while (c + colSpan < cols && !ruleCovers(lat.vRules, lat.colX[c + colSpan], top, bottom)) {
+        colSpan++;
+      }
+
+      let rowSpan = 1;
+      while (
+        r + rowSpan < rows &&
+        !ruleCovers(lat.hRules, lat.rowY[r + rowSpan], lat.colX[c], lat.colX[c + colSpan])
+      ) {
+        rowSpan++;
+      }
+
+      for (let rr = r; rr < r + rowSpan; rr++) {
+        for (let cc = c; cc < c + colSpan; cc++) {
+          // Overlapping spans mean the ruling contradicts itself; give up.
+          if (covered[rr][cc]) return null;
+          covered[rr][cc] = true;
+        }
+      }
+      plans.push({ row: r, col: c, colSpan, rowSpan, frags: [] });
+    }
+  }
+
+  // Every fragment must land in exactly one planned cell.
+  for (const f of frags) {
+    let r = -1;
+    for (let i = 0; i < rows; i++) {
+      if (f.y <= lat.rowY[i] + CELL_SLACK && f.y > lat.rowY[i + 1] - CELL_SLACK) {
+        r = i;
+        break;
+      }
+    }
+    let c = -1;
+    for (let i = 0; i < cols; i++) {
+      if (f.x >= lat.colX[i] - CELL_SLACK && f.x < lat.colX[i + 1] + CELL_SLACK) {
+        c = i;
+        break;
+      }
+    }
+    if (r < 0 || c < 0) return null;
+    const owner = plans.find(
+      (p) => r >= p.row && r < p.row + p.rowSpan && c >= p.col && c < p.col + p.colSpan,
+    );
+    if (!owner) return null;
+    // Text wider than the cell holding it means the grid does not describe
+    // this layout, whatever the ruling suggested.
+    const cellRight = lat.colX[owner.col + owner.colSpan];
+    if (f.x + f.width > cellRight + CELL_SLACK * 2) return null;
+    owner.frags.push(f);
+  }
+
+  return plans;
+}
+
+/* ------------------------------------------------------------------ */
 /*  conversion                                                          */
 /* ------------------------------------------------------------------ */
 
@@ -412,6 +693,8 @@ export type PdfToDocxResult = {
   stats: {
     pages: number;
     paragraphs: number;
+    /** Ruled tables recovered. Borderless column layouts are not counted. */
+    tables: number;
     fonts: string[];
     header: string | null;
     footer: string | null;
@@ -437,6 +720,11 @@ export async function convertPdfToDocx(
     AlignmentType,
     PageNumber,
     convertInchesToTwip,
+    Table,
+    TableRow,
+    TableCell,
+    WidthType,
+    BorderStyle,
   } = await import("docx");
 
   const doc = await pdfjs.getDocument({ data }).promise;
@@ -447,15 +735,21 @@ export async function convertPdfToDocx(
   onProgress?.(20, `Reading ${doc.numPages} page${doc.numPages === 1 ? "" : "s"}...`);
 
   /* --- pass 1: extract every page's lines --- */
-  const perPage: { lines: Line[]; width: number; height: number }[] = [];
+  const perPage: {
+    lines: Line[];
+    tables: { lat: Lattice; cells: CellPlan[] }[];
+    width: number;
+    height: number;
+  }[] = [];
   const fontsSeen = new Set<string>();
   const symbolFontsSeen = new Set<string>();
 
   for (let n = 1; n <= doc.numPages; n++) {
     const page = await doc.getPage(n);
     const viewport = page.getViewport({ scale: 1 });
-    // Forces pdf.js to resolve embedded font objects so commonObjs can name them.
-    await page.getOperatorList();
+    // Also forces pdf.js to resolve embedded font objects so commonObjs can
+    // name them, which the font resolver below depends on.
+    const ops = await page.getOperatorList();
     const content = await page.getTextContent();
 
     const frags: Frag[] = [];
@@ -490,8 +784,41 @@ export async function convertPdfToDocx(
       });
     }
 
+    // Tables are resolved before lines are built, not after. A row's cells
+    // share a baseline, so buildLines would fuse them into one line and the
+    // column boundaries would be gone. Partitioning fragments keeps the
+    // paragraph path receiving exactly the shape it always has: when nothing
+    // is detected `bodyFrags` is `frags`, so the pipeline below is unchanged.
+    const tables: { lat: Lattice; cells: CellPlan[] }[] = [];
+    let bodyFrags = frags;
+
+    for (const lat of detectLattices(
+      ops.fnArray,
+      ops.argsArray,
+      pdfjs.OPS.constructPath,
+      viewport.width,
+      viewport.height,
+    )) {
+      const inside = bodyFrags.filter(
+        (f) =>
+          f.x >= lat.x0 - CELL_SLACK &&
+          f.x <= lat.x1 + CELL_SLACK &&
+          f.y <= lat.y1 + CELL_SLACK &&
+          f.y >= lat.y0 - CELL_SLACK,
+      );
+      const cells = planTable(lat, inside);
+      // A region that will not resolve cleanly is abandoned whole: its text
+      // stays in bodyFrags and reads as ordinary paragraphs. Emitting the
+      // resolvable cells and stranding the rest would be worse than both.
+      if (!cells) continue;
+      tables.push({ lat, cells });
+      const claimed = new Set(inside);
+      bodyFrags = bodyFrags.filter((f) => !claimed.has(f));
+    }
+
     perPage.push({
-      lines: buildLines(frags),
+      lines: buildLines(bodyFrags),
+      tables,
       width: viewport.width,
       height: viewport.height,
     });
@@ -516,8 +843,9 @@ export async function convertPdfToDocx(
   const footerText = footerHits.find((h) => footerSigs.has(signature(h.text)))?.text ?? null;
 
   /* --- pass 3: build the document body --- */
-  const children: InstanceType<typeof Paragraph>[] = [];
+  const children: (InstanceType<typeof Paragraph> | InstanceType<typeof Table>)[] = [];
   let paragraphCount = 0;
+  let tableCount = 0;
 
   const alignMap = {
     left: AlignmentType.START,
@@ -525,6 +853,139 @@ export async function convertPdfToDocx(
     right: AlignmentType.END,
     justify: AlignmentType.BOTH,
   } as const;
+
+  /**
+   * Turns one paragraph's lines into runs.
+   *
+   * Runs accumulate across the whole paragraph rather than per line. The lines
+   * in a group are the wrapped lines of one paragraph — groupParagraphs has
+   * already split anything genuinely separate on its vertical gap — so pinning
+   * them with hard breaks would fight Word's own rewrapping and strand
+   * fragments mid-sentence at Word's (different) text width.
+   */
+  const buildRuns = (para: Line[]): InstanceType<typeof TextRun>[] => {
+    const runs: InstanceType<typeof TextRun>[] = [];
+    let pending: { font: ResolvedFont; size: number; text: string } | null = null;
+    const flush = () => {
+      if (!pending || !pending.text) return;
+      runs.push(
+        new TextRun({
+          text: pending.text,
+          font: pending.font.family,
+          size: Math.round(pending.size * 2), // docx sizes are half-points
+          bold: pending.font.bold,
+          italics: pending.font.italic,
+        }),
+      );
+      pending = null;
+    };
+
+    para.forEach((line, li) => {
+      line.frags.forEach((f, fi) => {
+        let gap = "";
+        if (fi === 0) {
+          // Joining a wrapped line back on needs the space the line break
+          // was standing in for.
+          const prevText = pending?.text ?? "";
+          if (li > 0 && prevText && !/[\s-]$/.test(prevText)) gap = " ";
+        } else if (f.spaceBefore) {
+          gap = " ";
+        }
+
+        for (const seg of symbolSegments(f.text, f.font)) {
+          const segFont = seg.font;
+          const segGap = gap;
+          gap = "";
+          const same =
+            pending &&
+            pending.font.family === segFont.family &&
+            pending.font.bold === segFont.bold &&
+            pending.font.italic === segFont.italic &&
+            Math.abs(pending.size - f.size) < 0.6;
+          if (same) pending!.text += segGap + seg.text;
+          else {
+            // The gap belongs to the boundary, so it opens the new run
+            // rather than trailing the old one.
+            flush();
+            pending = { font: segFont, size: f.size, text: segGap + seg.text };
+          }
+        }
+      });
+    });
+    flush();
+    return runs;
+  };
+
+  /** PDF points are 1/72 in; Word table widths are in twips (1/20 pt). */
+  const PT_TO_TWIP = 20;
+  const cellBorder = { style: BorderStyle.SINGLE, size: 4, color: "auto" };
+
+  /** A cell's own text, reusing the same line and paragraph logic as the body. */
+  const cellParagraphs = (frags: Frag[]) => {
+    const out: InstanceType<typeof Paragraph>[] = [];
+    const lines = buildLines(frags);
+    if (lines.length) {
+      const x1 = Math.max(...lines.map((l) => l.x1));
+      for (const para of groupParagraphs(lines, x1)) {
+        const runs = buildRuns(para);
+        // Cell text keeps Word's default alignment. Inferring it from one or
+        // two short lines in a narrow cell guesses far more often than it reads.
+        if (runs.length) out.push(new Paragraph({ children: runs }));
+      }
+    }
+    // Word treats a cell holding no paragraph at all as malformed.
+    return out.length ? out : [new Paragraph({})];
+  };
+
+  const buildTable = ({ lat, cells }: { lat: Lattice; cells: CellPlan[] }) => {
+    const colCount = lat.colX.length - 1;
+    const rowCount = lat.rowY.length - 1;
+    // Explicit widths from the detected grid. Without these Word lays every
+    // column out equally, which throws away the source's proportions.
+    const widths = Array.from({ length: colCount }, (_, i) =>
+      Math.round((lat.colX[i + 1] - lat.colX[i]) * PT_TO_TWIP),
+    );
+
+    const byRow: CellPlan[][] = Array.from({ length: rowCount }, () => []);
+    // A row-spanning cell belongs only to the row it starts in: docx generates
+    // the vMerge continuation cells underneath it, and adding our own would
+    // double them up.
+    for (const c of cells) byRow[c.row].push(c);
+    for (const r of byRow) r.sort((a, b) => a.col - b.col);
+
+    return new Table({
+      columnWidths: widths,
+      width: { size: widths.reduce((a, b) => a + b, 0), type: WidthType.DXA },
+      // Detection only fires on ruled tables, so plain single borders are a
+      // fair rendering. Matching exact weight, colour and shading is Faithful
+      // mode's job, not this one's.
+      borders: {
+        top: cellBorder,
+        bottom: cellBorder,
+        left: cellBorder,
+        right: cellBorder,
+        insideHorizontal: cellBorder,
+        insideVertical: cellBorder,
+      },
+      rows: byRow.map(
+        (rowCells) =>
+          new TableRow({
+            children: rowCells.map(
+              (c) =>
+                new TableCell({
+                  columnSpan: c.colSpan > 1 ? c.colSpan : undefined,
+                  rowSpan: c.rowSpan > 1 ? c.rowSpan : undefined,
+                  width: {
+                    size: widths.slice(c.col, c.col + c.colSpan).reduce((a, b) => a + b, 0),
+                    type: WidthType.DXA,
+                  },
+                  children: cellParagraphs(c.frags),
+                }),
+            ),
+          }),
+      ),
+    });
+  };
 
   perPage.forEach((p, pageIndex) => {
     const body = p.lines.filter((l) => {
@@ -536,74 +997,39 @@ export async function convertPdfToDocx(
       return true;
     });
 
+    // Paragraphs and tables are collected with their vertical position and
+    // emitted in page order. With no tables detected this is the paragraph
+    // list in the order groupParagraphs already produced it, so the output is
+    // the same as before tables existed.
+    const blocks: {
+      y: number;
+      item: InstanceType<typeof Paragraph> | InstanceType<typeof Table>;
+    }[] = [];
+
     if (body.length) {
       const blockX0 = Math.min(...body.map((l) => l.x0));
       const blockX1 = Math.max(...body.map((l) => l.x1));
 
       for (const para of groupParagraphs(body, blockX1)) {
         const align = inferAlignment(para, blockX0, blockX1);
-        const runs: InstanceType<typeof TextRun>[] = [];
-
-        // Runs accumulate across the whole paragraph rather than per line. The
-        // lines in a group are the wrapped lines of one paragraph — groupParagraphs
-        // has already split anything genuinely separate on its vertical gap — so
-        // pinning them with hard breaks would fight Word's own rewrapping and
-        // strand fragments mid-sentence at Word's (different) text width.
-        let pending: { font: ResolvedFont; size: number; text: string } | null = null;
-        const flush = () => {
-          if (!pending || !pending.text) return;
-          runs.push(
-            new TextRun({
-              text: pending.text,
-              font: pending.font.family,
-              size: Math.round(pending.size * 2), // docx sizes are half-points
-              bold: pending.font.bold,
-              italics: pending.font.italic,
-            }),
-          );
-          pending = null;
-        };
-
-        para.forEach((line, li) => {
-          line.frags.forEach((f, fi) => {
-            let gap = "";
-            if (fi === 0) {
-              // Joining a wrapped line back on needs the space the line break
-              // was standing in for.
-              const prevText = pending?.text ?? "";
-              if (li > 0 && prevText && !/[\s-]$/.test(prevText)) gap = " ";
-            } else if (f.spaceBefore) {
-              gap = " ";
-            }
-
-            for (const seg of symbolSegments(f.text, f.font)) {
-              const segFont = seg.font;
-              const segGap = gap;
-              gap = "";
-              const same =
-                pending &&
-                pending.font.family === segFont.family &&
-                pending.font.bold === segFont.bold &&
-                pending.font.italic === segFont.italic &&
-                Math.abs(pending.size - f.size) < 0.6;
-              if (same) pending!.text += segGap + seg.text;
-              else {
-                // The gap belongs to the boundary, so it opens the new run
-                // rather than trailing the old one.
-                flush();
-                pending = { font: segFont, size: f.size, text: segGap + seg.text };
-              }
-            }
-          });
-        });
-        flush();
-
+        const runs = buildRuns(para);
         if (runs.length) {
-          children.push(new Paragraph({ alignment: alignMap[align], children: runs }));
+          blocks.push({
+            y: para[0].y,
+            item: new Paragraph({ alignment: alignMap[align], children: runs }),
+          });
           paragraphCount++;
         }
       }
     }
+
+    for (const t of p.tables) {
+      blocks.push({ y: t.lat.y1, item: buildTable(t) });
+      tableCount++;
+    }
+
+    blocks.sort((a, b) => b.y - a.y);
+    for (const b of blocks) children.push(b.item);
 
     // A real page break, rather than the old "Page N" heading in the body.
     if (pageIndex < perPage.length - 1) {
@@ -700,6 +1126,7 @@ export async function convertPdfToDocx(
     stats: {
       pages: perPage.length,
       paragraphs: paragraphCount,
+      tables: tableCount,
       fonts: [...fontsSeen].sort(),
       header: headerText,
       footer: footerText,
