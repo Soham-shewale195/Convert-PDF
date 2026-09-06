@@ -3,7 +3,7 @@ export function WebsiteSchema() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "ConvertPDF",
-    description: "Online PDF and Image Tools",
+    description: "Free PDF to Word converter and PDF toolkit. Convert PDF to editable Word documents, compress, merge, split, and more — entirely in your browser.",
     url: "https://converttpdf.com",
   };
   return (
@@ -246,6 +246,31 @@ export function HowToSchema({
       name: s.name,
       text: s.text,
     })),
+  };
+  return (
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+    />
+  );
+}
+
+export function PdfToWordSchema() {
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "PDF to Word Converter",
+    description:
+      "Convert PDF files to editable Word (.docx) documents for free, entirely in your browser. No uploads, no signup required.",
+    applicationCategory: "UtilityApplication",
+    operatingSystem: "Web Browser",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+    },
+    isAccessibleForFree: true,
+    url: "https://converttpdf.com/",
   };
   return (
     <script

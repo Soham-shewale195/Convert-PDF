@@ -6,6 +6,7 @@ import {
   Minimize2,
   Image as ImageIcon,
   FileImage,
+  FileText,
   Type,
   Droplets,
   FileSpreadsheet,
@@ -15,6 +16,7 @@ import {
 } from "lucide-react";
 
 type ToolId =
+  | "pdf2word"
   | "merge"
   | "split"
   | "compress"
@@ -33,7 +35,17 @@ const TOOLS: {
   icon: any;
   accent: string;
   path: string;
+  hash?: string;
 }[] = [
+  {
+    id: "pdf2word",
+    title: "PDF to Word",
+    desc: "Convert PDF to an editable .docx file.",
+    icon: FileText,
+    accent: "from-indigo-500 to-violet-600",
+    path: "/",
+    hash: "converter",
+  },
   {
     id: "merge",
     title: "Merge PDFs",
@@ -144,6 +156,7 @@ export default function Tools() {
             >
               <Link
                 to={t.path}
+                hash={t.hash}
                 className="block text-left glass rounded-2xl p-4 sm:p-5 hover:bg-white/[0.09] transition group h-full"
               >
                 <div

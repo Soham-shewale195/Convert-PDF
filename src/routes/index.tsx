@@ -7,7 +7,7 @@ import Navbar from "@/components/Navbar";
 import Background from "@/components/Background";
 import Converter, { type Mode } from "@/components/Converter";
 import { Footer } from "@/components/Footer";
-import { WebsiteSchema, OrganizationSchema } from "@/components/schema/Schema";
+import { WebsiteSchema, OrganizationSchema, PdfToWordSchema } from "@/components/schema/Schema";
 
 // Lazy-loaded components (Below the fold)
 const Features = lazy(() => import("@/components/Sections").then((m) => ({ default: m.Features })));
@@ -21,18 +21,19 @@ const ImageTools = lazy(() => import("@/components/ImageTools"));
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Convert PDF — Convert PDF and Word Files Instantly" },
+      { title: "Convert PDF to Word — Free Online Toolkit | ConvertPDF" },
       {
         name: "description",
         content:
           "Fast, secure, browser-based PDF to Word and Word to PDF conversion. No uploads, no watermarks, no signup.",
       },
-      { property: "og:title", content: "Convert PDF — Premium PDF ↔ Word Converter" },
+      { property: "og:title", content: "Convert PDF to Word — Free Online Toolkit | ConvertPDF" },
       {
         property: "og:description",
         content: "Convert PDF and Word files instantly, right in your browser.",
       },
     ],
+    links: [{ rel: "canonical", href: "https://converttpdf.com/" }],
   }),
   component: Index,
 });
@@ -49,6 +50,7 @@ function Index() {
     <div id="top" className="min-h-screen">
       <WebsiteSchema />
       <OrganizationSchema />
+      <PdfToWordSchema />
       <Background />
       <Toaster theme="dark" position="top-center" richColors />
       <Navbar />
